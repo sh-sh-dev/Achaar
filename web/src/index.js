@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import './index.scss';
 import registerServiceWorker from './registerServiceWorker';
-import HomePage from './homePage';
+import HomePage from './pages/homePage';
+import SignIn from './pages/signin';
 import { Route, BrowserRouter } from 'react-router-dom';
 // import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -26,10 +27,10 @@ import palette from './palette';
 class App extends React.Component {
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <Route path="/" exact component={HomePage}/>
-                <Route path='/signin' exact render={() => <div>LOL</div>} />
-            </div>
+                <Route path='/signin' exact component={SignIn} />
+            </React.Fragment>
         )
     }
 }

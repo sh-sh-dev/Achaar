@@ -6,6 +6,35 @@
     box-sizing: border-box;
 }
 
+h1,h2,h3,h4,h5,h6{
+    margin: .67rem 0;
+    font-weight: bold;
+}
+
+h1{
+    font-size: 2.8em
+}
+
+h2{
+    font-size: 2.5em
+}
+
+h3{
+    font-size: 2.2em
+}
+
+h4{
+    font-size: 1.7em
+}
+
+h5{
+    font-size: 1.4em
+}
+
+h6{
+    font-size: 1.2em
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -128,6 +157,24 @@ a{
             .price{
                 font-weight: bold;
             }
+        }
+    }
+}
+
+body.superdoc-form{
+    background-image: linear-gradient(to bottom, #3063a3, #3f9bc7);
+    #root{
+        height: 100vh;
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        .form-main{
+            margin: 40px;
+            width: 100%;
+            max-width: 500px;
+            overflow: auto;
+            padding: 15px 20px;
+            text-align: center;
         }
     }
 }
