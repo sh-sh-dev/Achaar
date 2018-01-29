@@ -1,0 +1,129 @@
+@import "mdi";
+
+*{
+    outline: 0;
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'iransansweb';
+  background-color: #f1f1f1;
+}
+
+.index-Banner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    color: #fff;
+    font-size: 1.25em;
+    position: relative;
+    z-index: 2;
+    .b--m{
+        text-align: center;
+        &>*:first-child{
+            margin: 0;
+            margin-bottom: 10px;
+        }
+    }
+    box-shadow: 0 2px 6px rgba(#000, .5)
+}
+
+.ic-item{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    direction: rtl;
+    .ici-icon{
+        padding: 20px;
+        .ici-icon-main{
+            font-size: 70px;
+            color: #fff
+        }
+    }
+}
+
+.mulitsh{
+    margin: 20px 15px;
+    background-color: #fff;
+    border-radius: 2.5px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(#000, .4);
+    position: relative;
+    color: inherit;
+    .header{
+        padding: 5px;
+        font-weight: bold;
+        box-shadow: 0 1px 5px 2px rgba(#000, .2);
+        position: relative;
+        i{
+            color: #2196f3
+        }
+    }
+    .main{
+        display: flex;
+        align-items: stretch;
+    }
+    &, & *{
+        user-select: none;
+    }
+    cursor: default;
+    .mulitsh-button{
+        background-color: #fff;
+        border: 0;
+        box-shadow: 0 2px 15px -3px rgba(#000, .3);
+        font-size: 21px;
+        cursor: pointer;
+        padding: 0 6px;
+        transition: .2s ease;
+        & > *{
+            color: inherit !important;
+            font-size: inherit !important
+        }
+        &:disabled{
+            color: #888;
+            box-shadow: none;
+            background-color: #eaeaea
+        }
+        &:not(:disabled):active{
+            box-shadow: 0 5px 20px -2px rgba(#000, .35)
+        }
+    }
+    .mulitsh-item{
+        display: inline-block;
+        border-radius: 2.5px;
+        direction: rtl !important;
+        width: (100% / 3);
+        @media only screen and (min-width: 768px){
+            width: 20%;
+        }
+        padding: 15px;
+        text-align: center;
+        img{
+            width: 100%;
+        }
+        .title{
+            font-size: 20px;
+        }
+        p{
+            color: #888;
+            font-size: 14px;
+            margin: 0;
+            margin-top: 3px;
+        }
+        .footer{
+            // text-align: left;
+            padding: 5px 0;
+            font-size: 67%;
+            border-top: 1px solid #ececec;
+            .price{
+                font-weight: bold;
+            }
+        }
+    }
+}
