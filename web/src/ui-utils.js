@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-export default class TypeText extends Component{
+export class TypeText extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -22,4 +22,8 @@ export default class TypeText extends Component{
     render(){
         return (<React.Fragment>{this.props.text.substring(0, this.state.max)}</React.Fragment>)
     }
+}
+
+export function Space(props){
+    return <div style={{height: props.height}}></div>
 }
