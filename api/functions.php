@@ -59,3 +59,10 @@ function Clean($value) {
     return $value;
 }
 
+function Response($value , $ok = true , $code = null) {
+    return json_encode([
+        'ok'=>$ok,
+        'result'=>$value,
+        'code'=>$code
+    ]);
+}
