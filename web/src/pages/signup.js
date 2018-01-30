@@ -33,7 +33,7 @@ export default class SignUp extends Component {
     verifyPass = (e) => {
         let val = e.target.value;
         this.setState({
-            pass: val.split('').length >= 6
+            pass: val.split('').length >= 6 && val.split('').length =< 18
         })
     }
     verifyName = (e) => {
@@ -51,16 +51,16 @@ export default class SignUp extends Component {
             pass: inps.pass.value
         };
         for (var i = 0; i < this.farsiNumbers.length; i++) {
-            forms.phoneNum = forms.phoneNum.replace(this.farsiNumbers[i], i)
+            forms.phoneNum = forms.phoneNum.replace(this.farsiNumbers[i], i);
+            forms.pass = forms.pass.replace(this.farsiNumbers[i], i);
         }
-        // console.log(forms);
         this.setState({writeable: false});
         axios({
             method: 'post',
             url: '//localhost/Achaar/api/signup',
             data: forms
         }).then(res => {
-            console.log(res)
+            let {status} = res;
         })
     }
     renderChildren(){
@@ -76,7 +76,7 @@ export default class SignUp extends Component {
                             <TextField required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && 'شماره اشتباه است.'} name='phoneNum' autocomplete='off' />
                         </div>
                         <div>
-                            <TextField required floatingLabelText='گذرواژه' errorText={!this.state.pass && 'گذرواژه حداقل باید ۶ حرف یا رقم داشته باشد.'} errorStyle={{textAlign: 'left'}} type='password' name='pass' autocomplete='off' onChange={this.verifyPass} />
+                            <TextField required floatingLabelText='گذرواژه' errorText={!this.state.pass && 'گذرواژه باید دارای حداقل 6 و حداکثر 18 رقم یا حرف باشد.'} errorStyle={{textAlign: 'left'}} type='password' name='pass' autocomplete='off' onChange={this.verifyPass} />
                         </div>
                         <Space height={20} />
                         <RaisedButton disabled={!this.state.pass || !this.state.phone} type='submit' primary={true}>ثبت نام</RaisedButton>
