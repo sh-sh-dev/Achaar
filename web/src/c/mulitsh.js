@@ -20,8 +20,7 @@ class MulitshSelf extends Component {
         super(props);
         this.state = {
             index: 0,
-            mobile: window.innerWidth < 768,
-            amount: this.mobile ? 3 : 7
+            mobile: window.innerWidth < 768
         };
         window.onresize = () => {
             this.setState(prev => ({
@@ -46,8 +45,7 @@ class MulitshSelf extends Component {
     }
 
     render() {
-        let {amount} = this.state;
-        let children = chunk(this.props.children.filter(e => e.type.name === 'MulitshItem'), amount);
+        let children = chunk(this.props.children.filter(e => e.type.name === 'MulitshItem'), this.state.mobile ? 3 : 7);
         return (
             <div className='mulitsh'>
                 <div className='header'><i className='mdi'>{this.props.icon.split(' ').join('_')}</i> {this.props.headerText}</div>

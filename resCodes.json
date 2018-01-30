@@ -1,0 +1,15 @@
+{
+    "auth": {
+        "sign_up": {
+            "user_exists": -110,
+        },
+        "sign_in": {
+            "user_doesnt_exist": -120,
+            "wrong_pass": -121
+        },
+        "token": {
+            "wrong": -130,
+            "not_found": -131
+        }
+    }
+}
