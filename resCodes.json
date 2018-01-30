@@ -1,15 +1,18 @@
 {
     "auth": {
         "sign_up": {
-            "user_exists": -110,
+            "fill_inputs": -100,
+            "password_lower":-101,
+            "password_greater":-102,
+            "mobile_not_mobile":-103,
+            "user_exist":-104,
+            "failed":-105
         },
         "sign_in": {
-            "user_doesnt_exist": -120,
-            "wrong_pass": -121
+
         },
         "token": {
-            "wrong": -130,
-            "not_found": -131
+
         }
     }
 }
