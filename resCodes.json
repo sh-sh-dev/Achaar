@@ -6,7 +6,8 @@
             "password_greater":-102,
             "mobile_not_mobile":-103,
             "user_exist":-104,
-            "failed":-105
+            "failed":-105,
+            "success": 100
         },
         "sign_in": {
 

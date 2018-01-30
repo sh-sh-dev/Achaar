@@ -4,6 +4,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
+import FontIcon from 'material-ui/FontIcon';
 import {Space} from '../ui-utils';
 import Helmet from 'react-helmet';
 import axios from 'axios';
@@ -16,8 +17,8 @@ export default class SignUp extends Component {
         this.state = {
             phone: false,
             pass: false,
-            writeable: true,
-            name: !true
+            name: !true,
+            mode: 'write'
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
@@ -47,24 +48,29 @@ export default class SignUp extends Component {
         let inps = e.target.elements;
         let forms = {
             name: inps.name.value,
-            phoneNum: inps.phoneNum.value,
-            pass: inps.pass.value
+            mobile: inps.phoneNum.value,
+            password: inps.pass.value
         };
         for (var i = 0; i < this.farsiNumbers.length; i++) {
             forms.phoneNum = forms.phoneNum.replace(this.farsiNumbers[i], i);
             forms.pass = forms.pass.replace(this.farsiNumbers[i], i);
         }
-        this.setState({writeable: false});
+        this.setState({mode: 'loading'});
+        let $ = this;
         axios({
             method: 'post',
             url: '//localhost/Achaar/api/signup',
             data: forms
         }).then(res => {
+            console.log(res);
             let {status} = res;
+            if (status == 100) {
+                $.setState({mode: 'success'})
+            }
         })
     }
     renderChildren(){
-        if (this.state.writeable) {
+        if (this.state.mode == 'write') {
             return (
                 <React.Fragment>
                     <h2>ثبت نام</h2>
@@ -82,11 +88,18 @@ export default class SignUp extends Component {
                         <RaisedButton disabled={!this.state.pass || !this.state.phone} type='submit' primary={true}>ثبت نام</RaisedButton>
                     </form>
                 </React.Fragment>)
-        } else {
+        } else if (this.state.mode == 'loading') {
             return (<div className='loading'>
                 <div>
                     <CircularProgress size={80} />
                     <b style={{display: 'block', marginTop: 5}}>در حال ارسال اطلاعات...</b>
+                </div>
+            </div>)
+        } else if (this.state.mode == 'success') {
+            return (<div className='loading'>
+                <div>
+                    <FontIcon className='material-icons' color='#4caf50'>done</FontIcon><br />
+                    <b>ثبت نام با موفقیت انجام شد!</b>
                 </div>
             </div>)
         }
