@@ -58,10 +58,7 @@ export default class SignUp extends Component {
         axios({
             method: 'post',
             url: '//localhost/Achaar/api/signin',
-            data: forms,
-            headers: {
-                'Allow-Access-Cross-Origin': '*'
-            }
+            data: forms
         }).then(res => {
             console.log(res)
         })
