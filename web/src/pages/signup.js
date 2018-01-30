@@ -6,6 +6,7 @@ import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import {Space} from '../ui-utils';
 import Helmet from 'react-helmet';
+import axios from 'axios';
 
 export default class SignUp extends Component {
     constructor(props){
@@ -43,14 +44,34 @@ export default class SignUp extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({writeable: false})
+        let inps = e.target.elements;
+        let forms = {
+            name: inps.name.value,
+            phoneNum: inps.phoneNum.value,
+            pass: inps.pass.value
+        };
+        for (var i = 0; i < this.farsiNumbers.length; i++) {
+            forms.phoneNum = forms.phoneNum.replace(this.farsiNumbers[i], i)
+        }
+        // console.log(forms);
+        this.setState({writeable: false});
+        axios({
+            method: 'post',
+            url: '//localhost/Achaar/api/signin',
+            data: forms,
+            headers: {
+                'Allow-Access-Cross-Origin': '*'
+            }
+        }).then(res => {
+            console.log(res)
+        })
     }
     renderChildren(){
         if (this.state.writeable) {
             return (
                 <React.Fragment>
                     <h2>ثبت نام</h2>
-                    <form action='' method='post' onSubmit={this.handleSubmit}>
+                    <form method='post' onSubmit={this.handleSubmit} style={{paddingTop: 50}}>
                         <div>
                             <TextField autoFocus required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && 'نام کامل نیست.'} type='text' name='name' autocomplete='off' />
                         </div>
