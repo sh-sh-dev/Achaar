@@ -57,7 +57,7 @@ export default class SignUp extends Component {
         this.setState({writeable: false});
         axios({
             method: 'post',
-            url: '//localhost/Achaar/api/signin',
+            url: '//localhost/Achaar/api/signup',
             data: forms
         }).then(res => {
             console.log(res)
