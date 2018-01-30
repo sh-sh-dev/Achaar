@@ -33,7 +33,7 @@ export default class SignUp extends Component {
     verifyPass = (e) => {
         let val = e.target.value;
         this.setState({
-            pass: val.split('').length >= 6 && val.split('').length =< 18
+            pass: (val.split('').length >= 6 && 18 >= val.split('').length)
         })
     }
     verifyName = (e) => {
@@ -70,13 +70,13 @@ export default class SignUp extends Component {
                     <h2>ثبت نام</h2>
                     <form method='post' onSubmit={this.handleSubmit} style={{paddingTop: 50}}>
                         <div>
-                            <TextField autoFocus required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && 'نام کامل نیست.'} type='text' name='name' autocomplete='off' />
+                            <TextField autoFocus required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && 'نام کامل نیست.'} type='text' name='name' autoComplete='off' />
                         </div>
                         <div>
-                            <TextField required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && 'شماره اشتباه است.'} name='phoneNum' autocomplete='off' />
+                            <TextField required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && 'شماره اشتباه است.'} name='phoneNum' autoComplete='off' />
                         </div>
                         <div>
-                            <TextField required floatingLabelText='گذرواژه' errorText={!this.state.pass && 'گذرواژه باید دارای حداقل 6 و حداکثر 18 رقم یا حرف باشد.'} errorStyle={{textAlign: 'left'}} type='password' name='pass' autocomplete='off' onChange={this.verifyPass} />
+                            <TextField required floatingLabelText='گذرواژه' errorText={!this.state.pass && 'گذرواژه باید دارای حداقل 6 و حداکثر 18 رقم یا حرف باشد.'} errorStyle={{textAlign: 'left'}} type='password' name='pass' autoComplete='off' onChange={this.verifyPass} />
                         </div>
                         <Space height={20} />
                         <RaisedButton disabled={!this.state.pass || !this.state.phone} type='submit' primary={true}>ثبت نام</RaisedButton>
