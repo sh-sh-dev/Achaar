@@ -52,8 +52,8 @@ export default class SignUp extends Component {
             password: inps.pass.value
         };
         for (var i = 0; i < this.farsiNumbers.length; i++) {
-            forms.phoneNum = forms.phoneNum.replace(this.farsiNumbers[i], i);
-            forms.pass = forms.pass.replace(this.farsiNumbers[i], i);
+            forms.mobile = forms.mobile.replace(this.farsiNumbers[i], i);
+            forms.password = forms.password.replace(this.farsiNumbers[i], i);
         }
         this.setState({mode: 'loading'});
         let $ = this;
@@ -63,7 +63,7 @@ export default class SignUp extends Component {
             data: forms
         }).then(res => {
             console.log(res);
-            let {status} = res;
+            let status = res.data.code;
             if (status == 100) {
                 $.setState({mode: 'success'})
             }
