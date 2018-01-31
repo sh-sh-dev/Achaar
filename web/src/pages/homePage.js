@@ -55,10 +55,12 @@ export default class HomePage extends React.Component {
                             <IconButton><FontIcon className='mdi'>account_circle</FontIcon></IconButton>
                         } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                         <MenuItem disabled primaryText="کاربر مهمان" />
-                        <Link to='/signup' style={{color: 'inherit'}}>
+                        <Link to='/signup'>
                             <MenuItem primaryText='ثبت نام' />
                         </Link>
-                        <MenuItem primaryText="ورود به حساب قبلی" />
+                        <Link to='/signin'>
+                            <MenuItem primaryText="ورود به حساب قبلی" />
+                        </Link>
                     </IconMenu>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: !prev.drawerOpen}))} />
                     <Drawer docked={!1} onRequestChange={(drawerOpen) => this.setState({drawerOpen})} open={this.state.drawerOpen} width={300}>
                         <MenuItem primaryText='خانه' />

@@ -5,14 +5,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
-import IconButton from 'material-ui/IconButton';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import {Space} from '../ui-utils';
 import Helmet from 'react-helmet';
 import axios from 'axios';
 
-export default class SignUp extends Component {
+export default class SignIn extends Component {
     constructor(props){
         document.body.className = 'superdoc-form signin'
         super(props)
@@ -24,8 +21,7 @@ export default class SignUp extends Component {
             mode: 'write',
             focusName: false,
             focusPass: false,
-            focusPhone: false,
-            helpDialogOpen: false
+            focusPhone: false
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
@@ -47,7 +43,7 @@ export default class SignUp extends Component {
     verifyName = (e) => {
         let val = e.target.value;
         this.setState({
-            name: val.split(' ').filter(e => e.length >= 1).length >= 2 && val.match(/[آ-ی]/) && !val.match(/([a-zA-Z])/) && !val.match(/\d/) && !val.match(this.farsiNumbers)
+            name: val.split(' ').filter(e => e.length >= 1).length >= 2 && val.match(/[آ-ی]/) && !val.match(/([a-zA-Z])/) && !val.match(/\d/)
         })
     }
     handleSubmit = (e) => {
@@ -80,37 +76,12 @@ export default class SignUp extends Component {
     }
     renderChildren(){
         if (this.state.mode == 'write') {
-            let closeDialog = () => {
-                this.setState({helpDialogOpen: !1})
-            }
             return (
                 <React.Fragment>
-                    <h2>ثبت نام
-                        <IconButton tooltip='راهنمایی' onClick={() => {this.setState({helpDialogOpen: true})}} tooltipPosition='bottom-left' style={{float: "right"}}>
-                            <FontIcon className='mdi'>info_outline</FontIcon>
-                        </IconButton>
-                    </h2>
-                    <Dialog title='راهنمایی' modal={false} open={this.state.helpDialogOpen} onRequestClose={closeDialog} actions={<FlatButton onClick={closeDialog} secondary={true}>فهمیدم</FlatButton>} autoScrollBodyContent={true}>
-                        شما از طریق این فرم می‌توانید در سایت آچار ثبت نام کرده و از خدمات ما بهره مند شوید. <br />
-                        لطفا مشخصات خود را در فرم، طبق این اطلاعات وارد کنید:
-                        <ul>
-                            <li>
-                                <b>نام و نام خانوادگی</b>:
-                                از نوشتن اعداد و حروف انگلیسی پرهیز کنید و حداقل دو کلمه وارد نمایید.
-                            </li>
-                            <li>
-                                <b>شماره تلفن همراه</b>:
-                                شماره باید با الگوی عمومی مطابقت داشته باشد (مثلا 09213456789). همچنین نوشتن اعداد فارسی نیز مجاز است.
-                            </li>
-                            <li>
-                                <b>گذرواژه</b>:
-                                گذرواژه شما باید حداقل 6 و حداکثر 18 رقم یا حرف داشته باشد. سعی کنید گذرواژه‌تان را همیشه در ذهن داشته باشید!
-                            </li>
-                        </ul>
-                    </Dialog>
+                    <h2>ورود به حساب</h2>
                     <form method='post' onSubmit={this.handleSubmit} style={{paddingTop: 50}}>
                         <div>
-                            <TextField onFocus={() => {this.setState({focusName: true})}} required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && this.state.focusName && 'نام اشتباه است.'} type='text' name='name' autoComplete='off' />
+                            <TextField onFocus={() => {this.setState({focusName: true})}} required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && this.state.focusName && 'نام کامل نیست.'} type='text' name='name' autoComplete='off' />
                         </div>
                         <div>
                             <TextField onFocus={() => {this.setState({focusPhone: true})}} required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && this.state.focusPhone && 'شماره اشتباه است.'} name='phoneNum' autoComplete='off' />
