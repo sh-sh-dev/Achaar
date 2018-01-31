@@ -1,1 +1,2 @@
 web/public/* linguist-vendored
+web/src/*.scss linguist-vendored
