@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Img from 'react-image';
 import { autoPlay } from 'react-swipeable-views-utils';
-import palette from '../palette';
+import palette from './palette';
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const chunk = (array, chunkSize) => {
@@ -63,7 +63,7 @@ class MulitshSelf extends Component {
 
 function MulitshItem(props) {
     return (
-        <div className='mulitsh-item'>
+        <div className='mulitsh-item' {...props}>
             {/* <Img src={props.imagePath} /> */}
             <div className='title'>{props.title}</div>
             <p>{props.description}</p>

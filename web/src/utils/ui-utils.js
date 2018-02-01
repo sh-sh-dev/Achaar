@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
+import * as mul from './mulitsh';
+import palette from './palette';
 
-export class TypeText extends Component{
+const {MulitshItem, MulitshSelf} = mul;
+
+class TypeText extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -24,6 +28,14 @@ export class TypeText extends Component{
     }
 }
 
-export function Space(props){
+function Space(props){
     return <div style={{height: props.height}}></div>
 }
+
+export {
+    Space,
+    TypeText,
+    palette,
+    MulitshItem,
+    MulitshSelf
+};
