@@ -4,7 +4,7 @@
 
 include "functions.php";
 
-$Name = Clean($_POST["name"]);
+$Name = $_POST["name"];
 $Password = Clean($_POST["password"]);
 $Mobile = Clean($_POST["mobile"]);
 
@@ -25,14 +25,15 @@ $Password = md5(base64_encode($Password));
 $Name = $db->real_escape_string($Name);
 $Mobile = $db->real_escape_string($Mobile);
 
-$RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
-if ($RepeatabilityCheck->num_rows != 0) {
-    die(Response("User exists.",false,-104));
-}
-$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`) VALUES ('$Name','$Mobile','$Password')");
+//$RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
+//if ($RepeatabilityCheck->num_rows != 0) {
+//    die(Response("User exists.",false,-104));
+//}
+//$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`) VALUES ('$Name','$Mobile','$Password')");
+$Signup = true;
 
 if ($Signup) {
-    Response("Signup Completed.",true,100);
+    Response(array("Signup Completed.","token"=>"1-wd-5awf-aw-5"),true,100);
 }
 else {
     Response("Signup Failed.",false,-105);
