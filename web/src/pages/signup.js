@@ -93,7 +93,7 @@ export default class SignUp extends Component {
                             </IconButton>
                             <Link to='/'>
                                 <IconButton touch={true} tabIndex={-1} style={{float: "right"}}>
-                                    <FontIcon className='mdi'>file_download</FontIcon>
+                                    <FontIcon className='mdi'>arrow_back</FontIcon>
                                 </IconButton>
                             </Link>
                         </h2>

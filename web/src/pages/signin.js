@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-// import palette from '../utils/palette';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import {Space} from '../utils/ui-utils';
 import Helmet from 'react-helmet';
 import axios from 'axios';
@@ -20,7 +22,8 @@ export default class SignIn extends Component {
             pass: false,
             mode: 'write',
             focusPass: false,
-            focusPhone: false
+            focusPhone: false,
+            helpDialogOpen: false
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
@@ -41,37 +44,53 @@ export default class SignIn extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        let inps = e.target.elements;
-        let forms = {
-            password: inps.pass.value,
-            mobile: inps.phoneNum.value
-        };
-        for (var i = 0; i < this.farsiNumbers.length; i++) {
-            forms.mobile = forms.mobile.replace(this.farsiNumbers[i], i);
-            forms.password = forms.password.replace(this.farsiNumbers[i], i);
-        }
-        this.setState({mode: 'loading'});
-        let $ = this;
-        axios({
-            method: 'post',
-            url: '//localhost/Achaar/api/signup',
-            data: forms
-        }).then(res => {
-            console.log(res);
-            let status = res.data.code;
-            if (status == 100) {
-                $.setState({mode: 'success'})
-            } else {
-                $.setState({mode: 'write'})
-            }
-        })
+        // let inps = e.target.elements;
+        // let forms = {
+        //     password: inps.pass.value,
+        //     mobile: inps.phoneNum.value
+        // };
+        // for (var i = 0; i < this.farsiNumbers.length; i++) {
+        //     forms.mobile = forms.mobile.replace(this.farsiNumbers[i], i);
+        //     forms.password = forms.password.replace(this.farsiNumbers[i], i);
+        // }
+        // this.setState({mode: 'loading'});
+        // let $ = this;
+        // axios({
+        //     method: 'post',
+        //     url: '//localhost/Achaar/api/signup',
+        //     data: forms
+        // }).then(res => {
+        //     console.log(res);
+        //     let status = res.data.code;
+        //     if (status == 100) {
+        //         $.setState({mode: 'success'})
+        //     } else {
+        //         $.setState({mode: 'write'})
+        //     }
+        // })
     }
     renderChildren(){
         switch (this.state.mode) {
             case 'write':
+                let closeDialog = () => {
+                    this.setState({helpDialogOpen: !1})
+                }
                 return (
                 <React.Fragment>
-                    <h2>ورود به حساب</h2>
+                    <h2>ورود به حساب
+                        <IconButton touch={true} tabIndex={-1} onClick={() => {this.setState({helpDialogOpen: true})}} style={{float: "left"}}>
+                            <FontIcon className='mdi'>info_outline</FontIcon>
+                        </IconButton>
+                        <Link to='/'>
+                            <IconButton touch={true} tabIndex={-1} style={{float: "right"}}>
+                                <FontIcon className='mdi'>arrow_back</FontIcon>
+                            </IconButton>
+                        </Link>
+                    </h2>
+                    <Dialog title='راهنمایی' modal={false} open={this.state.helpDialogOpen} onRequestClose={closeDialog} actions={<FlatButton onClick={closeDialog} secondary={true} tabIndex={-1}>تایید</FlatButton>} autoScrollBodyContent={true}>
+                        اگر قبلا در آچار حساب داشته‌اید، اکنون می‌توانید از طریق این فرم وارد آن شوید. <br />
+                        برای این کار، لطفا شماره تلفن حساب قبلی خود و گذرواژه آن را در فرم وارد کنید.
+                    </Dialog>
                     <form method='post' onSubmit={this.handleSubmit}>
                         <div>
                             <TextField onFocus={() => {this.setState({focusPhone: true})}} required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && this.state.focusPhone && 'شماره اشتباه است.'} name='phoneNum' autoComplete='off' />
