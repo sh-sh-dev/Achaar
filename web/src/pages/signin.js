@@ -1,25 +1,24 @@
 import React, {Component} from 'react';
-import palette from '../palette';
+// import palette from '../utils/palette';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import FontIcon from 'material-ui/FontIcon';
-import {Space} from '../ui-utils';
+import {Space} from '../utils/ui-utils';
 import Helmet from 'react-helmet';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 export default class SignIn extends Component {
     constructor(props){
-        document.body.className = 'superdoc-form signin'
+        document.body.className = 'superdoc-form signin';
         super(props)
         this.phoneNumRegexp = /^[0][9][0-4][0-9]{8,8}$/g;
         this.state = {
             phone: false,
             pass: false,
-            name: !true,
             mode: 'write',
-            focusName: false,
             focusPass: false,
             focusPhone: false
         }
@@ -40,17 +39,10 @@ export default class SignIn extends Component {
             pass: (val.split('').length >= 6 && 18 >= val.split('').length)
         })
     }
-    verifyName = (e) => {
-        let val = e.target.value;
-        this.setState({
-            name: val.split(' ').filter(e => e.length >= 1).length >= 2 && val.match(/[آ-ی]/) && !val.match(/([a-zA-Z])/) && !val.match(/\d/)
-        })
-    }
     handleSubmit = (e) => {
         e.preventDefault();
         let inps = e.target.elements;
         let forms = {
-            name: inps.name.value,
             password: inps.pass.value,
             mobile: inps.phoneNum.value
         };
@@ -75,14 +67,12 @@ export default class SignIn extends Component {
         })
     }
     renderChildren(){
-        if (this.state.mode == 'write') {
-            return (
+        switch (this.state.mode) {
+            case 'write':
+                return (
                 <React.Fragment>
                     <h2>ورود به حساب</h2>
-                    <form method='post' onSubmit={this.handleSubmit} style={{paddingTop: 50}}>
-                        <div>
-                            <TextField onFocus={() => {this.setState({focusName: true})}} required onChange={this.verifyName} floatingLabelText='نام و نام خانوادگی' errorStyle={{textAlign: 'left'}} errorText={!this.state.name && this.state.focusName && 'نام کامل نیست.'} type='text' name='name' autoComplete='off' />
-                        </div>
+                    <form method='post' onSubmit={this.handleSubmit}>
                         <div>
                             <TextField onFocus={() => {this.setState({focusPhone: true})}} required floatingLabelText='شماره تلفن' errorStyle={{textAlign: 'left'}} type='text' onChange={this.verifyPhoneNumber} errorText={!this.state.phone && this.state.focusPhone && 'شماره اشتباه است.'} name='phoneNum' autoComplete='off' />
                         </div>
@@ -90,31 +80,40 @@ export default class SignIn extends Component {
                             <TextField onFocus={() => {this.setState({focusPass: true})}} required floatingLabelText='گذرواژه' errorText={!this.state.pass && this.state.focusPass && 'گذرواژه باید دارای حداقل 6 و حداکثر 18 رقم یا حرف باشد.'} errorStyle={{textAlign: 'left'}} type='password' name='pass' autoComplete='off' onChange={this.verifyPass} />
                         </div>
                         <Space height={20} />
-                        <RaisedButton disabled={!this.state.pass || !this.state.phone || !this.state.name} type='submit' primary={true}>ثبت نام</RaisedButton>
+                        <RaisedButton disabled={!this.state.pass || !this.state.phone} type='submit' primary={true} label='ورود به حساب' />
+                        <Space height={20} />
+                        <p style={{fontSize: '80%'}}>قبلا حسابی نداشته اید؟ <Link to='/signup'>اینجا یکی بسازید.</Link></p>
                     </form>
                 </React.Fragment>)
-        } else if (this.state.mode == 'loading') {
-            return (<div className='loading'>
-                <div>
-                    <CircularProgress size={80} />
-                    <b style={{display: 'block', marginTop: 5}}>در حال ارسال اطلاعات...</b>
-                </div>
-            </div>)
-        } else if (this.state.mode == 'success') {
-            return (<div className='loading'>
-                <div>
-                    <FontIcon className='material-icons' color='#4caf50'>done</FontIcon><br />
-                    <b>ثبت نام با موفقیت انجام شد!</b>
-                </div>
-            </div>)
+                break;
+            case 'loading':
+                return (<div className='loading'>
+                    <div>
+                        <CircularProgress size={80} />
+                        <b style={{display: 'block', marginTop: 5}}>در حال ارسال اطلاعات...</b>
+                    </div>
+                </div>)
+                break;
+            case 'success':
+                return (<div className='loading'>
+                    <div>
+                        <FontIcon className='mdi' color='#4caf50'>done</FontIcon><br />
+                        <b>ورود با موفقیت انجام شد!</b>
+                    </div>
+                </div>)
+                break;
         }
+        // if (this.state.mode == 'write') {
+        // } else if (this.state.mode == 'loading') {
+        // } else if (this.state.mode == 'success') {
+        // }
     }
     render() {
         return (<Paper zDepth={5} className='form-main'>
-                <Helmet>
-                    <title>ثبت نام در آچار</title>
-                </Helmet>
-                {this.renderChildren()}
-            </Paper>)
+            <Helmet>
+                <title>آچار | ورود به حساب</title>
+            </Helmet>
+            {this.renderChildren()}
+        </Paper>)
     }
 }

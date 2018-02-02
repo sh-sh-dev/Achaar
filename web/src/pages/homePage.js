@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import {TypeText, Space} from '../ui-utils';
-import palette from '../palette';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
@@ -11,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import {Link} from 'react-router-dom';
 import FontIcon from 'material-ui/FontIcon';
-import {MulitshSelf, MulitshItem} from '../c/mulitsh';
+import {MulitshSelf, MulitshItem, TypeText, Space, palette} from '../utils/ui-utils';
 import Helmet from 'react-helmet';
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 
@@ -50,10 +48,9 @@ export default class HomePage extends React.Component {
                     <title>آچار | فروشگاه آنلاین تجهیزات و ابزار صنعتی</title>
                 </Helmet>
                 <div>
-                    <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={
-                        <IconMenu iconButtonElement={
-                            <IconButton><FontIcon className='mdi'>account_circle</FontIcon></IconButton>
-                        } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                    <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={<IconMenu iconButtonElement={
+                        <IconButton><FontIcon className='mdi'>account_circle</FontIcon></IconButton>
+                    } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                         <MenuItem disabled primaryText="کاربر مهمان" />
                         <Link to='/signup'>
                             <MenuItem primaryText='ثبت نام' />
@@ -61,12 +58,12 @@ export default class HomePage extends React.Component {
                         <Link to='/signin'>
                             <MenuItem primaryText="ورود به حساب قبلی" />
                         </Link>
-                    </IconMenu>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: !prev.drawerOpen}))} />
+                    </IconMenu>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: true}))} />
                     <Drawer docked={!1} onRequestChange={(drawerOpen) => this.setState({drawerOpen})} open={this.state.drawerOpen} width={300}>
                         <MenuItem primaryText='خانه' />
                     </Drawer>
                     <Space height={64} />
-                    <DemoSimple />
+                    {/* <DemoSimple /> */}
                     <MulitshSelf icon='bookmark border' headerText='جدیدترین کالاها' interval={7000}>
                         <MulitshItem title='کالای اول' description='کالای دوم' imagePath={{}} price={41000} />
                         <MulitshItem title='کالای اول' description='کالای دوم' imagePath={{}} price={41000} />

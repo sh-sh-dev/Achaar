@@ -1,14 +1,25 @@
+// basic stuff
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
-import './index.scss';
-import registerServiceWorker from './registerServiceWorker';
+import { Route, BrowserRouter } from 'react-router-dom';
+// theme and UI
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {palette} from './utils/ui-utils';
+// routes
 import HomePage from './pages/homePage';
 import SignUp from './pages/signup';
 import SignIn from './pages/signin';
-import { Route, BrowserRouter } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import palette from './palette';
+import ProductPage from './pages/product-page';
+// misc
+import './styles/index.scss';
+import registerServiceWorker from './registerServiceWorker';
+
+
+
+// The story begins...(:
+
+
 
 class App extends React.Component {
     render() {
@@ -17,6 +28,7 @@ class App extends React.Component {
                 <Route path="/" exact component={HomePage}/>
                 <Route path='/signup' exact component={SignUp} />
                 <Route path='/signin' exact component={SignIn} />
+                <Route path='/product/:name' render={({match}) => <ProductPage productName={match.params.name} />} exact />
             </React.Fragment>
         )
     }
@@ -25,7 +37,8 @@ class App extends React.Component {
 ReactDOM.render(<MuiThemeProvider muiTheme={getMuiTheme({
     isRtl: true,
     palette,
-    fontFamily: 'inherit'
+    fontFamily: 'inherit',
+    borderRadius: 2.5
 })}><BrowserRouter><App /></BrowserRouter></MuiThemeProvider>, document.getElementById('root'))
 
 registerServiceWorker();
