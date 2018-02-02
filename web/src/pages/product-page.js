@@ -5,6 +5,8 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import {Tab, Tabs} from 'material-ui/Tabs';
+import SwipeableViews from 'react-swipeable-views';
 import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
@@ -18,6 +20,17 @@ const chunk = (array, chunkSize) => {
 }
 
 export default class ProductPage extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            activeTab: 0
+        }
+    }
+    handleChangeTab = value => {
+        this.setState({
+            activeTab: value
+        })
+    }
     render(){
         let {props} = this;
         return (
@@ -25,7 +38,12 @@ export default class ProductPage extends Component {
                 <Helmet>
                     <title>{`${props.productName} | آچار`}</title>
                 </Helmet>
-                <AppBar zDepth={2} style={{position: 'fixed', right: 0}} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color='#fff'>arrow_forward</FontIcon></Link></IconButton>} />
+                <AppBar zDepth={2} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color='#fff'>arrow_forward</FontIcon></Link></IconButton>} style={{flexWrap: 'wrap', position: 'fixed', right: 0}}>
+                    <Tabs onChange={this.handleChangeTab} value={this.state.activeTab} style={{width: '100%'}}>
+                        <Tab label="مشخصات فنی" value={0} />
+                        <Tab label="نظرات کاربران" value={1} />
+                    </Tabs>
+                </AppBar>
                 <Space height={64} />
                 <div className='clear'>
                     <div className='col-xs-12 col-md-6'>
@@ -45,17 +63,34 @@ export default class ProductPage extends Component {
                             <Space height={20} />
                             <div style={{margin: '0 50px'}}>
                                 <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
-                                    <FontIcon className='mdi' color='#fff'>shopping_cart</FontIcon>
+                                    <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
                                 </RaisedButton>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style={{margin: '0 auto', float: 'none'}} className='col-xs-12 col-md-8'></div>
+                <Space height={45} />
+                <div style={{margin: '0 auto', float: 'none'}} className='col-xs-12 col-md-8'>
+                    <Paper zDepth={1} style={{overflow: 'hidden'}}>
+                        {/* <Tabs onChange={this.handleChangeTab} value={this.state.activeTab}>
+                            <Tab label="مشخصات فنی" value={0} />
+                            <Tab label="نظرات کاربران" value={1} />
+                        </Tabs> */}
+                        <SwipeableViews index={this.state.activeTab} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
+                            <div style={{padding: 15}}>
+                                {[1,2,3,4,5,6,8,9,10,11,12,13,14].map(i => <div>مشخصه {i}: <b>مقدار {i}</b></div>)}
+                            </div>
+                            <div>
+                                نظر نداره (ق) :|
+                            </div>
+                        </SwipeableViews>
+                    </Paper>
+                </div>
+                <Space height={100} />
                 <Paper role='button' rounded={!1} style={{position: 'fixed', zIndex: 1100, bottom: 0, left: 0, right: 0, cursor: 'pointer', boxShadow: '0 -4px 20px -1px rgba(0,0,0,.2)'}} className='unselectable'>
                     <TouchRipple>
                         <div style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center', padding: '10px 0', color: '#757575'}}>
-                            <i className='mdi'>shopping_cart</i>&nbsp; افزودن به سبد خرید
+                            <i className='mdi'>add_shopping_cart</i>&nbsp; افزودن به سبد خرید
                         </div>
                     </TouchRipple>
                 </Paper>
