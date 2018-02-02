@@ -442,3 +442,41 @@ body.superdoc-form{
         }
     }
 }
+
+.comment{
+    @include clear;
+    $primary: #6796d2;
+    @media only screen and (min-width: 610px){
+        &:nth-of-type(even){
+            .comment-bubble{
+                float: right;
+                &::after{
+                    left: auto;
+                    right: -10px;
+                }
+            }
+        }
+    }
+    .comment-bubble{
+        // color: #fff;
+        background-color: $primary;
+        border-radius: 5px;
+        padding: 15px;
+        position: relative;
+        margin: 10px;
+        max-width: 550px;
+        float: left;
+        // min-width: 350px;
+        width: 100%;
+        color: #fff;
+        &::after{
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            content: '';
+            border-bottom: 10px solid $primary;
+            border-right: 10px solid transparent;
+            border-left: 10px solid transparent;
+        }
+    }
+}

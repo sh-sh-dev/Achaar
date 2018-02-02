@@ -3,9 +3,13 @@ import {TypeText, Space, palette} from '../utils/ui-utils';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import {Tab, Tabs} from 'material-ui/Tabs';
+import {
+    Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn
+} from 'material-ui/Table';
 import SwipeableViews from 'react-swipeable-views';
 import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
@@ -19,11 +23,70 @@ const chunk = (array, chunkSize) => {
     );
 }
 
+const commentData = [
+    {
+        author: 'نظرده اول',
+        text: 'خیلی جــــــــالب و جــــــذابه',
+        title: 'واقعا خوبه',
+        time: new Date().toLocaleTimeString('fa-ir'),
+        date: new Date().toLocaleDateString('fa-ir'),
+        rate: 89
+    },
+    {
+        author: 'نظرده اول',
+        text: 'خیلی جــــــــالب و جــــــذابه',
+        title: 'واقعا خوبه',
+        time: new Date().toLocaleTimeString('fa-ir'),
+        date: new Date().toLocaleDateString('fa-ir'),
+        rate: 89
+    },
+    {
+        author: 'نظرده اول',
+        text: 'خیلی جــــــــالب و جــــــذابه',
+        title: 'واقعا خوبه',
+        time: new Date().toLocaleTimeString('fa-ir'),
+        date: new Date().toLocaleDateString('fa-ir'),
+        rate: 0
+    },
+]
+
+const Comments = (props) => {
+    let result = [];
+    const rateFullStars = (num) => {
+        let fulls = new Number(num[0]),
+        halfs = new Number(num[1]);
+        let f = [];
+        for (var i = 0; i < (fulls == 0 ? 4 : fulls); i++) {
+            f.push(<i className='mdi'>{fulls == 0 ? 'star_border' : 'star'}</i>)
+        }
+        f.push(<i className='mdi'>{halfs >= .5 ? 'star_half' : 'star_border'}</i>)
+        return f;
+    }
+    for (var i = 0; i < props.data.length; i++) {
+        let comment = props.data[i];
+        result.push(<div key={i} className='comment'>
+            <div className='comment-bubble'>
+                <div style={{fontSize: '1.25em'}} className='comment-title'>{comment.title}</div>
+                <div className='comment-author' style={{fontSize: '.8em', opacity: .65}}><i className='mdi'>person</i> {comment.author}</div>
+                <div className='comment-text'>{comment.text}</div>
+                <div className='comment-metadata' style={{fontSize: '.8em', opacity: .65, textAlign: 'left'}}>
+                    {comment.time} | {comment.date}
+                </div>
+                {comment.rate != null && <div className='comment-rating' style={{direction: 'ltr', fontSize: '.8em', opacity: .75}}>
+                    {rateFullStars((Math.round(comment.rate / 20 * 2) / 2).toFixed(1).toString().split('.'))}
+                </div>}
+            </div>
+        </div>)
+    }
+    return result;
+}
+
 export default class ProductPage extends Component {
     constructor(props){
         super(props);
         this.state = {
-            activeTab: 0
+            activeTab: 2,
+            showTooltips: false
         }
     }
     handleChangeTab = value => {
@@ -46,17 +109,16 @@ export default class ProductPage extends Component {
                     </Tabs>
                 </AppBar>
                 <Space height={127} />
-                {/* <div style={{margin: '0 auto', float: 'none'}} className='col-xs-12 col-md-8'>
-                </div> */}
-                <Paper zDepth={1} style={{overflow: 'hidden'}}>
-                    <SwipeableViews index={this.state.activeTab} animateHeight onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
+                {/* <div style={{margin: '0 auto', float: 'none'}} className='col-xs-12 col-md-8'></div> */}
+                <SwipeableViews index={this.state.activeTab} animateHeight={false} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
+                    <Paper style={{margin: 7}} zDepth={2}>
                         <div className='clear' style={{direction: 'rtl'}}>
                             <div className='col-xs-12 col-md-6'>
                                 <Space height={1} />
                                 {/* Pictures! */}
                             </div>
                             <div className='col-xs-12 col-md-6'>
-                                <h2>&zwnj;<TypeText text={props.productName} /></h2>
+                                <h2>&zwnj;<TypeText dur={0} text={props.productName} /></h2>
                                 <div style={{fontSize: '1.25em'}}>
                                     <p style={{color: '#585858'}}>
                                         <i className='mdi'>restore</i> گارانتی: <b style={{color: '#000'}}>شخمه صنعت پرداز غرب</b>
@@ -64,36 +126,36 @@ export default class ProductPage extends Component {
                                         <i className='mdi'>money_off</i> قیمت:
                                         <b style={{color: palette.accent2Color}}> {chunk('450000'.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')} تومان</b>
                                     </p>
-                                    <Space height={20} />
-                                    <div style={{margin: '0 20px'}}>
+                                    <div style={{margin: 20}}>
                                         <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
                                             <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
                                         </RaisedButton>
                                     </div>
-                                    <Space height={20} />
                                 </div>
                             </div>
                         </div>
-                        <div style={{padding: 15, direction: 'rtl'}}>
-                            {[1,2,3,4,5,6,8,9,10,11,12,13,14].map(i => <div>مشخصه {i}: <b>مقدار {i}</b></div>)}
-                        </div>
-                        <div style={{padding: 15, direction: 'rtl'}}>
-                            نظر نداره (ق) :|
-                        </div>
-                    </SwipeableViews>
-                </Paper>
-
-
-                <Space height={100} />
-
-
-                <Paper role='button' rounded={!1} style={{position: 'fixed', zIndex: 1100, bottom: 0, left: 0, right: 0, cursor: 'pointer', boxShadow: '0 -4px 20px -1px rgba(0,0,0,.2)'}} className='unselectable'>
-                    <TouchRipple>
-                        <div style={{fontSize: 20, fontWeight: 'bold', textAlign: 'center', padding: '10px 0', color: '#757575'}}>
-                            <i className='mdi'>add_shopping_cart</i>&nbsp; افزودن به سبد خرید
-                        </div>
-                    </TouchRipple>
-                </Paper>
+                    </Paper>
+                    <div style={{padding: 15, direction: 'rtl'}}>
+                        <Table selectable={false} multipleSelectable={false}>
+                            <TableBody displayRowCheckbox={false}>
+                                <TableRow>
+                                    <TableRowColumn>نام کامل</TableRowColumn>
+                                    <TableRowColumn>{props.productName}</TableRowColumn>
+                                </TableRow>
+                                {/* Other properties... Waiting for the API :) */}
+                            </TableBody>
+                        </Table>
+                    </div>
+                    <div style={{padding: 15, direction: 'rtl'}}>
+                        <Comments data={commentData} />
+                    </div>
+                </SwipeableViews>
+                <FloatingActionButton secondary={true} style={{position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab == 2 ? 1 : 0})`, opacity: this.state.activeTab == 2 ? 1 : .4}}>
+                    <FontIcon className='mdi'>edit</FontIcon>
+                </FloatingActionButton>
+                <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab == 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab == 2 ? 96 : 25, zIndex: 1100}}>
+                    <FontIcon className='mdi'>add_shopping_cart</FontIcon>
+                </FloatingActionButton>
             </div>
         )
     }
