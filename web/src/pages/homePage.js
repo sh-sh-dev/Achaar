@@ -21,7 +21,7 @@ function slideRenderer(params) {
     return (
         <div key={key} className='ic-item' style={Object.assign({}, styles.slide, {backgroundColor: palette.accent2Color})}>
             <div className='ici-icon'>
-                <FontIcon className='mdi ici-icon-main' color='#fff' style={{fontSize: 50}}>cloud_download</FontIcon>
+                <FontIcon className='mdi ici-icon-main' color={'#fff'} style={{fontSize: 50}}>cloud_download</FontIcon>
             </div>
             <p>
                 حالا یک مثشال ساده میتونه کار رو بهتر کنه.
@@ -50,7 +50,7 @@ export default class HomePage extends React.Component {
                 <div>
                     <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={<IconMenu iconButtonElement={
                         <IconButton><FontIcon className='mdi'>account_circle</FontIcon></IconButton>
-                    } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                    } targetOrigin={{horizontal: 'right', vertical: 'top'}}> anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                         <MenuItem disabled primaryText="کاربر مهمان" />
                         <Link to='/signup'>
                             <MenuItem primaryText='ثبت نام' />

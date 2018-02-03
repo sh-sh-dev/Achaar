@@ -32,10 +32,24 @@ function Space(props){
     return <div style={{height: props.height}}></div>
 }
 
+const chunk = (array, chunkSize) => {
+    return [].concat.apply([],
+        array.map(function(elem,i) {
+            return i%chunkSize ? [] : [array.slice(i,i+chunkSize)];
+        })
+    );
+}
+
+function slicePrice(num) {
+    return chunk(num.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')
+}
+
 export {
     Space,
     TypeText,
     palette,
     MulitshItem,
-    MulitshSelf
+    MulitshSelf,
+    chunk,
+    slicePrice
 };

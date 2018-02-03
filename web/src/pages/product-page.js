@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TypeText, Space, palette} from '../utils/ui-utils';
+import {TypeText, Space, palette, slicePrice} from '../utils/ui-utils';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -18,14 +18,6 @@ import SwipeableViews from 'react-swipeable-views';
 import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
-
-const chunk = (array, chunkSize) => {
-    return [].concat.apply([],
-        array.map(function(elem,i) {
-            return i%chunkSize ? [] : [array.slice(i,i+chunkSize)];
-        })
-    );
-}
 
 const commentData = [
     {
@@ -135,7 +127,7 @@ export default class ProductPage extends Component {
                                         <i className='mdi'>restore</i> گارانتی: <b style={{color: '#000'}}>شخمه صنعت پرداز غرب</b>
                                         <br />
                                         <i className='mdi'>money_off</i> قیمت:
-                                        <b style={{color: palette.accent2Color}}> {chunk('450000'.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')} تومان</b>
+                                        <b style={{color: palette.accent2Color}}> {slicePrice(410000)} تومان</b>
                                     </p>
                                     <div style={{margin: 20}}>
                                         <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
