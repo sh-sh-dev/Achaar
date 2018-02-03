@@ -4,8 +4,12 @@ import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import ReactStars from 'react-stars';
 import {Tab, Tabs} from 'material-ui/Tabs';
 import {
     Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn
@@ -85,8 +89,8 @@ export default class ProductPage extends Component {
     constructor(props){
         super(props);
         this.state = {
-            activeTab: 2,
-            showTooltips: false
+            activeTab: 0,
+            commentDialogOpen: false
         }
     }
     handleChangeTab = value => {
@@ -96,6 +100,14 @@ export default class ProductPage extends Component {
     }
     render(){
         let {props} = this;
+        let di = {
+            close(){
+                this.setState({commentDialogOpen: false})
+            },
+            open(){
+                this.setState({commentDialogOpen: true})
+            }
+        }
         return (
             <div className='container'>
                 <Helmet>
@@ -109,8 +121,7 @@ export default class ProductPage extends Component {
                     </Tabs>
                 </AppBar>
                 <Space height={127} />
-                {/* <div style={{margin: '0 auto', float: 'none'}} className='col-xs-12 col-md-8'></div> */}
-                <SwipeableViews index={this.state.activeTab} animateHeight={false} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
+                <SwipeableViews animateHeight index={this.state.activeTab} animateHeight={false} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
                     <Paper style={{margin: 7}} zDepth={2}>
                         <div className='clear' style={{direction: 'rtl'}}>
                             <div className='col-xs-12 col-md-6'>
@@ -150,12 +161,37 @@ export default class ProductPage extends Component {
                         <Comments data={commentData} />
                     </div>
                 </SwipeableViews>
-                <FloatingActionButton secondary={true} style={{position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab == 2 ? 1 : 0})`, opacity: this.state.activeTab == 2 ? 1 : .4}}>
+
+
+                <FloatingActionButton secondary={true} style={{
+                    position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab == 2 ? 1 : 0}) rotate(${this.state.activeTab * 90 - 180}deg)`, opacity: this.state.activeTab == 2 ? 1 : .4
+                }} onClick={di.open.bind(this)}>
                     <FontIcon className='mdi'>edit</FontIcon>
                 </FloatingActionButton>
+
+
                 <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab == 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab == 2 ? 96 : 25, zIndex: 1100}}>
                     <FontIcon className='mdi'>add_shopping_cart</FontIcon>
                 </FloatingActionButton>
+
+
+                <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${props.productName}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
+                    <FlatButton secondary={true} label='ارسال دیدگاه' onClick={di.close.bind(this)} />,
+                    <FlatButton secondary={true} onClick={di.close.bind(this)} label='لغو' />
+                ]}>
+                    {this.state.commentDialogOpen &&
+                        <React.Fragment>
+                            <div style={{textAlign: 'center'}}>
+                                <TextField floatingLabelText='عنوان دیدگاه شما' autoFocus />
+                            </div>
+                            <TextField multiLine floatingLabelText='دیدگاه خود را بنویسید...' rows={2} fullWidth={true} />
+                            <Space height={15} />
+                            <div style={{direction: 'ltr', textAlign: 'center'}}>
+                                <ReactStars size={40} color1='#aaa' color2={palette.accent2Color} className='mdi unselectable' char='star' />
+                            </div>
+                        </React.Fragment>
+                    }
+                </Dialog>
             </div>
         )
     }

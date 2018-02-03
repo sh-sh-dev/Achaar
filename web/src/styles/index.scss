@@ -445,7 +445,7 @@ body.superdoc-form{
 
 .comment{
     @include clear;
-    $primary: #6796d2;
+    $primary: #dadada;
     @media only screen and (min-width: 610px){
         &:nth-of-type(even){
             .comment-bubble{
@@ -458,7 +458,6 @@ body.superdoc-form{
         }
     }
     .comment-bubble{
-        // color: #fff;
         background-color: $primary;
         border-radius: 5px;
         padding: 15px;
@@ -468,7 +467,7 @@ body.superdoc-form{
         float: left;
         // min-width: 350px;
         width: 100%;
-        color: #fff;
+        // color: #fff;
         &::after{
             position: absolute;
             bottom: 0;

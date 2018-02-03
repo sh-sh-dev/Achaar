@@ -28,7 +28,7 @@ class App extends React.Component {
                 <Route path="/" exact component={HomePage}/>
                 <Route path='/signup' exact component={SignUp} />
                 <Route path='/signin' exact component={SignIn} />
-                <Route path='/product/:name' render={({match}) => <ProductPage productName={match.params.name} />} exact />
+                <Route path='/product/:name' render={({match, history}) => <ProductPage productName={match.params.name} />} exact />
             </React.Fragment>
         )
     }
