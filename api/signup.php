@@ -1,21 +1,19 @@
 <?
-
-// $Name XSS defence
-
 include "functions.php";
 
-$Name = $_POST["name"];
+$_POST = json_decode(file_get_contents("php://input"),true);
+$Name = Clean($_POST["name"]);
 $Password = Clean($_POST["password"]);
 $Mobile = Clean($_POST["mobile"]);
 
 if (empty($Name) || empty($Password) || empty($Mobile)) {
     die(Response("Fill all inputs.",false,-100));
 }
-if (strlen($Password) <= 6 || strlen($Password) >= 18) {
+if (strlen($Password) < 6 || strlen($Password) > 18) {
     $Re = strlen($Password) < 6 ? true : false;
     $ResD = $Re ? "Password length is lower than allowed." : "Password length is greater than the limit.";
     $ResC = $Re ? -101 : -102;
-    die(Response($ResD,false,$ResC));
+    die(Response($ResD.strlen($Password),false,$ResC));
 }
 if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
     die(Response("Mobile not valid.",false,-103));
@@ -25,18 +23,18 @@ $Password = md5(base64_encode($Password));
 $Name = $db->real_escape_string($Name);
 $Mobile = $db->real_escape_string($Mobile);
 
-$Token = bin2hex($Mobile . random_bytes(5));
+$Token = md5(bin2hex($Mobile . random_bytes(5)));
 
 $RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
 if ($RepeatabilityCheck->num_rows != 0) {
     die(Response("User exists.",false,-104));
 }
+
 $Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`,`token`) VALUES ('$Name','$Mobile','$Password','$Token')");
-$Signup = true;
 
 if ($Signup) {
-    Response(array("Signup Completed.","token"=>$Token),true,100);
+    Response($Token,true,100,true);
 }
 else {
-    Response("Signup Failed.",false,-105);
+    Response("Signup Failed.",false,-105,true);
 }

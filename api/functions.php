@@ -54,22 +54,17 @@ function xss_clean($data) {
     return $data;
 }
 
-function Clean2($value) {
-    $value = strip_tags_content(xss_clean(htmlspecialchars($value)));
+function Clean($value) {
+//    $value = strip_tags_content(xss_clean(htmlspecialchars($value)));
     return $value;
 }
 
-
-function Clean($str){
-    $text_top = strip_tags(trim(html_entity_decode($str,   ENT_QUOTES, 'UTF-8'), "\xc2\xa0"));
-    return $text_top;
-}
-
-
-function Response($value , $ok = true , $code = null) {
-    return json_encode([
+function Response($value , $ok = true , $code = null,$print = 0) {
+    $res = json_encode([
         'ok'=>$ok,
         'result'=>$value,
         'code'=>$code
     ]);
+    if ($print) echo $res;
+    else return $res;
 }
