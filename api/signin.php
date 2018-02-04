@@ -1,4 +1,4 @@
-<?php
+<?
 include "functions.php";
 
 $_POST = json_decode(file_get_contents("php://input"),true);
@@ -19,7 +19,7 @@ if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
 $Password = md5(base64_decode($Password));
 $Mobile = $db->real_escape_string($Mobile);
 
-$Login = $db->query("SELECT * FROM `Users` WHERE `Password`='$Password' && `Mobile`='$Mobile'");
+$Login = $db->query("SELECT * FROM `Users` WHERE `Password`='$Password' AND `Mobile`='$Mobile' AND `blocked`=0");
 
 if (!$Login) {
     die(Response("Login failed",false,-203));
@@ -29,6 +29,7 @@ else {
         Response("Login successful",true,200,true);
     }
     else {
+        echo $Login->num_rows;
         die(Response("Username or Password isn't valid",false,-204));
     }
 }

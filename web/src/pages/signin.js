@@ -44,30 +44,31 @@ export default class SignIn extends Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        // let inps = e.target.elements;
-        // let forms = {
-        //     password: inps.pass.value,
-        //     mobile: inps.phoneNum.value
-        // };
-        // for (var i = 0; i < this.farsiNumbers.length; i++) {
-        //     forms.mobile = forms.mobile.replace(this.farsiNumbers[i], i);
-        //     forms.password = forms.password.replace(this.farsiNumbers[i], i);
-        // }
-        // this.setState({mode: 'loading'});
-        // let $ = this;
-        // axios({
-        //     method: 'post',
-        //     url: '//localhost/Achaar/api/signup',
-        //     data: forms
-        // }).then(res => {
-        //     console.log(res);
-        //     let status = res.data.code;
-        //     if (status == 100) {
-        //         $.setState({mode: 'success'})
-        //     } else {
-        //         $.setState({mode: 'write'})
-        //     }
-        // })
+        let inps = e.target.elements;
+        let forms = {
+            password: inps.pass.value,
+            mobile: inps.phoneNum.value
+        };
+        for (var i = 0; i < this.farsiNumbers.length; i++) {
+            forms.mobile = forms.mobile.replace(this.farsiNumbers[i], i);
+            forms.password = forms.password.replace(this.farsiNumbers[i], i);
+        }
+        this.setState({mode: 'loading'});
+        let $ = this;
+        axios({
+            method: 'post',
+            url: '//localhost/Achaar/api/signin',
+            data: forms
+        }).then(res => {
+            console.log(res);
+            // let status = res.data.code;
+            let status = res.data.ok;
+            if (status) {
+                $.setState({mode: 'success'})
+            } else {
+                $.setState({mode: 'write'})
+            }
+        })
     }
     renderChildren(){
         switch (this.state.mode) {

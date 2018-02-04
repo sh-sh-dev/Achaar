@@ -71,8 +71,9 @@ export default class SignUp extends Component {
             data: forms
         }).then(res => {
             console.log(res);
-            let status = res.data.code;
-            if (status == 100) {
+            // let status = res.data.code;
+            let status = res.data.ok;
+            if (status) {
                 $.setState({mode: 'success'})
             } else {
                 $.setState({mode: 'write'})
