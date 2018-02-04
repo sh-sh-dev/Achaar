@@ -40,9 +40,17 @@ const chunk = (array, chunkSize) => {
     );
 }
 
-function slicePrice(num) {
-    return chunk(num.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')
-}
+const numToFA = num => {
+    const _faNums = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    const toBeRepld = [/0/gi, /1/gi, /2/gi, /3/gi, /4/gi, /5/gi, /6/gi, /7/gi, /8/gi, /9/gi]
+    num = num.toString()
+    for (var i = 0; i < 10; i++) {
+        num = num.replace(toBeRepld[i], _faNums[i]);
+    };
+    return num;
+};
+
+const slicePrice = num => chunk(num.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',');
 
 export {
     Space,
@@ -51,5 +59,6 @@ export {
     MulitshItem,
     MulitshSelf,
     chunk,
-    slicePrice
+    slicePrice,
+    numToFA
 };

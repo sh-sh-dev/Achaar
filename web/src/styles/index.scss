@@ -479,3 +479,26 @@ body.superdoc-form{
         }
     }
 }
+
+.cart-main{
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow: auto;
+    th, td{
+        text-align: right;
+        padding: (5 * .125em) (2 * .125em);
+        padding-left: 10px
+    }
+    th{
+        color: #555;
+        font-weight: bold;
+        font-size: 13px
+    }
+    .actions > div{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

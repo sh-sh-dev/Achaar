@@ -9,7 +9,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import {Link} from 'react-router-dom';
 import FontIcon from 'material-ui/FontIcon';
-import {MulitshSelf, MulitshItem, TypeText, Space, palette} from '../utils/ui-utils';
+import {MulitshSelf, MulitshItem, TypeText, Space, palette} from '../utils/';
 import Helmet from 'react-helmet';
 const VirtualizeSwipeableViews = virtualize(SwipeableViews);
 

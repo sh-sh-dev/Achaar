@@ -8,7 +8,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Space} from '../utils/ui-utils';
+import {Space} from '../utils/';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import axios from 'axios';
