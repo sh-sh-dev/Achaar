@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TypeText, Space, palette, slicePrice} from '../utils/ui-utils';
+import {Space, palette, slicePrice, numToFA} from '../utils/';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -15,7 +15,7 @@ import {
     Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn
 } from 'material-ui/Table';
 import SwipeableViews from 'react-swipeable-views';
-import TouchRipple from 'material-ui/internal/TouchRipple';
+// import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
 
@@ -105,7 +105,13 @@ export default class ProductPage extends Component {
                 <Helmet>
                     <title>{`${props.productName} | آچار`}</title>
                 </Helmet>
-                <AppBar zDepth={2} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color='#fff'>arrow_forward</FontIcon></Link></IconButton>} style={{flexWrap: 'wrap', position: 'fixed', right: 0}}>
+                <AppBar zDepth={2} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color='#fff'>arrow_forward</FontIcon></Link></IconButton>} style={{flexWrap: 'wrap', position: 'fixed', right: 0}} iconElementRight={
+                    <Link to='/cart'>
+                        <IconButton>
+                            <FontIcon color='#fff' className='mdi'>shopping_cart</FontIcon>
+                        </IconButton>
+                    </Link>
+                }>
                     <Tabs onChange={this.handleChangeTab} value={this.state.activeTab} style={{width: 'calc(100% + 48px)', marginLeft: -24, marginRight: -24}}>
                         <Tab label='معرفی' value={0} />
                         <Tab label="مشخصات فنی" value={1} />
@@ -121,13 +127,13 @@ export default class ProductPage extends Component {
                                 {/* Pictures! */}
                             </div>
                             <div className='col-xs-12 col-md-6'>
-                                <h2>&zwnj;<TypeText dur={0} text={props.productName} /></h2>
+                                <h2>{props.productName}</h2>
                                 <div style={{fontSize: '1.25em'}}>
                                     <p style={{color: '#585858'}}>
-                                        <i className='mdi'>restore</i> گارانتی: <b style={{color: '#000'}}>شخمه صنعت پرداز غرب</b>
+                                        <i className='mdi'>security</i> گارانتی: <b style={{color: '#000'}}>شخمه صنعت پرداز غرب</b>
                                         <br />
-                                        <i className='mdi'>money_off</i> قیمت:
-                                        <b style={{color: palette.accent2Color}}> {slicePrice(410000)} تومان</b>
+                                        <i className='mdi'>attach_money</i> قیمت:
+                                        <b style={{color: palette.accent2Color}}> {slicePrice(numToFA(410000))} تومان</b>
                                     </p>
                                     <div style={{margin: 20}}>
                                         <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
