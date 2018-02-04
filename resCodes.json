@@ -10,7 +10,12 @@
             "success": 100
         },
         "sign_in": {
-
+            "fill_inputs": -200,
+            "password_invalid":-201,
+            "username_invalid":-202,
+            "login_failed":-203,
+            "username_or_password_is_wrong":-204,
+            "success":200
         },
         "token": {
 

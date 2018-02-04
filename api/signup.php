@@ -2,6 +2,7 @@
 include "functions.php";
 
 $_POST = json_decode(file_get_contents("php://input"),true);
+
 $Name = Clean($_POST["name"]);
 $Password = Clean($_POST["password"]);
 $Mobile = Clean($_POST["mobile"]);
@@ -13,7 +14,7 @@ if (strlen($Password) < 6 || strlen($Password) > 18) {
     $Re = strlen($Password) < 6 ? true : false;
     $ResD = $Re ? "Password length is lower than allowed." : "Password length is greater than the limit.";
     $ResC = $Re ? -101 : -102;
-    die(Response($ResD.strlen($Password),false,$ResC));
+    die(Response($ResD,false,$ResC));
 }
 if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
     die(Response("Mobile not valid.",false,-103));
