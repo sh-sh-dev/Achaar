@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as mul from './mulitsh';
 import palette from './palette';
-
+import cookie from './cookie';
 const {MulitshItem, MulitshSelf} = mul;
 
 class TypeText extends Component{
@@ -60,5 +60,6 @@ export {
     MulitshSelf,
     chunk,
     slicePrice,
-    numToFA
+    numToFA,
+    cookie
 };
