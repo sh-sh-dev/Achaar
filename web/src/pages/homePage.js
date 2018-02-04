@@ -48,17 +48,24 @@ export default class HomePage extends React.Component {
                     <title>آچار | فروشگاه آنلاین تجهیزات و ابزار صنعتی</title>
                 </Helmet>
                 <div>
-                    <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={<IconMenu iconButtonElement={
-                        <IconButton><FontIcon className='mdi'>account_circle</FontIcon></IconButton>
-                    } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                        <MenuItem disabled primaryText="کاربر مهمان" />
-                        <Link to='/signup'>
-                            <MenuItem primaryText='ثبت نام' />
+                    <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={<React.Fragment>
+                        <Link to='/cart'>
+                            <IconButton>
+                                <FontIcon className='mdi' color='#fff'>shopping_cart</FontIcon>
+                            </IconButton>
                         </Link>
-                        <Link to='/signin'>
-                            <MenuItem primaryText="ورود به حساب قبلی" />
-                        </Link>
-                    </IconMenu>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: true}))} />
+                        <IconMenu iconButtonElement={
+                            <IconButton><FontIcon color='#fff' className='mdi'>account_circle</FontIcon></IconButton>
+                        } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                            <MenuItem disabled primaryText="کاربر مهمان" />
+                            <Link to='/signup'>
+                                <MenuItem primaryText='ثبت نام' />
+                            </Link>
+                            <Link to='/signin'>
+                                <MenuItem primaryText="ورود به حساب قبلی" />
+                            </Link>
+                        </IconMenu>
+                    </React.Fragment>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: true}))} />
                     <Drawer docked={!1} onRequestChange={(drawerOpen) => this.setState({drawerOpen})} open={this.state.drawerOpen} width={300}>
                         <MenuItem primaryText='خانه' />
                     </Drawer>
