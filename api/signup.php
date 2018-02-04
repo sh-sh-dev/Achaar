@@ -1,6 +1,6 @@
 <?
 
-//Token Token Token !!!
+// $Name XSS defence
 
 include "functions.php";
 
@@ -25,15 +25,17 @@ $Password = md5(base64_encode($Password));
 $Name = $db->real_escape_string($Name);
 $Mobile = $db->real_escape_string($Mobile);
 
-//$RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
-//if ($RepeatabilityCheck->num_rows != 0) {
-//    die(Response("User exists.",false,-104));
-//}
-//$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`) VALUES ('$Name','$Mobile','$Password')");
+$Token = bin2hex($Mobile . random_bytes(5));
+
+$RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
+if ($RepeatabilityCheck->num_rows != 0) {
+    die(Response("User exists.",false,-104));
+}
+$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`,`token`) VALUES ('$Name','$Mobile','$Password','$Token')");
 $Signup = true;
 
 if ($Signup) {
-    Response(array("Signup Completed.","token"=>"1-wd-5awf-aw-5"),true,100);
+    Response(array("Signup Completed.","token"=>$Token),true,100);
 }
 else {
     Response("Signup Failed.",false,-105);
