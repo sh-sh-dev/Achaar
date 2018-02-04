@@ -5,7 +5,7 @@ import { Route, BrowserRouter } from 'react-router-dom';
 // theme and UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {palette} from './utils/ui-utils';
+import {palette} from './utils/';
 // routes
 import HomePage from './pages/homePage';
 import SignUp from './pages/signup';
@@ -39,8 +39,7 @@ class App extends React.Component {
 ReactDOM.render(<MuiThemeProvider muiTheme={getMuiTheme({
     isRtl: true,
     palette,
-    fontFamily: 'inherit',
-    borderRadius: 2.5
+    fontFamily: 'inherit'
 })}><BrowserRouter><App /></BrowserRouter></MuiThemeProvider>, document.getElementById('root'))
 
 registerServiceWorker();
