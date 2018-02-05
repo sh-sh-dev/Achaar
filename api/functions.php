@@ -2,7 +2,6 @@
 include_once "config.php";
 
 function strip_tags_content($text, $tags = '', $invert = FALSE) {
-
     preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
     $tags = array_unique($tags[1]);
 
@@ -55,7 +54,7 @@ function xss_clean($data) {
 }
 
 function Clean($value) {
-//    $value = strip_tags_content(xss_clean(htmlspecialchars($value)));
+    $value = strip_tags_content(xss_clean(htmlspecialchars($value)));
     return $value;
 }
 
@@ -67,4 +66,8 @@ function Response($value , $ok = true , $code = null,$print = 0) {
     ]);
     if ($print) echo $res;
     else return $res;
+}
+
+function Token($value,$random_bytes = 5) {
+    return md5(bin2hex($value . random_bytes($random_bytes)));
 }

@@ -8,34 +8,35 @@ $Password = Clean($_POST["password"]);
 $Mobile = Clean($_POST["mobile"]);
 
 if (empty($Name) || empty($Password) || empty($Mobile)) {
-    die(Response("Fill all inputs.",false,-100));
+    die(Response("لطفا همه فیلد ها را پر نمایید",false,-100));
 }
-if (strlen($Password) < 6 || strlen($Password) > 18) {
+if (mb_strlen($Password) < 6 || mb_strlen($Password) > 18) {
     $Re = strlen($Password) < 6 ? true : false;
-    $ResD = $Re ? "Password length is lower than allowed." : "Password length is greater than the limit.";
+    $ResD = $Re ? "کمتر" : "بیشتر";
     $ResC = $Re ? -101 : -102;
-    die(Response($ResD,false,$ResC));
+    die(Response("طول رمز عبور $ResD از حد مجاز است",false,$ResC));
 }
 if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
-    die(Response("Mobile not valid.",false,-103));
+    die(Response("موبایل معتبر نمی‌باشد",false,-103));
 }
 
 $Password = md5(base64_encode($Password));
 $Name = $db->real_escape_string($Name);
 $Mobile = $db->real_escape_string($Mobile);
-
-$Token = md5(bin2hex($Mobile . random_bytes(5)));
+$Time = time();
+$Token = Token($Mobile);
 
 $RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
 if ($RepeatabilityCheck->num_rows != 0) {
-    die(Response("User exists.",false,-104));
+    die(Response("کاربر وجود دارد",false,-104));
 }
 
-$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`,`token`) VALUES ('$Name','$Mobile','$Password','$Token')");
+$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password','$Time')");
+$IToken = $db->query("INSERT INTO `Token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Time')");
 
-if ($Signup) {
+if ($Signup && $IToken) {
     Response($Token,true,100,true);
 }
 else {
-    Response("Signup Failed.",false,-105,true);
+    Response("ثبت نام موفقیت آمیز نبود",false,-105,true);
 }
