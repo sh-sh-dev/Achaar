@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as mul from './mulitsh';
 import palette from './palette';
-import cookie from './cookie';
+const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;
 
 class TypeText extends Component{

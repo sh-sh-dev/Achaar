@@ -60,8 +60,6 @@ export default class SignIn extends Component {
             url: '//localhost/Achaar/api/signin',
             data: forms
         }).then(res => {
-            console.log(res);
-            // let status = res.data.code;
             let status = res.data.ok;
             if (status) {
                 $.setState({mode: 'success'})
@@ -117,7 +115,7 @@ export default class SignIn extends Component {
             case 'success':
                 return (<div className='loading'>
                     <div>
-                        <FontIcon className='mdi' color='#4caf50'>done</FontIcon><br />
+                        <FontIcon className='mdi' style={{fontSize: '5em'}} color='#4caf50'>done</FontIcon><br />
                         <b>ورود با موفقیت انجام شد!</b>
                     </div>
                 </div>)
