@@ -3,16 +3,14 @@ import Helmet from 'react-helmet';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import TouchRipple from 'material-ui/internal/TouchRipple';
+// import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
 import {palette, Space, slicePrice, numToFA} from '../utils/';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
-import {
-    Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn
-} from 'material-ui/Table';
+import update from 'immutability-helper';
 
 export default class ShoppingCart extends Component {
     state = {
@@ -40,6 +38,20 @@ export default class ShoppingCart extends Component {
         ],
         confirmDialogOpen: false
     }
+    changeAmount = (index, inc) => {
+        let {items} = this.state;
+        const IO = {};
+        let i = index.toString();
+        IO[i] = {};
+        IO[i].amount = {$set: items[index].amount + inc};
+        let newItems = update(items, IO);
+        return (() => {
+            // console.log(newItems);
+            this.setState({
+                items: newItems
+            })
+        }).bind(this)
+    }
     render(){
         const closeD = () => {
             this.setState({confirmDialogOpen: false})
@@ -66,7 +78,7 @@ export default class ShoppingCart extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.items.map(e => <tr>
+                                    {this.state.items.map((e, index) => <tr key={index}>
                                         <td>{e.name}</td>
                                         <td>{numToFA(e.amount)}</td>
                                         <td>{slicePrice(numToFA(e.price))} تومان</td>
@@ -78,12 +90,12 @@ export default class ShoppingCart extends Component {
                                                         delete
                                                     </FontIcon>
                                                 </IconButton>
-                                                <IconButton tooltipPosition='top-center' tooltip='افزایش تعداد کالا'>
+                                                <IconButton tooltipPosition='top-center' tooltip='افزایش تعداد کالا' onClick={this.changeAmount(index, 1)}>
                                                     <FontIcon className='mdi' color={palette.accent1Color}>
                                                         add_circle_outline
                                                     </FontIcon>
                                                 </IconButton>
-                                                <IconButton tooltipPosition='top-center' tooltip='کاهش تعداد کالا'>
+                                                <IconButton tooltipPosition='top-center' tooltip='کاهش تعداد کالا' onClick={this.changeAmount(index, -1)} disabled={this.state.items[index].amount < 2}>
                                                     <FontIcon className='mdi' color={palette.accent2Color}>
                                                         remove_circle_outline
                                                     </FontIcon>
