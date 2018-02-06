@@ -7,9 +7,9 @@ $Product = Clean($Data["product"]);
 
 if (empty($Product)) die(Response("لطفا همه فیلد ها را پر نمایید",false,-400));
 
-$Product = $db->real_escape_string($Product);
+$Product = (int)$db->real_escape_string($Product);
 
-$getProduct = $db->query("SELECT * FROM `Products` WHERE `name`='$Product' AND `active`=1");
+$getProduct = $db->query("SELECT * FROM `Products` WHERE `n`='$Product' AND `active`=1");
 
 if (!$getProduct) die(Response("خطای غیر منتظره رخ داد",false,-401));
 

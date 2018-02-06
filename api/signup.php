@@ -26,7 +26,7 @@ $Mobile = $db->real_escape_string($Mobile);
 $Time = time();
 $Token = Token($Mobile);
 
-$RepeatabilityCheck =  $db->query("SELECT * FROM `Users` WHERE `mobile`='$Mobile'");
+$RepeatabilityCheck =  $db->query("SELECT * FROM `users` WHERE `mobile`='$Mobile'");
 if ($RepeatabilityCheck->num_rows != 0) {
     die(Response("کاربر وجود دارد",false,-104));
 }
