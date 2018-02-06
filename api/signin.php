@@ -1,10 +1,10 @@
 <?
 include "functions.php";
 
-$_POST = json_decode(file_get_contents("php://input"),true);
+$Data = getData();
 
-$Mobile = Clean($_POST["mobile"]);
-$Password = Clean($_POST["password"]);
+$Mobile = Clean($Data["mobile"]);
+$Password = Clean($Data["password"]);
 
 if (empty($Mobile) || empty($Password)) {
     die(Response("لطفا همه فیلد ها را پر نمایید",false,-200));

@@ -6,19 +6,25 @@
             "password_greater":-102,
             "mobile_not_mobile":-103,
             "user_exist":-104,
-            "failed":-105,
-            "success": 100
+            "failed":-105
         },
         "sign_in": {
             "fill_inputs": -200,
             "password_invalid":-201,
             "username_invalid":-202,
             "login_failed":-203,
-            "username_or_password_is_wrong":-204,
-            "success":200
+            "insert_token_failed":-204,
+            "username_or_password_is_wrong":-205
         },
         "token": {
 
+        }
+    },
+    "cart": {
+        "products": {
+            "product_is_empty":-400,
+            "get_products_failed":-401,
+            "not_found":-402
         }
     }
 }
