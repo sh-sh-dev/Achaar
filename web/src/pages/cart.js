@@ -139,12 +139,6 @@ export default class ShoppingCart extends Component {
                                             })}
                                         </tbody>
                                     </table>
-                                    <Space height={15} />
-                                    <div style={{textAlign: 'center'}}>
-                                        <RaisedButton onClick={() => {
-                                            this.setState({confirmDialogOpen: true})
-                                        }} secondary label='نهایی سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
-                                    </div>
                                 </React.Fragment>
                             :
                             <div style={{textAlign: 'center', color: '#777', padding: 30}}>
@@ -154,6 +148,16 @@ export default class ShoppingCart extends Component {
                             </div>
                             }
                         </div>
+                        {this.state.items.length > 0 ?
+                            <div>
+                                <Space height={15} />
+                                <div style={{textAlign: 'center'}}>
+                                    <RaisedButton onClick={() => {
+                                        this.setState({confirmDialogOpen: true})
+                                    }} secondary label='نهایی سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
+                                </div>
+                            </div> : <React.Fragment></React.Fragment>
+                        }
                     </Paper>
                 </div>
 
