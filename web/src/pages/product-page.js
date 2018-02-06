@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Space, palette, slicePrice, numToFA, cookie} from '../utils/';
+import {Space, palette, slicePrice, numToFA, cookie, resolveApiURL} from '../utils/';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -17,6 +17,7 @@ import {
 import SwipeableViews from 'react-swipeable-views';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
+import axios from 'axios';
 
 const commentData = [
     {
@@ -81,8 +82,20 @@ export default class ProductPage extends Component {
         super(props);
         this.state = {
             activeTab: 0,
-            commentDialogOpen: false
+            commentDialogOpen: false,
+            loaded: false
         }
+    }
+    componentDidMount(){
+        let $ = this;
+        axios({
+            method: 'post',
+            url: resolveApiURL('product'),
+            data: $.props.pid
+        }).then(res => {
+            $.setState({loaded: true})
+            console.log(res);
+        })
     }
     handleChangeTab = value => {
         this.setState({
@@ -102,7 +115,8 @@ export default class ProductPage extends Component {
                 this.setState({commentDialogOpen: true})
             }
         }
-        return (
+        if (this.state.loaded) {
+            return (
             <div className='container' style={{padding: 0}}>
                 <Helmet>
                     <title>{`${props.productName} | آچار`}</title>
@@ -204,5 +218,8 @@ export default class ProductPage extends Component {
                 }
             </div>
         )
+        } else {
+            return (<div>Loading...</div>)
+        }
     }
 }

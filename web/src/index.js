@@ -41,7 +41,7 @@ class App extends React.Component {
                         <Route path='/signup' exact component={SignUp} />
                         <Route path='/signin' exact component={SignIn} />
                         {/* Products */}
-                        <Route path='/product/:name' render={({match, history}) => <ProductPage productName={match.params.name} />} exact />
+                        <Route path='/product/:id' render={({match, history}) => <ProductPage pid={match.params.id} />} exact />
                         {/* Cart */}
                         <Route exact path='/cart' component={ShoppingCart} />
                         {/* Account managing */}
