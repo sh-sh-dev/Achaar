@@ -66,7 +66,7 @@ export default class SignUp extends Component {
         let $ = this;
         axios({
             method: 'post',
-            url: resolveApiURL('signin'),
+            url: resolveApiURL('signup'),
             data: forms
         }).then(res => {
             let status = res.data.ok;
