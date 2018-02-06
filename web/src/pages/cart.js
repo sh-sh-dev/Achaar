@@ -30,8 +30,8 @@ class CartItem extends Component {
             <td>{slicePrice(numToFA(this.props.data.price * this.props.data.amount))} تومان</td>
             <td className='actions'>
                 <div>
-                    <IconButton tooltipPosition='top-center' tooltip='حذف آیتم از سبد خرید'>
-                        <FontIcon className='mdi' color='#f44336' onClick={() => {this.setState({cddOpen: true})}}>
+                    <IconButton tooltipPosition='top-center' tooltip='حذف آیتم از سبد خرید' onClick={() => {this.setState({cddOpen: true})}}>
+                        <FontIcon className='mdi' color='#f44336'>
                             delete
                         </FontIcon>
                     </IconButton>
