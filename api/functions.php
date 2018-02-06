@@ -98,3 +98,8 @@ function getUser($n,$req) {
     $result = $query->fetch_assoc();
     return $result[$req];
 }
+
+function Discount($price, $percent) {
+    $Discount = ($percent /100) * $price;
+    return ($price - $Discount);
+}
