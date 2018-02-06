@@ -20,7 +20,7 @@ $Password = md5(base64_encode($Password));
 $Mobile = $db->real_escape_string($Mobile);
 $Date = time();
 
-$Login = $db->query("SELECT * FROM `Users` WHERE `Password`='$Password' AND `Mobile`='$Mobile' AND `blocked`=0");
+$Login = $db->query("SELECT * FROM `users` WHERE `Password`='$Password' AND `Mobile`='$Mobile' AND `blocked`=0");
 
 if (!$Login) {
     die(Response("خطای غیر منتظره رخ داد",false,-203));
@@ -28,7 +28,7 @@ if (!$Login) {
 else {
     if ($Login->num_rows == 1) {
         $Token = Token($Mobile);
-        $IToken = $db->query("INSERT INTO `Token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Date')");
+        $IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Date')");
         if ($IToken) Response($Token,true,200,true);
         else die(Response("خطای غیر منتظره رخ داد",false,-204));
     }

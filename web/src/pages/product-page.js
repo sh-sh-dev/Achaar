@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Space, palette, slicePrice, numToFA} from '../utils/';
+import {Space, palette, slicePrice, numToFA, cookie} from '../utils/';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -12,10 +12,9 @@ import TextField from 'material-ui/TextField';
 import ReactStars from 'react-stars';
 import {Tab, Tabs} from 'material-ui/Tabs';
 import {
-    Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn
+    Table, TableRow, TableBody, TableRowColumn
 } from 'material-ui/Table';
 import SwipeableViews from 'react-swipeable-views';
-// import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link} from 'react-router-dom';
 import Helmet from 'react-helmet';
 
@@ -49,8 +48,8 @@ const commentData = [
 const Comments = (props) => {
     let result = [];
     const rateFullStars = (num) => {
-        let fulls = new Number(num[0]),
-        halfs = new Number(num[1]);
+        let fulls = Number(num[0]),
+        halfs = Number(num[1]);
         let f = [];
         for (var i = 0; i < (fulls == 0 ? 4 : fulls); i++) {
             f.push(<i className='mdi'>{fulls == 0 ? 'star_border' : 'star'}</i>)
@@ -90,6 +89,9 @@ export default class ProductPage extends Component {
             activeTab: value
         })
     }
+
+    auth = cookie.get('AS_AUTH')
+
     render(){
         let {props} = this;
         let di = {
@@ -101,14 +103,15 @@ export default class ProductPage extends Component {
             }
         }
         return (
-            <div className='container'>
+            <div className='container' style={{padding: 0}}>
                 <Helmet>
                     <title>{`${props.productName} | آچار`}</title>
                 </Helmet>
-                <AppBar zDepth={2} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color='#fff'>arrow_forward</FontIcon></Link></IconButton>} style={{flexWrap: 'wrap', position: 'fixed', right: 0}} iconElementRight={
+                <AppBar zDepth={2} title={props.productName} iconElementLeft={<IconButton><Link draggable={false} to='/'><FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon></Link></IconButton>} style={{flexWrap: 'wrap', position: 'fixed', right: 0}} iconElementRight={
+                    this.auth &&
                     <Link to='/cart'>
                         <IconButton>
-                            <FontIcon color='#fff' className='mdi'>shopping_cart</FontIcon>
+                            <FontIcon color={palette.primary3Color} className='mdi'>shopping_cart</FontIcon>
                         </IconButton>
                     </Link>
                 }>
@@ -120,7 +123,7 @@ export default class ProductPage extends Component {
                 </AppBar>
                 <Space height={127} />
                 <SwipeableViews animateHeight index={this.state.activeTab} animateHeight={false} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
-                    <Paper style={{margin: 7}} zDepth={2}>
+                    <Paper style={{margin: '7px 22px'}} zDepth={2}>
                         <div className='clear' style={{direction: 'rtl'}}>
                             <div className='col-xs-12 col-md-6'>
                                 <Space height={1} />
@@ -135,11 +138,17 @@ export default class ProductPage extends Component {
                                         <i className='mdi'>attach_money</i> قیمت:
                                         <b style={{color: palette.accent2Color}}> {slicePrice(numToFA(410000))} تومان</b>
                                     </p>
-                                    <div style={{margin: 20}}>
-                                        <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
-                                            <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
-                                        </RaisedButton>
+                                    {this.auth ?
+                                        <div style={{margin: 20}}>
+                                            <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
+                                                <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
+                                            </RaisedButton>
+                                        </div>
+                                    :
+                                    <div className='unselectable' style={{margin: 20, color: palette.primary3Color, fontSize: 14, padding: 5, textAlign: 'center', backgroundColor: '#eaeaea', borderRadius: 2, cursor: 'default'}}>
+                                        برای سفارش کالا برای وارد سایت شوید.
                                     </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -155,41 +164,44 @@ export default class ProductPage extends Component {
                             </TableBody>
                         </Table>
                     </div>
-                    <div style={{padding: 15, direction: 'rtl'}}>
+                    <div style={{padding: 15, paddingRight: 30, direction: 'rtl'}}>
                         <Comments data={commentData} />
                     </div>
                 </SwipeableViews>
 
-
-                <FloatingActionButton secondary={true} style={{
-                    position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab == 2 ? 1 : 0}) rotate(${this.state.activeTab * 90 - 180}deg)`, opacity: this.state.activeTab == 2 ? 1 : .4
-                }} onClick={di.open.bind(this)}>
-                    <FontIcon className='mdi'>edit</FontIcon>
-                </FloatingActionButton>
-
-
-                <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab == 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab == 2 ? 96 : 25, zIndex: 1100}}>
-                    <FontIcon className='mdi'>add_shopping_cart</FontIcon>
-                </FloatingActionButton>
+                {this.auth &&
+                    <React.Fragment>
+                        <FloatingActionButton secondary={true} style={{
+                            position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab == 2 ? 1 : 0}) rotate(${this.state.activeTab * 90 - 180}deg)`, opacity: this.state.activeTab == 2 ? 1 : .4
+                        }} onClick={di.open.bind(this)}>
+                            <FontIcon className='mdi'>edit</FontIcon>
+                        </FloatingActionButton>
 
 
-                <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${props.productName}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
-                    <FlatButton secondary={true} label='ارسال دیدگاه' onClick={di.close.bind(this)} />,
-                    <FlatButton secondary={true} onClick={di.close.bind(this)} label='لغو' />
-                ]}>
-                    {this.state.commentDialogOpen &&
-                        <React.Fragment>
-                            <div style={{textAlign: 'center'}}>
-                                <TextField floatingLabelText='عنوان دیدگاه شما' autoFocus />
-                            </div>
-                            <TextField multiLine floatingLabelText='دیدگاه خود را بنویسید...' rows={2} fullWidth={true} />
-                            <Space height={15} />
-                            <div style={{direction: 'ltr', textAlign: 'center'}}>
-                                <ReactStars size={40} color1='#aaa' color2={palette.accent2Color} className='mdi unselectable' char='star' />
-                            </div>
-                        </React.Fragment>
-                    }
-                </Dialog>
+                        <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab == 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab == 2 ? 96 : 25, zIndex: 1100}}>
+                            <FontIcon className='mdi'>add_shopping_cart</FontIcon>
+                        </FloatingActionButton>
+
+
+                        <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${props.productName}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
+                            <FlatButton secondary={true} label='ارسال دیدگاه' onClick={di.close.bind(this)} />,
+                            <FlatButton secondary={true} onClick={di.close.bind(this)} label='لغو' />
+                        ]}>
+                            {this.state.commentDialogOpen &&
+                                <React.Fragment>
+                                    <div style={{textAlign: 'center'}}>
+                                        <TextField floatingLabelText='عنوان دیدگاه شما' autoFocus />
+                                    </div>
+                                    <TextField multiLine floatingLabelText='دیدگاه خود را بنویسید...' rows={2} fullWidth={true} />
+                                    <Space height={15} />
+                                    <div style={{direction: 'ltr', textAlign: 'center'}}>
+                                        <ReactStars size={40} color1='#aaa' color2={palette.accent2Color} className='mdi unselectable' char='star' />
+                                    </div>
+                                </React.Fragment>
+                            }
+                        </Dialog>
+                    </React.Fragment>
+                }
             </div>
         )
     }

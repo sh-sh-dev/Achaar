@@ -31,8 +31,8 @@ if ($RepeatabilityCheck->num_rows != 0) {
     die(Response("کاربر وجود دارد",false,-104));
 }
 
-$Signup = $db->query("INSERT INTO `Users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password','$Time')");
-$IToken = $db->query("INSERT INTO `Token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Time')");
+$Signup = $db->query("INSERT INTO `users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password','$Time')");
+$IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Time')");
 
 if ($Signup && $IToken) {
     Response($Token,true,100,true);

@@ -7,39 +7,17 @@ import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
+import Badge from 'material-ui/Badge';
 import {Link} from 'react-router-dom';
 import FontIcon from 'material-ui/FontIcon';
-import {MulitshSelf, MulitshItem, TypeText, Space, palette} from '../utils/';
+import {MulitshSelf, MulitshItem, TypeText, Space, palette, cookie} from '../utils/';
 import Helmet from 'react-helmet';
-const VirtualizeSwipeableViews = virtualize(SwipeableViews);
-
-const styles = {};
-
-function slideRenderer(params) {
-    const { index, key } = params;
-    var i = mod(index, 10);
-    return (
-        <div key={key} className='ic-item' style={Object.assign({}, styles.slide, {backgroundColor: palette.accent2Color})}>
-            <div className='ici-icon'>
-                <FontIcon className='mdi ici-icon-main' color='#fff' style={{fontSize: 50}}>cloud_download</FontIcon>
-            </div>
-            <p>
-                حالا یک مثشال ساده میتونه کار رو بهتر کنه.
-            </p>
-        </div>
-    )
-}
-
-function DemoSimple() {
-    return (
-        <VirtualizeSwipeableViews slideRenderer={slideRenderer} enableMouseEvents />
-    );
-}
 
 export default class HomePage extends React.Component {
     state = {
         drawerOpen: false
     }
+    auth = cookie.get('AS_AUTH');
     render(){
         document.body.className = '';
         return (
@@ -48,26 +26,43 @@ export default class HomePage extends React.Component {
                     <title>آچار | فروشگاه آنلاین تجهیزات و ابزار صنعتی</title>
                 </Helmet>
                 <div>
-                    <AppBar style={{position: 'fixed'}} zDepth={2} title='آچار' iconElementRight={<React.Fragment>
-                        <Link to='/cart'>
+                    <AppBar style={{position: 'fixed'}} iconElementLeft={<IconButton><FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon></IconButton>} zDepth={2} title='آچار' iconElementRight={<React.Fragment>
+                        {this.auth && <Link to='/cart'>
                             <IconButton>
-                                <FontIcon className='mdi' color='#fff'>shopping_cart</FontIcon>
+                                <FontIcon className='mdi' color={palette.primary3Color}>shopping_cart</FontIcon>
                             </IconButton>
                         </Link>
+                        }
                         <IconMenu iconButtonElement={
-                            <IconButton><FontIcon color='#fff' className='mdi'>account_circle</FontIcon></IconButton>
+                            <IconButton><FontIcon color={palette.primary3Color} className='mdi'>person</FontIcon></IconButton>
                         } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                            <MenuItem disabled primaryText="کاربر مهمان" />
-                            <Link to='/signup'>
-                                <MenuItem primaryText='ثبت نام' />
-                            </Link>
-                            <Link to='/signin'>
-                                <MenuItem primaryText="ورود به حساب قبلی" />
-                            </Link>
+                            {!this.auth ?
+                                <React.Fragment>
+                                    <Link to='/signup'>
+                                        <MenuItem primaryText='ثبت نام' />
+                                    </Link>
+                                    <Link to='/signin'>
+                                        <MenuItem primaryText="ورود به حساب" />
+                                    </Link>
+                                </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <Link to='/account/logout'>
+                                    <MenuItem primaryText='خروج از حساب' />
+                                </Link>
+                                <Link to='/account/delete-account'>
+                                    <MenuItem primaryText='حذف حساب کاربری' />
+                                </Link>
+                            </React.Fragment>
+                            }
                         </IconMenu>
                     </React.Fragment>} onLeftIconButtonClick={() => this.setState(prev => ({drawerOpen: true}))} />
                     <Drawer docked={!1} onRequestChange={(drawerOpen) => this.setState({drawerOpen})} open={this.state.drawerOpen} width={300}>
-                        <MenuItem primaryText='خانه' />
+                        <Link to='/'>
+                            <MenuItem>
+                                خانه
+                            </MenuItem>
+                        </Link>
                     </Drawer>
                     <Space height={64} />
                     {/* <DemoSimple /> */}
