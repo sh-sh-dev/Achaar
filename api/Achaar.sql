@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2018 at 06:34 PM
+-- Generation Time: Feb 06, 2018 at 07:31 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
 
@@ -62,7 +62,7 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`n`, `user`, `product`, `title`, `text`, `score`, `date`, `approved`) VALUES
 (1, '09357778351', 1, 'عـــــــــالیه !', 'همه چی عالی\r\nبعضی دوستان میگن سیاه میشه، ولی به هیچ عنوان اینطور نیست', 100, '1517914553', 1),
-(2, '09363478412', 1, 'خـــیلی بده', 'بسیار بده\r\nهی سیاه میشه\r\nهی سیاه میشه\r\nهی سیاه میشه\r\n(گیف را پخش میکند)', 10, '1517915143', 1);
+(2, '09357778351', 1, 'خـــیلی بده', 'بسیار بده\r\nهی سیاه میشه\r\nهی سیاه میشه\r\nهی سیاه میشه\r\n(گیف را پخش میکند)', 10, '1517915143', 1);
 
 -- --------------------------------------------------------
 
@@ -122,6 +122,14 @@ CREATE TABLE `token` (
   `blocked` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
+--
+-- Dumping data for table `token`
+--
+
+INSERT INTO `token` (`n`, `token`, `user`, `date`, `blocked`) VALUES
+(1, '1efccd828c50b0d7589abbc7a0b77f38', '09357778351', '1517939154', 0),
+(2, 'cdc2d683a01280703c25d2134f19895d', '09357778351', '1517939309', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -142,8 +150,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`n`, `name`, `mobile`, `password`, `date`, `blocked`) VALUES
-(1, 'شایگان شکرالهی', '09357778351', '87d9bb400c0634691f0e3baaf1e2fd0d', '1517909201', 0),
-(2, 'حسین خوانساری', '09363478412', '87d9bb400c0634691f0e3baaf1e2fd0d', '1517914999', 0);
+(1, 'شایگان شکرالهی', '09357778351', '87d9bb400c0634691f0e3baaf1e2fd0d', '1517939154', 0);
 
 -- --------------------------------------------------------
 
@@ -164,7 +171,7 @@ CREATE TABLE `warranties` (
 --
 
 INSERT INTO `warranties` (`n`, `product`, `name`, `period`, `active`) VALUES
-(1, '2', 'آچار ایران', '12 ماهه', 1);
+(1, '1', 'آچار ایران', '12 ماهه', 1);
 
 --
 -- Indexes for dumped tables
@@ -240,12 +247,12 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `warranties`
 --
