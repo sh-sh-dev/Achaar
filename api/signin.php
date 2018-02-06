@@ -16,7 +16,7 @@ if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
     die(Response("نام کاربری معتبر نمی‌باشد",false,-202));
 }
 
-$Password = md5(base64_decode($Password));
+$Password = md5(base64_encode($Password));
 $Mobile = $db->real_escape_string($Mobile);
 $Date = time();
 
@@ -33,7 +33,6 @@ else {
         else die(Response("خطای غیر منتظره رخ داد",false,-204));
     }
     else {
-        echo $Login->num_rows;
         die(Response("نام کاربری یا رمز عبور معتبر نمی‌باشد",false,-205));
     }
 }

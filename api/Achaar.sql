@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2018 at 03:30 PM
--- Server version: 5.7.14
--- PHP Version: 5.6.25
+-- Generation Time: Feb 06, 2018 at 09:27 AM
+-- Server version: 10.1.13-MariaDB
+-- PHP Version: 7.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `token` (
   `n` int(11) NOT NULL,
   `token` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `user` int(11) NOT NULL,
+  `user` text COLLATE utf8mb4_persian_ci NOT NULL,
   `date` text COLLATE utf8mb4_persian_ci NOT NULL,
   `blocked` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;

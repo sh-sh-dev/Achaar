@@ -52,7 +52,7 @@ class CartItem extends Component {
                     this.setState({cddOpen: false});
                     this.props.delete()
                 }} secondary={true}>بله</FlatButton>, <FlatButton secondary={true} onClick={this.cdClose}>خیر</FlatButton>] }>
-                ناموسن؟‌ :|
+                <b>{this.props.data.name}</b> حذف شود؟
             </Dialog>
         </tr>)
     }
@@ -61,26 +61,21 @@ class CartItem extends Component {
 export default class ShoppingCart extends Component {
     state = {
         items: [
-            // {
-            //     name: 'آچار فرانسه',
-            //     price: 41000,
-            //     amount: 4
-            // },
-            // {
-            //     name: 'آچار فرانسه',
-            //     price: 41000,
-            //     amount: 4
-            // },
-            // {
-            //     name: 'آچار فرانسه',
-            //     price: 41000,
-            //     amount: 4
-            // },
-            // {
-            //     name: 'آچار فرانسه',
-            //     price: 41000,
-            //     amount: 4
-            // }
+            {
+                name: 'آچار فرانسه',
+                price: 41000,
+                amount: 10
+            },
+            {
+                name: 'آچار لندنی',
+                price: 50000,
+                amount: 1
+            },
+            {
+                name: 'دیل(م)',
+                price: 100000,
+                amount: 1
+            }
         ],
         confirmDialogOpen: false
     }
@@ -155,7 +150,7 @@ export default class ShoppingCart extends Component {
                             <div style={{textAlign: 'center', color: '#777', padding: 30}}>
                                 <i className='mdi' style={{fontSize: 100, color: palette.accent1Color}}>error_outline</i>
                                 <br />
-                                <b>شما هنوز آیتمی در سبد خرید خود ندارید!</b>
+                                <b>سبد خرید شما خالی است :(</b>
                             </div>
                             }
                         </div>
@@ -164,7 +159,6 @@ export default class ShoppingCart extends Component {
 
                 <Dialog title='تأئید نهایی سازی خرید' open={this.state.confirmDialogOpen} onRequestClose={closeD} actions={[<FlatButton secondary={true} onClick={closeD}>بله</FlatButton>, <FlatButton secondary={true} onClick={closeD}>خیر</FlatButton>]}>
                     آیا از نهایی سازی خرید خود اطمینان دارید؟
-                    <b>این کار غیرقابل بازگشت نیست!</b>
                 </Dialog>
             </Fragment>
         )
