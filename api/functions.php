@@ -1,5 +1,6 @@
 <?
 include_once "config.php";
+include_once "vendor/jdf.php";
 
 function strip_tags_content($text, $tags = '', $invert = FALSE) {
     preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
@@ -59,15 +60,46 @@ function Clean($value) {
 }
 
 function Response($value , $ok = true , $code = null,$print = 0) {
-    $res = json_encode([
+    $res = [
         'ok'=>$ok,
-        'result'=>$value,
-        'code'=>$code
-    ]);
+        'result'=>$value
+    ];
+    if (!$ok && !empty($code)) $res['code'] = $code;
+    $res = json_encode($res,JSON_UNESCAPED_UNICODE);
     if ($print) echo $res;
     else return $res;
 }
 
 function Token($value,$random_bytes = 5) {
     return md5(bin2hex($value . random_bytes($random_bytes)));
+}
+
+function getData($array = true) {
+    return json_decode(file_get_contents("php://input"),$array);
+}
+
+function get($table,$req) {
+    $db = $GLOBALS["db"];
+    $query = $db->query("SELECT * FROM `$table`");
+    $result = $query->fetch_assoc();
+    return $result[$req];
+}
+
+function getCategory($n,$req) {
+    $db = $GLOBALS["db"];
+    $query = $db->query("SELECT * FROM `Categories` WHERE `name`='$n' OR `n`=$n");
+    $result = $query->fetch_assoc();
+    return $result[$req];
+}
+
+function getUser($n,$req) {
+    $db = $GLOBALS["db"];
+    $query = $db->query("SELECT * FROM `Users` WHERE `mobile`='$n' OR `n`=$n");
+    $result = $query->fetch_assoc();
+    return $result[$req];
+}
+
+function Discount($price, $percent) {
+    $Discount = ($percent /100) * $price;
+    return ($price - $Discount);
 }

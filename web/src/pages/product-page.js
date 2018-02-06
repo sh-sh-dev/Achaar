@@ -20,28 +20,28 @@ import Helmet from 'react-helmet';
 
 const commentData = [
     {
-        author: 'نظرده اول',
-        text: 'خیلی جــــــــالب و جــــــذابه',
-        title: 'واقعا خوبه',
-        time: new Date().toLocaleTimeString('fa-ir'),
-        date: new Date().toLocaleDateString('fa-ir'),
-        rate: 89
-    },
-    {
-        author: 'نظرده اول',
-        text: 'خیلی جــــــــالب و جــــــذابه',
-        title: 'واقعا خوبه',
-        time: new Date().toLocaleTimeString('fa-ir'),
-        date: new Date().toLocaleDateString('fa-ir'),
-        rate: 89
-    },
-    {
-        author: 'نظرده اول',
-        text: 'خیلی جــــــــالب و جــــــذابه',
-        title: 'واقعا خوبه',
+        author: 'نظرده سوم',
+        text: 'خیلی بده\nاصلا از آچار این انتظارو نداشتم',
+        title: 'خیلی بده',
         time: new Date().toLocaleTimeString('fa-ir'),
         date: new Date().toLocaleDateString('fa-ir'),
         rate: 0
+    },
+    {
+        author: 'نظرده دوم',
+        text: 'نظر نداره :(',
+        title: 'نظری ندارم',
+        time: new Date().toLocaleTimeString('fa-ir'),
+        date: new Date().toLocaleDateString('fa-ir'),
+        rate: 50
+    },
+    {
+        author: 'نظرده اول',
+        text: 'خیلی جــــــــالب و جــــــذابه',
+        title: 'واقعا خوبه',
+        time: new Date().toLocaleTimeString('fa-ir'),
+        date: new Date().toLocaleDateString('fa-ir'),
+        rate: 89
     },
 ]
 
