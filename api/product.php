@@ -19,7 +19,7 @@ $Product = $getProduct->fetch_assoc();
 
 $getComments = $db->query("SELECT * FROM `Comments` WHERE `product`='$Product[n]' AND `approved`=1 ORDER BY `date` DESC ");
 $getWarranties = $db->query("SELECT * FROM `Warranties` WHERE `product`='$Product[n]' AND `active`=1");
-$getDiscount = $db->query("SELECT * FROM `Discounts` WHERE `product`='$Product[n]' AND `active`=1 AND `expiry_date`<UNIX_TIMESTAMP()");
+$getDiscount = $db->query("SELECT * FROM `Discounts` WHERE `product`='$Product[n]' AND `active`=1 AND `expiry_date`>UNIX_TIMESTAMP()");
 
 if (!$getComments || !$getWarranties || !$getDiscount) die(Response("خطای غیر منتظره رخ داد",false,-401));
 
@@ -59,11 +59,13 @@ if ($getDiscount->num_rows == 1) {
 
     $Discount = Discount($result['price'],$DiscountROW["percent"]);
     $result['has_discount'] = true;
+    $Special = $DiscountROW['special'] ? true : false;
 
     $result['discount'] = [
         'price'=>$result['price'] - $Discount,
         'discounted_price'=>$Discount,
-        'percent'=>$DiscountROW["percent"]
+        'percent'=>$DiscountROW["percent"],
+        'special'=>$Special
     ];
 }
 
