@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-// import palette from '../utils/palette';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
@@ -8,8 +7,8 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Space} from '../utils/';
-import {Link} from 'react-router-dom';
+import {Space, cookie, $APP_DEFAULTS, resolveApiURL} from '../utils/';
+import {Link, Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import axios from 'axios';
 
@@ -67,19 +66,27 @@ export default class SignUp extends Component {
         let $ = this;
         axios({
             method: 'post',
-            url: '//localhost/Achaar/api/signup',
+            url: resolveApiURL('signin'),
             data: forms
         }).then(res => {
             let status = res.data.ok;
             if (status) {
                 $.setState({mode: 'success'})
+                setTimeout(function () {
+                    cookie.set('AS_AUTH', res.data.result, {expires: $APP_DEFAULTS.default_cookie_days * 24 * 60 * 60});
+                    $.setState({mode: 'redirect'})
+                }, 750);
             } else {
+                alert(res.data.result);
                 $.setState({mode: 'write'})
             }
         })
     }
     renderChildren(){
         switch (this.state.mode) {
+            case 'redirect':
+                return <Redirect to='/' />;
+                break;
             case 'write':
                 let closeDialog = () => {
                     this.setState({helpDialogOpen: !1})
@@ -147,12 +154,17 @@ export default class SignUp extends Component {
                 </div>)
         }
     }
+    auth = cookie.get('AS_AUTH');
     render() {
-        return (<Paper zDepth={5} className='form-main'>
-            <Helmet>
-                <title>آچار | ثبت نام</title>
-            </Helmet>
-            {this.renderChildren()}
-        </Paper>)
+        if (!this.auth) {
+            return (<Paper zDepth={5} className='form-main'>
+                <Helmet>
+                    <title>ثبت نام | آچار</title>
+                </Helmet>
+                {this.renderChildren()}
+            </Paper>)
+        } else {
+            return <Redirect to='/' />
+        }
     }
 }

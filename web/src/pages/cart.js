@@ -4,8 +4,8 @@ import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 // import TouchRipple from 'material-ui/internal/TouchRipple';
-import {Link} from 'react-router-dom';
-import {palette, Space, slicePrice, numToFA} from '../utils/';
+import {Link, Redirect} from 'react-router-dom';
+import {palette, Space, slicePrice, numToFA, cookie} from '../utils/';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -51,7 +51,7 @@ class CartItem extends Component {
                 () => {
                     this.setState({cddOpen: false});
                     this.props.delete()
-                }} secondary={true}>بله</FlatButton>, <FlatButton secondary={true} onClick={this.cdClose}>خیر</FlatButton>] }>
+                }} secondary={true} autoFocus>بله</FlatButton>, <FlatButton secondary={true} onClick={this.cdClose}>خیر</FlatButton>] }>
                 <b>{this.props.data.name}</b> حذف شود؟
             </Dialog>
         </tr>)
@@ -69,11 +69,6 @@ export default class ShoppingCart extends Component {
             {
                 name: 'آچار لندنی',
                 price: 50000,
-                amount: 1
-            },
-            {
-                name: 'دیل(م)',
-                price: 100000,
                 amount: 1
             }
         ],
@@ -106,65 +101,70 @@ export default class ShoppingCart extends Component {
             })
         }).bind(this)
     }
+    auth = cookie.get('AS_AUTH')
     render(){
-        const closeD = () => {
-            this.setState({confirmDialogOpen: false})
-        }
-        return (
-            <Fragment>
-                <Helmet>
-                    <title>سبد خرید | آچار</title>
-                </Helmet>
-                <Paper zDepth={1} style={{backgroundColor: palette.primary1Color, height: 256}}>
-                    <AppBar style={{backgroundColor: 'transparent'}} title='سبد خرید' zDepth={0} iconElementLeft={<Link to='/'><IconButton><FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon></IconButton></Link>} />
-                </Paper>
-                <div className='col-xs-12 col-md-8' style={{position: 'relative', top: -70, float: 'none', margin: '0 auto'}}>
-                    <Paper style={{padding: 15}} zDepth={1}>
-                        <div style={{overflow: 'auto'}}>
-                            {this.state.items.length > 0 ?
-                                <React.Fragment>
-                                    <table className='cart-main'>
-                                        <thead>
-                                            <tr>
-                                                <th>نام</th>
-                                                <th>تعداد</th>
-                                                <th>قیمت واحد</th>
-                                                <th>قیمت کل</th>
-                                                <th>فعالیت ها</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {this.state.items.map((e, ind) => {
-                                                return <CartItem reducerDis={(e.amount < 2)} data={this.state.items[ind]} key={ind} reduce={this.changeAmount(ind, -1)} add={this.changeAmount(ind, 1)} delete={this.deleteItem(ind)} />
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </React.Fragment>
-                            :
-                            <div style={{textAlign: 'center', color: '#777', padding: 30}}>
-                                <i className='mdi' style={{fontSize: 100, color: palette.accent1Color}}>error_outline</i>
-                                <br />
-                                <b>سبد خرید شما خالی است :(</b>
-                            </div>
-                            }
-                        </div>
-                        {this.state.items.length > 0 ?
-                            <div>
-                                <Space height={15} />
-                                <div style={{textAlign: 'center'}}>
-                                    <RaisedButton onClick={() => {
-                                        this.setState({confirmDialogOpen: true})
-                                    }} secondary label='نهایی سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
-                                </div>
-                            </div> : <React.Fragment></React.Fragment>
-                        }
+        if (this.auth) {
+            const closeD = () => {
+                this.setState({confirmDialogOpen: false})
+            }
+            return (
+                <Fragment>
+                    <Helmet>
+                        <title>سبد خرید | آچار</title>
+                    </Helmet>
+                    <Paper zDepth={1} style={{backgroundColor: palette.primary1Color, height: 256}}>
+                        <AppBar style={{backgroundColor: 'transparent'}} title='سبد خرید' zDepth={0} iconElementLeft={<Link to='/'><IconButton><FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon></IconButton></Link>} />
                     </Paper>
-                </div>
+                    <div className='col-xs-12 col-md-8' style={{position: 'relative', top: -56, float: 'none', margin: '0 auto'}}>
+                        <Paper style={{padding: 15}} zDepth={1}>
+                            <div style={{overflow: 'auto'}}>
+                                {this.state.items.length > 0 ?
+                                    <React.Fragment>
+                                        <table className='cart-main'>
+                                            <thead>
+                                                <tr>
+                                                    <th>نام</th>
+                                                    <th>تعداد</th>
+                                                    <th>قیمت واحد</th>
+                                                    <th>قیمت کل</th>
+                                                    <th>فعالیت ها</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {this.state.items.map((e, ind) => {
+                                                    return <CartItem reducerDis={(e.amount < 2)} data={this.state.items[ind]} key={ind} reduce={this.changeAmount(ind, -1)} add={this.changeAmount(ind, 1)} delete={this.deleteItem(ind)} />
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    </React.Fragment>
+                                :
+                                <div style={{textAlign: 'center', color: '#777', padding: 30}}>
+                                    <i className='mdi' style={{fontSize: 100, color: palette.accent1Color}}>error_outline</i>
+                                    <br />
+                                    <b>سبد خرید شما خالی است :(</b>
+                                </div>
+                                }
+                            </div>
+                            {this.state.items.length > 0 ?
+                                <div>
+                                    <Space height={15} />
+                                    <div style={{textAlign: 'center'}}>
+                                        <RaisedButton onClick={() => {
+                                            this.setState({confirmDialogOpen: true})
+                                        }} secondary label='نهایی سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
+                                    </div>
+                                </div> : <React.Fragment></React.Fragment>
+                            }
+                        </Paper>
+                    </div>
 
-                <Dialog title='تأئید نهایی سازی خرید' open={this.state.confirmDialogOpen} onRequestClose={closeD} actions={[<FlatButton secondary={true} onClick={closeD}>بله</FlatButton>, <FlatButton secondary={true} onClick={closeD}>خیر</FlatButton>]}>
-                    آیا از نهایی سازی خرید خود اطمینان دارید؟
-                </Dialog>
-            </Fragment>
-        )
+                    <Dialog title='تأئید نهایی سازی خرید' open={this.state.confirmDialogOpen} onRequestClose={closeD} actions={[<FlatButton secondary={true} onClick={closeD}>بله</FlatButton>, <FlatButton secondary={true} onClick={closeD}>خیر</FlatButton>]}>
+                        آیا از نهایی سازی خرید خود اطمینان دارید؟
+                    </Dialog>
+                </Fragment>
+            )
+        } else {
+            return <Redirect to='/' />
+        }
     }
 }

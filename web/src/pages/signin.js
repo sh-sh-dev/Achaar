@@ -7,10 +7,10 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Space} from '../utils/';
+import {Space, cookie, $APP_DEFAULTS, resolveApiURL} from '../utils/';
 import Helmet from 'react-helmet';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 export default class SignIn extends Component {
     constructor(props){
@@ -27,6 +27,7 @@ export default class SignIn extends Component {
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
+    auth = cookie.get('AS_AUTH')
     verifyPhoneNumber = (e) => {
         let val = e.target.value;
         for (var i = 0; i < 10; i++) {
@@ -57,26 +58,34 @@ export default class SignIn extends Component {
         let $ = this;
         axios({
             method: 'post',
-            url: '//localhost/Achaar/api/signin',
+            url: resolveApiURL('signin'),
             data: forms
         }).then(res => {
             let status = res.data.ok;
             if (status) {
                 $.setState({mode: 'success'})
+                setTimeout(function () {
+                    cookie.set('AS_AUTH', res.data.result, {expires: $APP_DEFAULTS.default_cookie_days * 24 * 60 * 60});
+                    $.setState({mode: 'redirect'})
+                }, 750);
             } else {
                 $.setState({mode: 'write'})
+                alert(res.data.result)
             }
         })
     }
     renderChildren(){
         switch (this.state.mode) {
+            case 'redirect':
+                return <Redirect to='/' />
+                break;
             case 'write':
                 let closeDialog = () => {
                     this.setState({helpDialogOpen: !1})
                 }
                 return (
                 <React.Fragment>
-                    <h2>ورود به حساب
+                    <h2>ورود
                         <IconButton touch={true} tabIndex={-1} onClick={() => {this.setState({helpDialogOpen: true})}} style={{float: "left"}}>
                             <FontIcon className='mdi'>info_outline</FontIcon>
                         </IconButton>
@@ -121,17 +130,17 @@ export default class SignIn extends Component {
                 </div>)
                 break;
         }
-        // if (this.state.mode == 'write') {
-        // } else if (this.state.mode == 'loading') {
-        // } else if (this.state.mode == 'success') {
-        // }
     }
     render() {
-        return (<Paper zDepth={5} className='form-main'>
-            <Helmet>
-                <title>آچار | ورود به حساب</title>
-            </Helmet>
-            {this.renderChildren()}
-        </Paper>)
+        if (!this.auth) {
+            return (<Paper zDepth={5} className='form-main'>
+                <Helmet>
+                    <title>ورود به حساب | آچار</title>
+                </Helmet>
+                {this.renderChildren()}
+            </Paper>)
+        } else {
+            return <Redirect to='/' />
+        }
     }
 }

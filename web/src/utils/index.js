@@ -52,6 +52,10 @@ const numToFA = num => {
 
 const slicePrice = num => chunk(num.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',');
 
+const $APP_DEFAULTS = require('./app-defaults.json');
+
+const resolveApiURL = path => `${$APP_DEFAULTS.api_url}${path}`;
+
 export {
     Space,
     TypeText,
@@ -61,5 +65,7 @@ export {
     chunk,
     slicePrice,
     numToFA,
-    cookie
+    cookie,
+    $APP_DEFAULTS,
+    resolveApiURL
 };
