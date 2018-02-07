@@ -1,6 +1,6 @@
 {
     "auth": {
-        "sign_up": {
+        "signup": {
             "fill_inputs": -100,
             "password_lower":-101,
             "password_greater":-102,
@@ -8,24 +8,25 @@
             "user_exist":-104,
             "failed":-105
         },
-        "sign_in": {
+        "signin": {
             "fill_inputs": -200,
             "password_invalid":-201,
             "username_invalid":-202,
             "login_failed":-203,
             "insert_token_failed":-204,
             "username_or_password_is_wrong":-205
-        },
-        "token": {
-
         }
     },
     "cart": {
-        "products": {
+        "getProduct": {
             "product_is_empty":-400,
             "product_not_valid":-401,
             "get_products_failed":-402,
             "not_found":-403
+        },
+        "categories": {
+            "sql_failed":-500,
+            "empty":-501
         }
     }
 }
