@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2018 at 07:31 PM
+-- Generation Time: Feb 07, 2018 at 09:36 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `categories` (
   `n` int(11) NOT NULL,
   `name` text COLLATE utf8mb4_persian_ci NOT NULL,
+  `ename` text COLLATE utf8mb4_persian_ci NOT NULL,
   `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
@@ -36,8 +37,8 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`n`, `name`, `active`) VALUES
-(1, 'ابزار سبک', 1);
+INSERT INTO `categories` (`n`, `name`, `ename`, `active`) VALUES
+(1, 'ابزار سبک', 'Lightweight tools', 1);
 
 -- --------------------------------------------------------
 
@@ -121,14 +122,6 @@ CREATE TABLE `token` (
   `date` text COLLATE utf8mb4_persian_ci NOT NULL,
   `blocked` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
-
---
--- Dumping data for table `token`
---
-
-INSERT INTO `token` (`n`, `token`, `user`, `date`, `blocked`) VALUES
-(1, '1efccd828c50b0d7589abbc7a0b77f38', '09357778351', '1517939154', 0),
-(2, 'cdc2d683a01280703c25d2134f19895d', '09357778351', '1517939309', 0);
 
 -- --------------------------------------------------------
 
@@ -247,7 +240,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `token`
 --
 ALTER TABLE `token`
-  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
