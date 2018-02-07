@@ -23,8 +23,9 @@
     "cart": {
         "products": {
             "product_is_empty":-400,
-            "get_products_failed":-401,
-            "not_found":-402
+            "product_not_valid":-401,
+            "get_products_failed":-402,
+            "not_found":-403
         }
     }
 }

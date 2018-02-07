@@ -87,14 +87,14 @@ function get($table,$req) {
 
 function getCategory($n,$req) {
     $db = $GLOBALS["db"];
-    $query = $db->query("SELECT * FROM `Categories` WHERE `name`='$n' OR `n`=$n");
+    $query = $db->query("SELECT * FROM `categories` WHERE `name`='$n' OR `n`=$n");
     $result = $query->fetch_assoc();
     return $result[$req];
 }
 
 function getUser($n,$req) {
     $db = $GLOBALS["db"];
-    $query = $db->query("SELECT * FROM `Users` WHERE `mobile`='$n' OR `n`=$n");
+    $query = $db->query("SELECT * FROM `users` WHERE `mobile`='$n' OR `n`=$n");
     $result = $query->fetch_assoc();
     return $result[$req];
 }
