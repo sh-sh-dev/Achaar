@@ -5,11 +5,8 @@ header("Access-Control-Allow-Methods: POST, OPTIONS");
 
 if (isset($_SERVER["REQUEST_METHOD"])) {
     $rm = $_SERVER["REQUEST_METHOD"];
-    if ($rm == "GET" OR $rm == "PUT" || $rm == "PATCH" || $rm == "DELETE" || $rm == "HEAD") die("REQUEST METHOD NOT VALID");
-    else if ($rm == "OPTIONS") die("Everything OK !");
-    else if ($rm == "POST"){
-        header('Content-Type: application/json; charset=UTF-8');
-    }
+    if ($rm == "OPTIONS") die("Everything OK !");
+    else if ($rm == "POST") header('Content-Type: application/json; charset=UTF-8');
     else {
         die("REQUEST METHOD NOT VALID");
     }

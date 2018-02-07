@@ -73,4 +73,4 @@ if ($getDiscount->num_rows == 1) {
     ];
 }
 
-Response($result,true,400,true);
+Response($result,true,null,true);
