@@ -5,68 +5,79 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
+import Subheader from 'material-ui/Subheader';
+import {GridList, GridTile} from 'material-ui/GridList';
 // import Paper from 'material-ui/Paper';
-import {palette} from '../utils/'
+import {palette, Space} from '../utils/'
 
 
-const data = [
+let data = [
     {
         name: 'آچار فرانسه',
-        price: 50000
+        price: 50000,
+        id: 0
     },
     {
         name: 'آچار فرانسه',
-        price: 4000
+        price: 4000,
+        id: 1
     },
     {
         name: 'آچار فرانسه',
-        price: 300000
+        price: 300000,
+        id: 2
     },
     {
         name: 'آچار فرانسه',
-        price: 1000
+        price: 1000,
+        id: 3
     },
     {
         name: 'آچار فرانسه',
-        price: 8420
+        price: 8420,
+        id: 4
     },
     {
         name: 'آچار فرانسه',
-        price: 50000
+        price: 50000,
+        id: 5
     }
 ]
 
 export default class Category extends Component {
     render(){
-        const {history, match} = this.props;
-        const category = match.params.name;
-        const _query = {
+        const {history, match} = this.props,
+        category = match.params.name,
+        _query = {
             min: 0,
             max: Infinity,
             filter: ''
-        }
-        const urlQuery = qs.parse(history.location.search);
-        const query = Object.assign(_query, urlQuery);
+        },
+        urlQuery = qs.parse(history.location.search),
+        query = Object.assign(_query, urlQuery);
+        data = data.filter(p => { return p.price >= Number(query.min) && Number(query.max) >= p.price && p.name.indexOf(query.filter) !== -1});
         return (
             <Fragment>
-                {/* <div>کتگوری: <b>{match.params.name}</b></div>
-                <div>حداقل قیمت: <b>{qs.parse(history.location.search).min}</b></div> */}
                 <AppBar title={category} zDepth={2} iconElementLeft={
                     <Link to='/'>
                         <IconButton>
-                            <FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon>
+                            <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
                         </IconButton>
                     </Link>
-                } />
-                {data.filter(p => {
-                    return p.price >= Number(query.min) && Number(query.max) >= p.price && p.name.indexOf(query.filter) !== -1
-                }).map((e, index) => {
-                    return <div key={index}>
-                        <b>{e.name}</b>
-                        <br />
-                        <b>{e.price}</b>
-                    </div>
-                })}
+                } style={{position: 'fixed'}} />
+                <Space height={64 + 15} />
+                {/* <Subheader>نمایش {data.length} آیتم</Subheader> */}
+                <GridList cold={2} cellHeight={200} padding={0}>
+                    {data.map((e, index) => {
+                        return (
+                            <Link to={`/product/${e.id}`}>
+                                <GridTile style={{margin: 1.5}} cols={1} rows={1} key={index} titlePosition='bottom'
+                                    titleBackground='linear-gradient(to top, rgba(0,0,0,.5), transparent)'
+                                    title={e.name} />
+                            </Link>
+                        )
+                    })}
+                </GridList>
             </Fragment>
         )
     }
