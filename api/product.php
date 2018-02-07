@@ -3,9 +3,11 @@ include "functions.php";
 
 $Data = getData();
 
-$Product = Clean($Data["product"]);
+if (empty(Clean($Data["product"]))) die(Response("لطفا همه فیلد ها را پر نمایید",false,-400));
 
-if (empty($Product)) die(Response("لطفا همه فیلد ها را پر نمایید",false,-400));
+$Product = (int)Clean($Data["product"]);
+
+if ($Product == 0) die(Response("کالا باید یک عدد باشد",false,-401));
 
 if (!is_int($Product)) die(Response("کالا باید یک عدد باشد",false,-401));
 
