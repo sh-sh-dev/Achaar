@@ -91,7 +91,7 @@ export default class ProductPage extends Component {
         axios({
             method: 'post',
             url: resolveApiURL('product'),
-            data: {product: $.props.pid}
+            data: {product: Number($.props.pid)}
         }).then(res => {
             console.log(res);
             $.setState({loaded: true})

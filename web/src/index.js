@@ -14,15 +14,13 @@ import ProductPage from './pages/product-page';
 import ShoppingCart from './pages/cart';
 import LogoutFromAccount from './pages/account-logout';
 import DeleteAccount from './pages/delete-account';
+import Category from './pages/category';
 // misc
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
 
 
-
 // The story begins...😃
-
-
 
 console.log('👌🔧');
 class App extends React.Component {
@@ -41,12 +39,13 @@ class App extends React.Component {
                         <Route path='/signup' exact component={SignUp} />
                         <Route path='/signin' exact component={SignIn} />
                         {/* Products */}
-                        <Route path='/product/:id' render={({match, history}) => <ProductPage pid={match.params.id} />} exact />
+                        <Route path='/product/:id' render={({match}) => <ProductPage pid={match.params.id} />} exact />
                         {/* Cart */}
                         <Route exact path='/cart' component={ShoppingCart} />
                         {/* Account managing */}
                         <Route exact path='/account/logout' component={LogoutFromAccount} />
                         <Route exact path='/account/delete-account' component={DeleteAccount} />
+                        <Route exact path='/category/:name' component={Category} />
                     </React.Fragment>
                 </MuiThemeProvider>
             </Router>
