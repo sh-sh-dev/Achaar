@@ -9,12 +9,13 @@
             "failed":-105
         },
         "signin": {
-            "fill_inputs": -200,
-            "password_invalid":-201,
-            "username_invalid":-202,
-            "login_failed":-203,
-            "insert_token_failed":-204,
-            "username_or_password_is_wrong":-205
+            "ip_blocked":-200,
+            "fill_inputs": -201,
+            "password_invalid":-202,
+            "username_invalid":-203,
+            "login_failed":-204,
+            "insert_token_failed":-205,
+            "username_or_password_is_wrong":-206
         }
     },
     "cart": {

@@ -1,6 +1,7 @@
 <?
 include_once "config.php";
 include_once "vendor/jdf.php";
+include_once "vendor/classes.php";
 
 function strip_tags_content($text, $tags = '', $invert = FALSE) {
     preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);

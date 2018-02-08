@@ -23,7 +23,6 @@ if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
 $Password = md5(base64_encode($Password));
 $Name = $db->real_escape_string($Name);
 $Mobile = $db->real_escape_string($Mobile);
-$Time = time();
 $Token = Token($Mobile);
 
 $RepeatabilityCheck =  $db->query("SELECT * FROM `users` WHERE `mobile`='$Mobile'");
@@ -31,8 +30,8 @@ if ($RepeatabilityCheck->num_rows != 0) {
     die(Response("کاربر وجود دارد",false,-104));
 }
 
-$Signup = $db->query("INSERT INTO `users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password','$Time')");
-$IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile','$Time')");
+$Signup = $db->query("INSERT INTO `users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password',UNIX_TIMESTAMP())");
+$IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
 
 if ($Signup && $IToken) {
     Response($Token,true,100,true);
