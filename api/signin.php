@@ -48,7 +48,7 @@ else {
     if ($Login->num_rows == 1) {
         $LoginAttempts->deleteAttempts();
         $Token = Token($Mobile);
-        $IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
+        $IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
         if ($IToken) Response($Token,true,200,true);
         else die(Response("خطای غیر منتظره رخ داد",false,-205));
     }

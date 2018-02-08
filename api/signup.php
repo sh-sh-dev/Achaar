@@ -31,7 +31,7 @@ if ($RepeatabilityCheck->num_rows != 0) {
 }
 
 $Signup = $db->query("INSERT INTO `users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password',UNIX_TIMESTAMP())");
-$IToken = $db->query("INSERT INTO `token` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
+$IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
 
 if ($Signup && $IToken) {
     Response($Token,true,100,true);
