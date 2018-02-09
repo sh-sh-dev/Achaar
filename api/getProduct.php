@@ -29,9 +29,10 @@ if (!$getComments || !$getWarranties || !$getDiscount) die(Response("خطای غ
 
 $Comments = [];
 while ($CommentsROW = $getComments->fetch_assoc()) {
+    $CommentText = preg_replace("/\r|\n/", "\n\r",$CommentsROW['text']);
     $CommentsArray = [
         'title'=>$CommentsROW['title'],
-        'text'=>$CommentsROW['text'],
+        'text'=>$CommentText,
         'date'=>tr_num(jdate('o/n/j G:i',$CommentsROW['date'])), # or : G:i o/m/d
         'score'=>$CommentsROW['score'],
         'user'=>getUser($CommentsROW['user'],'name')
