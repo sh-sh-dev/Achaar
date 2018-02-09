@@ -22,6 +22,7 @@ while ($ProductsROW = $getProducts->fetch_assoc()) {
     $getDiscount = $db->query("SELECT * FROM `discounts` WHERE `product`='$ProductsROW[n]' AND `active`=1 AND `expiry_date`>UNIX_TIMESTAMP()");
 
     $ProductsArray = [
+        'id'=>$ProductsROW['n'],
         'name'=>$ProductsROW["name"],
         'price'=>$ProductsROW["price"],
         'has_discount'=>false,
