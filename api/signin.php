@@ -3,7 +3,11 @@ include "functions.php";
 $LoginAttempts = new LoginAttempts($_SERVER["REMOTE_ADDR"],$db);
 $Attempts = $LoginAttempts->getAttempts();
 
-if ($Attempts == 3) die(Response("شما به علت 3 اشتباه متوالی، به مدت 15 دقیقه اجازه ورود را ندارید"."\nدر این زمان، با هر تکرار مجدد زمان انتظار شما 15 دقیقه بیشتر خواهد شد (حتی در صورت درست بودن اطلاعات)",false,-200));
+if ($Attempts == 3) {
+    $LoginAttempts->Update();
+    $Date = tr_num(jdate('o/n/j G:i',$LoginAttempts->getDate()));
+    die(Response("شما به علت 3 اشتباه متوالی، به مدت 15 دقیقه اجازه ورود را ندارید"."\nدر این زمان، با هر تکرار مجدد زمان انتظار شما 15 دقیقه بیشتر خواهد شد (حتی در صورت درست بودن اطلاعات)"."\nزمان انتظار فعلی : $Date",false,-200));
+}
 
 switch ($Attempts) {
     case 0:

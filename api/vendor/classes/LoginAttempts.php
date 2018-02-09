@@ -12,13 +12,25 @@ class LoginAttempts {
         $IP = $this->IP;
         $db = $this->db;
 
-        $getAttempts = $db->query("SELECT `attempts` FROM `loginattempts` WHERE `IP`='$IP' AND `date`>UNIX_TIMESTAMP()");
+        $getAttempts = $db->query("SELECT `attempts` FROM `login_attempts` WHERE `IP`='$IP' AND `date`>UNIX_TIMESTAMP()");
 
         if (!$getAttempts) return false;
         if ($getAttempts->num_rows == 0) return 0;
 
         $Attempts = $getAttempts->fetch_assoc();
         return $Attempts["attempts"];
+    }
+    public function getDate() {
+        $IP = $this->IP;
+        $db = $this->db;
+
+        $getDate = $db->query("SELECT `date` FROM `login_attempts` WHERE `IP`='$IP' AND `date`>UNIX_TIMESTAMP()");
+
+        if (!$getDate) return false;
+        if ($getDate->num_rows == 0) return 0;
+
+        $Date = $getDate->fetch_assoc();
+        return $Date["date"];
     }
     public function addAttempt() {
         $IP = $this->IP;
@@ -27,15 +39,15 @@ class LoginAttempts {
         $return = "";
 
         if ($currentAttempts == 0) {
-            $query = "INSERT INTO `loginattempts` (`ip`,`date`) VALUES ('$IP',UNIX_TIMESTAMP() + 900)";
+            $query = "INSERT INTO `login_attempts` (`ip`,`date`) VALUES ('$IP',UNIX_TIMESTAMP() + 900)";
             $return = true;
         }
         else if ($currentAttempts != 3){
-            $query = "UPDATE `loginattempts` SET `attempts`=`attempts` + 1, `date`=UNIX_TIMESTAMP() + 900 WHERE `IP`='$IP'";
+            $query = "UPDATE `login_attempts` SET `attempts`=`attempts` + 1, `date`=UNIX_TIMESTAMP() + 900 WHERE `IP`='$IP'";
             $return = ($currentAttempts + 1);
         }
         else {
-            $query = "DELETE FROM `loginattempts` WHERE `IP`='$IP';INSERT INTO `loginattempts` (`ip`,`date`) VALUES ('$IP',,UNIX_TIMESTAMP() + 900)";
+            $query = "DELETE FROM `login_attempts` WHERE `IP`='$IP';INSERT INTO `login_attempts` (`ip`,`date`) VALUES ('$IP',,UNIX_TIMESTAMP() + 900)";
             $return = 1;
         }
 
@@ -48,7 +60,7 @@ class LoginAttempts {
         $IP = $this->IP;
         $db = $this->db;
 
-        $deleteAttempts = $db->query("DELETE FROM `loginattempts` WHERE `IP`='$IP'");
+        $deleteAttempts = $db->query("DELETE FROM `login_attempts` WHERE `IP`='$IP'");
         if ($deleteAttempts) return true;
         else return false;
     }
@@ -59,7 +71,7 @@ class LoginAttempts {
 
         if ($currentAttempts == 0) return false;
 
-        $update = $db->query("UPDATE `loginattempts` SET `date`=`date` + 900 WHERE `ip`='$IP'");
+        $update = $db->query("UPDATE `login_attempts` SET `date`=`date` + 900 WHERE `ip`='$IP'");
         if (!$update) return false;
         else return true;
     }

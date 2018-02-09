@@ -21,11 +21,12 @@ if ($getProduct->num_rows == 0) die(Response("محصول مورد نظر وجو�
 
 $Product = $getProduct->fetch_assoc();
 
-$getComments = $db->query("SELECT * FROM `comments` WHERE `product`='$Product[n]' AND `approved`=1 ORDER BY `date` DESC ");
+$getComments = $db->query("SELECT * FROM `comments` WHERE `product`='$Product[n]' AND `approved`=1 ORDER BY `date` DESC LIMIT 5");
 $getWarranties = $db->query("SELECT * FROM `warranties` WHERE `product`='$Product[n]' AND `active`=1");
 $getDiscount = $db->query("SELECT * FROM `discounts` WHERE `product`='$Product[n]' AND `active`=1 AND `expiry_date`>UNIX_TIMESTAMP()");
+$getTechnicalSpecifications = $db->query("SELECT * FROM `technical_specifications` WHERE `product`='$Product[n]' and `active`=1");
 
-if (!$getComments || !$getWarranties || !$getDiscount) die(Response("خطای غیر منتظره رخ داد",false,-402));
+if (!$getComments || !$getWarranties || !$getDiscount || !$getTechnicalSpecifications) die(Response("خطای غیر منتظره رخ داد",false,-402));
 
 $Comments = [];
 while ($CommentsROW = $getComments->fetch_assoc()) {
@@ -45,33 +46,43 @@ while ($WarrantiesROW = $getWarranties->fetch_assoc()) {
     $WarrantiesArray = [
         'name'=>$WarrantiesROW['name'],
         'period'=>$WarrantiesROW['period'],
-        'full'=>$WarrantiesROW['name'] . ' | ' . $WarrantiesROW["period"]
+        'full'=>$WarrantiesROW['name'] . ' | ' . $WarrantiesROW['period']
     ];
     $Warranties[] = $WarrantiesArray;
 }
 
+$TechnicalSpecifications = [];
+while ($TechnicalSpecificationsROW = $getTechnicalSpecifications->fetch_assoc()) {
+    $TechnicalSpecificationsArray = [
+        'item'=>$TechnicalSpecificationsROW['item'],
+        'value'=>$TechnicalSpecificationsROW['value']
+    ];
+    $TechnicalSpecifications[] = $TechnicalSpecificationsArray;
+}
+
 $result = [
-    'name'=>$Product["name"],
-    'description'=>$Product["description"],
-    'price'=>$Product["price"],
-    'category'=>getCategory($Product["category"],'name'),
+    'name'=>$Product['name'],
+    'description'=>$Product['description'],
+    'technical_specifications'=>$TechnicalSpecifications,
+    'price'=>$Product['price'],
+    'category'=>getCategory($Product['category'],'name'),
     'warranties'=>$Warranties,
     'comments'=>$Comments,
     'has_discount'=>false,
-    'available'=>$Product["available"] ? true : false
+    'available'=>$Product['available'] ? true : false
 ];
 
 if ($getDiscount->num_rows == 1) {
     $DiscountROW = $getDiscount->fetch_assoc();
 
-    $Discount = Discount($result['price'],$DiscountROW["percent"]);
+    $Discount = Discount($result['price'],$DiscountROW['percent']);
     $result['has_discount'] = true;
     $Special = $DiscountROW['special'] ? true : false;
 
     $result['discount'] = [
         'price'=>$result['price'] - $Discount,
         'discounted_price'=>$Discount,
-        'percent'=>$DiscountROW["percent"],
+        'percent'=>$DiscountROW['percent'],
         'special'=>$Special
     ];
 }
