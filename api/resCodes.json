@@ -38,5 +38,10 @@
             "sql_failed":-601,
             "not_found":-602
         }
+        ,
+        "getCategory": {
+            "fill_inputs":-700,
+            "not_found":-701
+        }
     }
 }
