@@ -51,6 +51,7 @@ while ($WarrantiesROW = $getWarranties->fetch_assoc()) {
 
 $result = [
     'name'=>$Product["name"],
+    'description'=>$Product["description"],
     'price'=>$Product["price"],
     'category'=>getCategory($Product["category"],'name'),
     'warranties'=>$Warranties,
