@@ -1,2 +1,4 @@
 web/public/* linguist-vendored
 web/src/styles/* linguist-vendored
+web/node_modules/* linguist-vendored
+web/scripts/* linguist-vendored

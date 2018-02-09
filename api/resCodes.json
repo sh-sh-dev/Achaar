@@ -1,4 +1,7 @@
 {
+    "app": {
+        "database_error":-1
+    },
     "auth": {
         "signup": {
             "fill_inputs": -100,
