@@ -21,7 +21,7 @@
             "username_or_password_is_wrong":-206
         }
     },
-    "cart": {
+    "products": {
         "getProduct": {
             "product_is_empty":-400,
             "product_not_valid":-401,
@@ -31,6 +31,12 @@
         "categories": {
             "sql_failed":-500,
             "empty":-501
+        }
+        ,
+        "searchProduct": {
+            "fill_inputs":-600,
+            "sql_failed":-601,
+            "not_found":-602
         }
     }
 }
