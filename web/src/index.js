@@ -30,7 +30,17 @@ class App extends React.Component {
                 <MuiThemeProvider muiTheme={getMuiTheme({
                     isRtl: true,
                     palette,
-                    fontFamily: 'inherit'
+                    fontFamily: 'inherit',
+                    slider: {
+                        trackSize: 2,
+                        trackColor: '#dedede',
+                        trackColorSelected: '#dedede',
+                        handleColorZero: '#dedede'
+                    },
+                    toggle: {
+                        trackOffColor: '#aaa',
+                        thumbOffColor: '#fff'
+                    }
                 })}>
                     <React.Fragment>
                         {/* Index */}
@@ -39,13 +49,13 @@ class App extends React.Component {
                         <Route path='/signup' exact component={SignUp} />
                         <Route path='/signin' exact component={SignIn} />
                         {/* Products */}
+                        <Route exact path='/category/:name' component={Category} />
                         <Route path='/product/:id' render={({match}) => <ProductPage pid={match.params.id} />} exact />
                         {/* Cart */}
                         <Route exact path='/cart' component={ShoppingCart} />
                         {/* Account managing */}
                         <Route exact path='/account/logout' component={LogoutFromAccount} />
                         <Route exact path='/account/delete-account' component={DeleteAccount} />
-                        <Route exact path='/category/:name' component={Category} />
                     </React.Fragment>
                 </MuiThemeProvider>
             </Router>
