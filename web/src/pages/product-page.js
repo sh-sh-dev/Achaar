@@ -40,7 +40,7 @@ const Comments = (props) => {
             <div className='comment-bubble'>
                 <div style={{fontSize: '1.25em'}} className='comment-title'>{comment.title}</div>
                 <div className='comment-author' style={{fontSize: '.8em', opacity: .65}}><i className='mdi'>person</i> {comment.user}</div>
-                <div className='comment-text' style={{lineHeight: 1.35}}>{comment.text.split('\r\n').map(e => <React.Fragment>{e}<br /></React.Fragment>)}</div>
+                <div className='comment-text' style={{lineHeight: 1.35}}>{comment.text.split('\n').map(e => <React.Fragment>{e} <br /></React.Fragment>)}</div>
                 <div className='comment-metadata' style={{fontSize: '.8em', opacity: .65, textAlign: 'left'}}>
                     {numToFA(comment.date).split(' ').reverse().join(' | ')}
                 </div>
@@ -49,6 +49,7 @@ const Comments = (props) => {
                 </div>} */}
             </div>
         </div>)
+        console.log(comment);
     }
     return result;
 }
@@ -130,7 +131,7 @@ export default class ProductPage extends Component {
                         </Tabs>
                     </AppBar>
                     <Space height={127} />
-                    <SwipeableViews animateHeight index={this.state.activeTab} animateHeight={false} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
+                    <SwipeableViews animateHeight index={this.state.activeTab} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
                         <Paper style={{margin: '7px 22px'}} zDepth={1}>
                             <div className='clear' style={{direction: 'rtl'}}>
                                 <div className='col-xs-12 col-md-6'>

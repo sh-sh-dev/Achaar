@@ -29,7 +29,7 @@ if (!$getComments || !$getWarranties || !$getDiscount) die(Response("خطای غ
 
 $Comments = [];
 while ($CommentsROW = $getComments->fetch_assoc()) {
-    $CommentText = preg_replace("/\r|\n/", "\n\r",$CommentsROW['text']);
+    $CommentText = preg_replace("/\r|\n/", "\n",$CommentsROW['text']);
     $CommentsArray = [
         'title'=>$CommentsROW['title'],
         'text'=>$CommentText,
