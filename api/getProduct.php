@@ -57,7 +57,8 @@ $result = [
     'category'=>getCategory($Product["category"],'name'),
     'warranties'=>$Warranties,
     'comments'=>$Comments,
-    'has_discount'=>false
+    'has_discount'=>false,
+    'available'=>$Product["available"] ? true : false
 ];
 
 if ($getDiscount->num_rows == 1) {

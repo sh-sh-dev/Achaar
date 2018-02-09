@@ -23,7 +23,8 @@ while ($SearchROW = $Search->fetch_assoc()) {
         'name'=>$SearchROW['name'],
         'price'=>$SearchROW['price'],
         'category'=>getCategory($SearchROW['category'],'name'),
-        'has_discount'=>false
+        'has_discount'=>false,
+        'available'=>$SearchROW['available'] ? true : false
     ];
 
     if ($getDiscount->num_rows != 0) {
