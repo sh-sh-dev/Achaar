@@ -1,2 +1,4 @@
 web/public/* linguist-vendored
 web/src/styles/* linguist-vendored
+web/config/* linguist-vendored
+web/scripts/* linguist-vendored
