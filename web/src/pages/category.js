@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment as F} from 'react';
 import {Link} from 'react-router-dom';
 import qs from 'querystringify';
 import AppBar from 'material-ui/AppBar';
@@ -9,13 +9,15 @@ import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import Drawer from 'material-ui/Drawer';
 import Slider from 'material-ui/Slider';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenu from 'material-ui/IconMenu';
 import Toggle from 'material-ui/Toggle';
 import {GridList, GridTile} from 'material-ui/GridList';
-import {palette, Space, numToFA, slicePrice} from '../utils/'
+import {palette, Space, numToFA, slicePrice, resolveApiURL} from '../utils/'
 import Helmet from 'react-helmet';
+import axios from 'axios';
 
 
 let data = [
@@ -49,13 +51,38 @@ export default class Category extends Component {
         this.state = {
             sortFn: (a,b) => a.id - b.id,
             FDO: false,
-            mobile: window.innerWidth < 768
+            mobile: window.innerWidth < 768,
+            loaded: false,
+            data: []
         }
         window.onresize = () => {
             this.setState({
                 mobile: window.innerWidth < 768
             })
         }
+    }
+    componentDidMount(){
+        let _ = this;
+        axios({
+            method: 'post',
+            url: resolveApiURL('getCategory'),
+            data: {
+                category: _.category
+            }
+        }).then(res => {
+            console.log(res);
+            if (res.data.ok) {
+                _.setState({
+                    loaded: true,
+                    data: res.data.result
+                })
+            } else if (res.data.ok == false) {
+                _.setState({
+                    loaded: `err${res.data.code}`,
+                    data: res.data.result
+                })
+            }
+        })
     }
     updateQueryString = (q, v) => {
         let newQuery = {};
@@ -114,70 +141,110 @@ export default class Category extends Component {
         )
     }
     render(){
-        return (
-            <Fragment>
-                <Helmet>
-                    <title>
-                        دسته بندی {this.category} | آچار
-                    </title>
-                </Helmet>
+        if (this.state.loaded == true) {
+            return (
+                <F>
+                    <Helmet>
+                        <title>
+                            دسته بندی {this.category} | آچار
+                        </title>
+                    </Helmet>
 
-                <div className='category'>
-                    <AppBar title={this.category} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
-                        <IconButton onClick={() => {
-                            this.setState({
-                                FDO: true
-                            })
-                        }}>
-                            <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
-                        </IconButton>
-                    } iconElementRight={
-                        <IconMenu iconButtonElement={
-                            <IconButton>
-                                <FontIcon color={palette.primary3Color} className='mdi'>sort</FontIcon>
+                    <div className='category'>
+                        <AppBar title={this.state.data.name} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
+                            <IconButton onClick={() => {
+                                this.setState({
+                                    FDO: true
+                                })
+                            }}>
+                                <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
                             </IconButton>
-                        } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                            <MenuItem onClick={() => {
-                                this.setState({
-                                    sortFn: (a,b) => a.price - b.price
-                                })
-                            }}>قیمت از کمتر به بیشتر</MenuItem>
-                            <MenuItem onClick={() => {
-                                this.setState({
-                                    sortFn: (a,b) => b.price - a.price
-                                })
-                            }}>قیمت از بیشتر به کمتر</MenuItem>
-                        </IconMenu>
-                    } />
+                        } iconElementRight={
+                            <IconMenu iconButtonElement={
+                                <IconButton>
+                                    <FontIcon color={palette.primary3Color} className='mdi'>sort</FontIcon>
+                                </IconButton>
+                            } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                                <MenuItem onClick={() => {
+                                    this.setState({
+                                        sortFn: (a,b) => a.price - b.price
+                                    })
+                                }}>قیمت از کمتر به بیشتر</MenuItem>
+                                <MenuItem onClick={() => {
+                                    this.setState({
+                                        sortFn: (a,b) => b.price - a.price
+                                    })
+                                }}>قیمت از بیشتر به کمتر</MenuItem>
+                            </IconMenu>
+                        } />
 
 
-                    <div className='scroll-content'>
-                        {this.filterHelpers()}
-                        <div className='result'>
-                            <GridList cold={2} cellHeight={200} padding={0}>
-                                {data.filter(e => {
-                                    let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter) !== -1);
-                                    if (this.query.availables == true) {
-                                        return condition && e.available == true
-                                    } else {
-                                        return condition
-                                    }
-                                }).sort(this.state.sortFn).map((e, index) => {
-                                    return (
-                                        <GridTile key={index} cols={window.innerWidth < 768 ? 2 : 1} style={{transition: "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms", margin: 2}} rows={1} titlePosition='bottom' titleBackground='linear-gradient(to top, rgba(0,0,0,.5), transparent)' title={e.name} subtitle={
-                                            e.available ?
-                                                <b>{slicePrice(numToFA(e.price))} تومان</b>
-                                            :
-                                            <b style={{color: "hsl(0, 82%, 72%)"}}>ناموجود</b>}>
-                                            <Link to={`/product/${e.id}`} style={{display: 'block', backgroundColor: palette.accent2Color, height: '100%'}}></Link>
-                                        </GridTile>
+                        <div className='scroll-content'>
+                            {this.filterHelpers()}
+                            <div className='result' style={{padding: 16}}>
+                                <div className='col-xs-2 col-md-6'>
+                                    {this.state.data.products.filter((e, ind) => {
+                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter) !== -1 && ind%2 === 0);
+                                        if (this.query.availables == true) {
+                                            return condition && e.available == true
+                                        } else {
+                                            return condition
+                                        }
+                                    }).sort(this.state.sortFn).map((e, index) => {
+                                        return (
+                                            <Link to={`/product/${e.id}`} style={{display: 'block'}} key={index}>
+                                            <Card style={{overflow: 'hidden'}}>
+                                                <CardMedia>
+                                                    <div style={{backgroundColor: palette.primary3Color, height: 200}}></div>
+                                                </CardMedia>
+                                                <CardTitle title={e.name} />
+                                                <CardText>
+                                                    {e.has_discount ?
+                                                        <F>قیمت: <s color={{color: '#888'}}>{slicePrice(numToFA(e.price))}</s> <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
+                                                    :
+                                                        <F>قیمت: <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
+                                                    }
+                                                </CardText>
+                                            </Card>
+                                        </Link>
                                     )
                                 })}
-                            </GridList>
+                                </div>
+                                <div className='col-xs-2 col-md-6'>
+                                    {this.state.data.products.filter((e, ind) => {
+                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter) !== -1 && ind%2 === 1);
+                                        if (this.query.availables == true) {
+                                            return condition && e.available == true
+                                        } else {
+                                            return condition
+                                        }
+                                    }).sort(this.state.sortFn).map((e, index) => {
+                                        return (
+                                            <Link to={`/product/${e.id}`} style={{display: 'block'}} key={index}>
+                                            <Card style={{overflow: 'hidden'}}>
+                                                <CardMedia>
+                                                    <div style={{backgroundColor: palette.primary3Color, height: 200}}></div>
+                                                </CardMedia>
+                                                <CardTitle title={e.name} />
+                                                <CardText>
+                                                    {e.has_discount ?
+                                                        <F>قیمت: <s>{slicePrice(numToFA(e.price))}</s> <b>{slicePrice(numToFA(e.price))}</b> تومان</F>
+                                                    :
+                                                        <F>قیمت: {slicePrice(numToFA(e.price))} تومان</F>
+                                                    }
+                                                </CardText>
+                                            </Card>
+                                        </Link>
+                                    )
+                                })}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </Fragment>
-        )
+                </F>
+            )
+        } else {
+            return <div>loading...</div>
+        }
     }
 }

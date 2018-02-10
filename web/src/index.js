@@ -35,11 +35,15 @@ class App extends React.Component {
                         trackSize: 2,
                         trackColor: '#dedede',
                         trackColorSelected: '#dedede',
-                        handleColorZero: '#dedede'
+                        handleColorZero: '#dedede',
+                        selectionColor: palette.accent1Color,
+                        rippleColor: '#000'
                     },
                     toggle: {
                         trackOffColor: '#aaa',
-                        thumbOffColor: '#fff'
+                        thumbOffColor: '#d9d9d9',
+                        trackOnColor: palette.accent3Color,
+                        thumbOnColor: palette.accent1Color
                     }
                 })}>
                     <React.Fragment>

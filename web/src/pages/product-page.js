@@ -49,7 +49,6 @@ const Comments = (props) => {
                 </div>} */}
             </div>
         </div>)
-        console.log(comment);
     }
     return result;
 }
@@ -101,6 +100,7 @@ export default class ProductPage extends Component {
             }
         }
         if (this.state.loaded == true) {
+            console.log(this.state.data);
             return (
                 <div className='container' style={{padding: 0}}>
                     <Helmet>
@@ -132,17 +132,19 @@ export default class ProductPage extends Component {
                     </AppBar>
                     <Space height={127} />
                     <SwipeableViews animateHeight index={this.state.activeTab} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
-                        <Paper style={{margin: '7px 22px'}} zDepth={1}>
-                            <div className='clear' style={{direction: 'rtl'}}>
-                                <div className='col-xs-12 col-md-6'>
-                                    <Space height={1} />
-                                    {/* Pictures! */}
-                                </div>
-                                <div className='col-xs-12 col-md-6'>
-                                    <h2>{this.state.data.name}</h2>
-                                    <div style={{fontSize: '1.25em'}}>
-                                        <p style={{color: '#585858'}}>
-                                            <i className='mdi'>security</i> گارانتی: <b style={{color: '#000'}}>{this.state.data.warranties.map(e => e.full).join('\n')}</b>
+                        <div style={{overflowY: 'auto', padding: 15}}>
+                            <Paper zDepth={1}>
+                                <div className='clear' style={{direction: 'rtl'}}>
+                                    <div className='col-xs-12 col-md-6'>
+                                        <Space height={1} />
+                                        {/* Pictures! */}
+                                    </div>
+                                    <div className='col-xs-12 col-md-6'>
+                                        <h2>{this.state.data.name}</h2>
+                                        <div style={{fontSize: '1.25em'}}>
+                                            <p style={{color: '#585858'}}>
+                                                <i className='mdi'>security</i> گارانتی: <b style={{color: '#000'}}>{this.state.data.warranties.map(e => <React.Fragment>{e.full}<br /></React.Fragment>)
+                                            }</b>
                                             <br />
                                             <i className='mdi'>attach_money</i> قیمت:
                                             <b style={{color: palette.accent2Color}}> {slicePrice(numToFA(this.state.data.price))} تومان</b>
@@ -153,29 +155,33 @@ export default class ProductPage extends Component {
                                                     <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
                                                 </RaisedButton>
                                             </div>
-                                        :
-                                        <div className='unselectable' style={{margin: 20, color: palette.primary3Color, fontSize: 14, padding: 5, textAlign: 'center', backgroundColor: '#eaeaea', borderRadius: 2, cursor: 'default'}}>
-                                            برای سفارش کالا برای وارد سایت شوید.
-                                        </div>
+                                            :
+                                            <div className='unselectable' style={{margin: 20, color: palette.primary3Color, fontSize: 14, padding: 5, textAlign: 'center', backgroundColor: '#eaeaea', borderRadius: 2, cursor: 'default'}}>
+                                                برای سفارش کالا برای وارد سایت شوید.
+                                            </div>
                                         }
                                     </div>
                                 </div>
+                                <div>
+                                    <p style={{padding: 16, margin: 4, color: '#777', fontSize: 15}}>{this.state.data.description}</p>
+                                </div>
                             </div>
-                        </Paper>
-                        <div style={{padding: 15, direction: 'rtl'}}>
+                            </Paper>
+                        </div>
+                        <div style={{padding: 15, direction: 'rtl', overflowY: 'auto'}}>
                             <Paper zDepth={1}>
                                 <Table selectable={false} multipleSelectable={false}>
                                     <TableBody displayRowCheckbox={false}>
-                                        <TableRow>
+                                        {/* <TableRow>
                                             <TableRowColumn>نام کامل</TableRowColumn>
                                             <TableRowColumn>{props.productName}</TableRowColumn>
-                                        </TableRow>
-                                        {/* Other properties... Waiting for the API :) */}
+                                        </TableRow> */}
+                                        {this.state.data.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
                                     </TableBody>
                                 </Table>
                             </Paper>
                         </div>
-                        <div style={{padding: 15, paddingRight: 30, direction: 'rtl'}}>
+                        <div style={{padding: 15, paddingRight: 30, direction: 'rtl', overflowY: 'auto', paddingBottom: 127 + 15}}>
                             <Comments data={this.state.data.comments} />
                         </div>
                     </SwipeableViews>
@@ -217,7 +223,6 @@ export default class ProductPage extends Component {
             )
         } else if (typeof this.state.loaded == 'string') {
             if (this.state.loaded == 'err-403') {
-                // const Err404 = require('./err404');
                 return <Err404 />
             } else {
                 return (
