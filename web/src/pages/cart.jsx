@@ -107,6 +107,13 @@ export default class ShoppingCart extends Component {
             const closeD = () => {
                 this.setState({confirmDialogOpen: false})
             }
+            let fullPrice = 0;
+            for (var i = 0; i < this.state.items.length; i++) {
+                fullPrice += this.state.items[i].price * this.state.items[i].amount;
+            }
+            let finalize = () => {
+                this.props.history.push({pathname: '/finalize-order'})
+            }
             return (
                 <Fragment>
                     <Helmet>
@@ -136,6 +143,7 @@ export default class ShoppingCart extends Component {
                                                 })}
                                             </tbody>
                                         </table>
+                                        <Space height={16} />
                                     </React.Fragment>
                                 :
                                 <div style={{textAlign: 'center', color: '#777', padding: 30}}>
@@ -146,20 +154,24 @@ export default class ShoppingCart extends Component {
                                 }
                             </div>
                             {this.state.items.length > 0 ?
-                                <div>
+                                <div style={{textAlign: 'center', marginTop: 10}}>
+                                    <big>
+                                        قیمت کل:
+                                        <big style={{color: palette.accent1Color}}><b> {slicePrice(numToFA(fullPrice))} تومان</b></big>
+                                    </big>
                                     <Space height={15} />
-                                    <div style={{textAlign: 'center'}}>
+                                    <div>
                                         <RaisedButton onClick={() => {
                                             this.setState({confirmDialogOpen: true})
-                                        }} secondary label='نهایی سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
+                                        }} secondary label='نهایی‌سازی خرید' icon={<FontIcon className='mdi'>done</FontIcon>} />
                                     </div>
                                 </div> : <React.Fragment></React.Fragment>
                             }
                         </Paper>
                     </div>
 
-                    <Dialog title='تأئید نهایی سازی خرید' open={this.state.confirmDialogOpen} onRequestClose={closeD} actions={[<FlatButton secondary={true} onClick={closeD}>بله</FlatButton>, <FlatButton secondary={true} onClick={closeD}>خیر</FlatButton>]}>
-                        آیا از نهایی سازی خرید خود اطمینان دارید؟
+                    <Dialog title='تائید نهایی‌سازی خرید' open={this.state.confirmDialogOpen} onRequestClose={closeD} actions={[<FlatButton secondary={true} onClick={finalize}>بله</FlatButton>, <FlatButton secondary={true} onClick={closeD}>خیر</FlatButton>]}>
+                        آیا از نهایی‌سازی خرید خود اطمینان دارید؟
                     </Dialog>
                 </Fragment>
             )

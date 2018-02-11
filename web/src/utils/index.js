@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as mul from './mulitsh';
+import * as mul from './mulitsh.jsx';
 import palette from './palette';
 const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;

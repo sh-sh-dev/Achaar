@@ -172,11 +172,7 @@ export default class ProductPage extends Component {
                             <Paper zDepth={1}>
                                 <Table selectable={false} multipleSelectable={false}>
                                     <TableBody displayRowCheckbox={false}>
-                                        {/* <TableRow>
-                                            <TableRowColumn>نام کامل</TableRowColumn>
-                                            <TableRowColumn>{props.productName}</TableRowColumn>
-                                        </TableRow> */}
-                                        {this.state.data.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
+                                            {this.state.data.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
                                     </TableBody>
                                 </Table>
                             </Paper>

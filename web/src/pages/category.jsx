@@ -6,34 +6,67 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import Subheader from 'material-ui/Subheader';
-import Drawer from 'material-ui/Drawer';
 import Slider from 'material-ui/Slider';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenu from 'material-ui/IconMenu';
 import Toggle from 'material-ui/Toggle';
-import {GridList, GridTile} from 'material-ui/GridList';
+import CircularProgress from 'material-ui/CircularProgress';
+import Err404 from './err404';
 import {palette, Space, numToFA, slicePrice, resolveApiURL} from '../utils/'
 import Helmet from 'react-helmet';
 import axios from 'axios';
 
-
-let data = [
-    {
-        name: 'آچار فرانسه',
-        price: 50000,
-        id: 0,
-        available: true
-    },
-    {
-        name: 'دیل حیدری‌:|',
-        price: 26500,
-        id: 1,
-        available: false
+class CategoryItem extends Component {
+    render() {
+        const data = this.props.data.map((e, index) => {
+            return (
+                <Link to={`/product/${e.id}`} style={{display: 'block'}} key={index}>
+                    <Card style={{overflow: 'hidden'}}>
+                        <CardMedia>
+                            <div className='catpimage' style={{backgroundColor: palette.primary3Color, height: 200}}>
+                                {
+                                    e.discount.special && <span>تخفیف ویژه</span>
+                                }
+                        </div>
+                    </CardMedia>
+                    <CardTitle title={e.name} />
+                    <CardText>
+                        {e.has_discount ?
+                            <F>قیمت: <s style={{color: '#888', fontSize: 13}}>{slicePrice(numToFA(e.price))}</s> &nbsp;<b style={
+                                {
+                                    color: e.discount.special ? '#f44336' : palette.accent1Color,
+                                    fontSize: 17.5
+                                }
+                            }>{slicePrice(numToFA(e.discount.discounted_price))}</b> تومان</F>
+                            :
+                            <F>قیمت: <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
+                        }
+                    </CardText>
+                </Card>
+            </Link>
+            )
+        });
+        if (this.props.data.length > 0) {
+            return (
+                <F>
+                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 == 0)}</div>
+                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 == 1)}</div>
+                </F>
+            );
+        } else {
+            return (<div className='unselectable' style={{color: '#888', textAlign: 'center', fontWeight: 300, fontSize: 35, padding: '50px 12px'}}>
+                <i className='mdi' style={{fontSize: 80, color: palette.accent1Color}}>error_outline</i>
+                <Space height={20} />
+                نتیجه ای یافت نشد! <br />
+            <b style={{fontSize: 16, color: '#212121'}}>
+                    جستجوی شما بی‌نتیجه بود. به دنبال چیز دیگری بگردید!
+                </b>
+            </div>)
+        }
     }
-]
+}
 
 export default class Category extends Component {
     constructor(props){
@@ -47,7 +80,7 @@ export default class Category extends Component {
         }, qs.parse(props.history.location.search))
         this.query.min = Number(this.query.min);
         this.query.max = Number(this.query.max);
-        this.query.availables = this.query.availables == 'true' ? true : false;
+        this.query.availables = this.query.availables === 'true' ? true : false;
         this.state = {
             sortFn: (a,b) => a.id - b.id,
             FDO: false,
@@ -76,7 +109,7 @@ export default class Category extends Component {
                     loaded: true,
                     data: res.data.result
                 })
-            } else if (res.data.ok == false) {
+            } else if (res.data.ok === false) {
                 _.setState({
                     loaded: `err${res.data.code}`,
                     data: res.data.result
@@ -141,110 +174,76 @@ export default class Category extends Component {
         )
     }
     render(){
-        if (this.state.loaded == true) {
+        if (this.state.loaded === true) {
             return (
                 <F>
                     <Helmet>
                         <title>
-                            دسته بندی {this.category} | آچار
+                            دسته بندی {this.state.data.name} | آچار
                         </title>
                     </Helmet>
 
                     <div className='category'>
                         <AppBar title={this.state.data.name} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
+                            this.state.mobile ?
                             <IconButton onClick={() => {
                                 this.setState({
                                     FDO: true
                                 })
                             }}>
                                 <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
-                            </IconButton>
-                        } iconElementRight={
-                            <IconMenu iconButtonElement={
-                                <IconButton>
-                                    <FontIcon color={palette.primary3Color} className='mdi'>sort</FontIcon>
-                                </IconButton>
-                            } targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                                <MenuItem onClick={() => {
-                                    this.setState({
-                                        sortFn: (a,b) => a.price - b.price
-                                    })
-                                }}>قیمت از کمتر به بیشتر</MenuItem>
-                                <MenuItem onClick={() => {
-                                    this.setState({
-                                        sortFn: (a,b) => b.price - a.price
-                                    })
-                                }}>قیمت از بیشتر به کمتر</MenuItem>
-                            </IconMenu>
+                            </IconButton> :
+                            <F></F>
                         } />
 
 
                         <div className='scroll-content'>
                             {this.filterHelpers()}
                             <div className='result' style={{padding: 16}}>
-                                <div className='col-xs-2 col-md-6'>
-                                    {this.state.data.products.filter((e, ind) => {
-                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter) !== -1 && ind%2 === 0);
-                                        if (this.query.availables == true) {
-                                            return condition && e.available == true
+                                <CategoryItem data={this.state.data.products.filter((e, ind) => {
+                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter.replace(/ /g, '')) !== -1);
+                                        if (this.query.availables === true) {
+                                            return condition && e.available === true
                                         } else {
                                             return condition
                                         }
-                                    }).sort(this.state.sortFn).map((e, index) => {
-                                        return (
-                                            <Link to={`/product/${e.id}`} style={{display: 'block'}} key={index}>
-                                            <Card style={{overflow: 'hidden'}}>
-                                                <CardMedia>
-                                                    <div style={{backgroundColor: palette.primary3Color, height: 200}}></div>
-                                                </CardMedia>
-                                                <CardTitle title={e.name} />
-                                                <CardText>
-                                                    {e.has_discount ?
-                                                        <F>قیمت: <s color={{color: '#888'}}>{slicePrice(numToFA(e.price))}</s> <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
-                                                    :
-                                                        <F>قیمت: <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
-                                                    }
-                                                </CardText>
-                                            </Card>
-                                        </Link>
-                                    )
-                                })}
-                                </div>
-                                <div className='col-xs-2 col-md-6'>
-                                    {this.state.data.products.filter((e, ind) => {
-                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter) !== -1 && ind%2 === 1);
-                                        if (this.query.availables == true) {
-                                            return condition && e.available == true
-                                        } else {
-                                            return condition
-                                        }
-                                    }).sort(this.state.sortFn).map((e, index) => {
-                                        return (
-                                            <Link to={`/product/${e.id}`} style={{display: 'block'}} key={index}>
-                                            <Card style={{overflow: 'hidden'}}>
-                                                <CardMedia>
-                                                    <div style={{backgroundColor: palette.primary3Color, height: 200}}></div>
-                                                </CardMedia>
-                                                <CardTitle title={e.name} />
-                                                <CardText>
-                                                    {e.has_discount ?
-                                                        <F>قیمت: <s>{slicePrice(numToFA(e.price))}</s> <b>{slicePrice(numToFA(e.price))}</b> تومان</F>
-                                                    :
-                                                        <F>قیمت: {slicePrice(numToFA(e.price))} تومان</F>
-                                                    }
-                                                </CardText>
-                                            </Card>
-                                        </Link>
-                                    )
-                                })}
-                                </div>
+                                    }).sort(this.state.sortFn)} />
                             </div>
                         </div>
                     </div>
                 </F>
             )
+        } else if (typeof this.state.loaded === 'string') {
+            if (this.state.loaded === 'err-701') {
+                return <F>
+                    <Err404 />
+                    <Helmet>
+                        <title>دسته بندی یافت نشد!</title>
+                    </Helmet>
+                </F>
+            } else {
+                return (
+                    <div className='load-indic'>
+                        <Helmet>
+                            <title>خطایی رخ داد!</title>
+                        </Helmet>
+                        <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
+                        <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
+                            <b>{this.state.data}</b>
+                        </div>
+                        <Space height={15} />
+                        <Link to='/'>
+                            <RaisedButton backgroundColor={palette.accent2Color} labelColor='#fff' label='خروج به صفحه اصلی' />
+                        </Link>
+                    </div>
+                )
+            }
         } else {
-            return <div>loading...</div>
+            return (<div className='load-indic'>
+                <CircularProgress size={120} thickness={6} color={palette.accent3Color} />
+                <br />
+                در حال بارگذاری دسته بندی...
+            </div>)
         }
     }
 }
