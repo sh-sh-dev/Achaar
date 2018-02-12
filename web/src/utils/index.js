@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import * as mul from './mulitsh.jsx';
 import palette from './palette';
+import BlankLink from './blankLink.jsx';
 const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;
 
@@ -67,5 +68,6 @@ export {
     numToFA,
     cookie,
     $APP_DEFAULTS,
-    resolveApiURL
+    resolveApiURL,
+    BlankLink
 };

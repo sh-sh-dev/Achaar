@@ -1,6 +1,6 @@
 import React, {Fragment as F} from 'react';
 import {Redirect} from 'react-router-dom';
-import {palette, cookie, Space} from '../utils/';
+import {palette, cookie, Space, BlankLink} from '../utils/';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -29,7 +29,6 @@ const GridInput = (props) => {
         </div>
     )
 }
-
 
 class OrderFinalization extends React.Component {
     auth = cookie.get('AS_AUTH')
@@ -68,7 +67,14 @@ class OrderFinalization extends React.Component {
                     <RadioButtonGroup name='peyk' defaultSelected='alopeyk'>
                         <RadioButton
                             value='alopeyk' label={
-                                <F>ارسال کالا با <a style={{position: 'relative', zIndex: 100}} href='https://alopeyk.com' target='_blank'>الوپیک</a><br /><p style={{margin: 0, color: '#888', fontSize: 12}}>اینطوری سریع‌تر میرسه.</p></F>
+                                <F>
+                                    ارسال کالا با <BlankLink style={{
+                                        position: 'relative',
+                                        zIndex: 2
+                                    }} href='https://alopeyk.com'>الوپیک</BlankLink>
+                                    <br />
+                                    <p style={{margin: 0, color: '#888', fontSize: 12}}>اینطوری سریع‌تر میرسه.</p>
+                                </F>
                             } style={{
                                 marginBottom: 16
                             }} />
@@ -84,14 +90,20 @@ class OrderFinalization extends React.Component {
     render () {
         if (this.auth) {
             return (<F>
-                <AppBar
-                    title='نهایی‌سازی خرید'
-                    zDepth={2}
+                <Paper
+                    rounded={false}
                     style={{
-                        position: 'fixed',
-                        top: 0
-                    }}
-                    iconElementLeft={<F></F>} />
+                        backgroundColor: palette[`primary${this.state.activeStep + 1}Color`],
+                        height: 256
+                    }}>
+                    <AppBar
+                        title='نهایی‌سازی خرید'
+                        zDepth={0}
+                        style={{
+                            backgroundColor: 'transparent'
+                        }}
+                        iconElementLeft={<F></F>} />
+                </Paper>
                 <Paper
                 rounded={false}
                 zDepth={5}
@@ -119,9 +131,12 @@ class OrderFinalization extends React.Component {
                         </Step>
                     </Stepper>
                 </Paper>
-                <div style={{paddingTop: 96, paddingBottom: 80}}>
+                <div style={{paddingBottom: 80, marginTop: -128}}>
                     <div className='col-xs-12 col-md-8' style={{float: 'none', margin: '0 auto'}}>
-                        <Paper className='clear' zDepth={2}>
+                        <Paper style={{
+                                overflow: 'auto',
+                                maxHeight: 'calc(100vh - 256px + 128px - 64px - 16px)'
+                            }} className='clear' zDepth={2}>
                             {this.getStuff()}
                         </Paper>
                     </div>
