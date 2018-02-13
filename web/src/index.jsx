@@ -1,7 +1,7 @@
 // basic stuff
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 // theme and UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -50,7 +50,7 @@ class App extends React.Component {
                         reqiredColor: palette.accent1Color
                     }
                 })}>
-                    <React.Fragment>
+                    <Switch>
                         {/* Index */}
                         <Route path="/" exact component={HomePage} />
                         {/* Account */}
@@ -67,7 +67,7 @@ class App extends React.Component {
                         <Route exact path='/account/delete-account' component={DeleteAccount} />
                         {/* And, 404! */}
                         <Route component={Err404} />
-                    </React.Fragment>
+                    </Switch>
                 </MuiThemeProvider>
             </Router>
         )
