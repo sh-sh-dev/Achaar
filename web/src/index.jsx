@@ -31,6 +31,9 @@ class App extends React.Component {
                     isRtl: true,
                     palette,
                     fontFamily: 'inherit',
+                    appBar: {
+                        padding: 20
+                    },
                     slider: {
                         trackSize: 2,
                         trackColor: '#dedede',
@@ -48,6 +51,10 @@ class App extends React.Component {
                     radioButton: {
                         checkedColor: palette.accent1Color,
                         reqiredColor: palette.accent1Color
+                    },
+                    spacing: {
+                        desktopKeylineIncrement: 56,
+                        desktopDropDownItemHeight: 56 / 2
                     }
                 })}>
                     <Switch>
