@@ -11,8 +11,8 @@ $Headers = [
     'AllowMethods'=>"POST, OPTIONS",
     'XPoweredBy'=>"Achaar CMS"
 ];
-$TimeZone = "Asia/Tehran";
-
+const TimeZone = "Asia/Tehran";
+$TokenExpireTime = 86400 * 50;
 
 header("Access-Control-Allow-Origin: $Headers[AllowOrigin]");
 header("Access-Control-Allow-Headers: $Headers[AllowHeaders]");
@@ -31,7 +31,7 @@ if (isset($_SERVER["REQUEST_METHOD"])) {
     }
 }
 
-date_default_timezone_set($TimeZone);
+date_default_timezone_set(TimeZone);
 
 $db = new mysqli($Database['host'],$Database['user'],$Database['password'],$Database['database']);
 
@@ -42,4 +42,4 @@ $db->query("SET NAMES 'utf8'");
 $db->query("SET CHARACTER SET 'utf8'");
 $db->query("SET character_set_connection = 'utf8'");
 
-global $db;
+global $db,$TokenExpireTime;

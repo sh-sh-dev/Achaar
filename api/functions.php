@@ -100,7 +100,30 @@ function getUser($n,$req) {
     return $result[$req];
 }
 
+function getToken($n,$req) {
+    $db = $GLOBALS["db"];
+    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$n' OR `n`=$n");
+    $result = $query->fetch_assoc();
+    return $result[$req];
+}
+
 function Discount($price, $percent) {
     $Discount = ($percent /100) * $price;
     return ($price - $Discount);
+}
+
+function CheckToken($token) {
+    $db = $GLOBALS["db"];
+    if (empty($token)) return false;
+    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$token' AND `expiry_date`>UNIX_TIMESTAMP()");
+    if (!$query) return false;
+    if ($query->num_rows == 1) {
+        $User = $query->fetch_assoc();
+        $User = $User["user"];
+        if (getUser($User,'blocked')) return false;
+        return true;
+    }
+    else {
+        return false;
+    }
 }

@@ -6,7 +6,7 @@ $Data = getData();
 $SearchQ = Clean($Data["search"]);
 
 if (empty($SearchQ) || is_int($SearchQ)) {
-    die(Response("همه فیلد ها را پر کنید",false,-600));
+    die(Response("همه فیلد ها را پر کنید",false,-3));
 }
 
 $SearchQ = $db->real_escape_string($SearchQ);

@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.7
+-- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 09, 2018 at 07:59 PM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 7.0.8
+-- Host: localhost
+-- Generation Time: Feb 13, 2018 at 06:34 PM
+-- Server version: 10.2.12-MariaDB
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,8 +19,34 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `achaar`
+-- Database: `Achaar`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `card_products`
+--
+
+CREATE TABLE `card_products` (
+  `n` int(11) NOT NULL,
+  `cart` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  `count` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `n` int(11) NOT NULL,
+  `order-number` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -30,7 +58,7 @@ CREATE TABLE `categories` (
   `n` int(11) NOT NULL,
   `name` text COLLATE utf8mb4_persian_ci NOT NULL,
   `ename` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `active` int(11) NOT NULL DEFAULT '1'
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -54,7 +82,7 @@ CREATE TABLE `comments` (
   `text` text COLLATE utf8mb4_persian_ci NOT NULL,
   `score` int(11) NOT NULL,
   `date` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `approved` int(11) NOT NULL DEFAULT '0'
+  `approved` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -75,9 +103,9 @@ CREATE TABLE `discounts` (
   `n` int(11) NOT NULL,
   `product` int(11) NOT NULL,
   `percent` int(11) NOT NULL,
-  `special` int(11) NOT NULL DEFAULT '0',
+  `special` int(11) NOT NULL DEFAULT 0,
   `expiry_date` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `active` int(11) NOT NULL DEFAULT '1'
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -96,7 +124,7 @@ INSERT INTO `discounts` (`n`, `product`, `percent`, `special`, `expiry_date`, `a
 CREATE TABLE `login_attempts` (
   `n` int(11) NOT NULL,
   `ip` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `attempts` int(11) NOT NULL DEFAULT '1',
+  `attempts` int(11) NOT NULL DEFAULT 1,
   `date` text COLLATE utf8mb4_persian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
@@ -112,8 +140,8 @@ CREATE TABLE `products` (
   `description` longtext COLLATE utf8mb4_persian_ci NOT NULL,
   `price` bigint(20) NOT NULL,
   `category` int(11) NOT NULL,
-  `available` int(11) NOT NULL DEFAULT '1',
-  `active` int(11) NOT NULL DEFAULT '1'
+  `available` int(11) NOT NULL DEFAULT 1,
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -121,7 +149,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`n`, `name`, `description`, `price`, `category`, `available`, `active`) VALUES
-(1, 'هارد اکسترنال اي ديتا مدل HD720 ظرفيت 1 ترابايت', 'هارددیسک‌های اکسترنال از جذاب‌ترین وسایل ذخیره‌سازی اطلاعات به‌شمار می‌روند که به ‌دلیل قیمت مناسب و قابل‌حمل‌بودن، در میان افراد مختلف ضریب نفوذ بالایی دارند. هارددیسک اکسترنال «HD720» یک محصول ضدضربه و ضدآب است که در برابر حوادث فیزیکی پیش‌بینی‌نشده مقاومت زیادی دارد و قادر است در هر شرایطی از اطلاعات شما محافظت کند. روکش بیرونی HD720 از پلاستیک نرم ساخته شده و به‌واسطه‌ی این لایه‌ی الاستیک می‌تواند سخت‌ترین ضربات را دفع کند. این هارددیسک از رابط USB 3.0 برای انتقال اطلاعات استفاده می‌کند و سرعت مناسبی هم دارد. این هارد در سه رنگ مشکی، سبز فسفری و آبی فیروزه‌ای تولید شده‌ است.', 333000, 1, 1, 1);
+(1, 'هارد اکسترنال ای ديتا مدل HD720 ظرفيت 1 ترابايت', 'هارددیسک‌های اکسترنال از جذاب‌ترین وسایل ذخیره‌سازی اطلاعات به‌شمار می‌روند که به ‌دلیل قیمت مناسب و قابل‌حمل‌بودن، در میان افراد مختلف ضریب نفوذ بالایی دارند. هارددیسک اکسترنال «HD720» یک محصول ضدضربه و ضدآب است که در برابر حوادث فیزیکی پیش‌بینی‌نشده مقاومت زیادی دارد و قادر است در هر شرایطی از اطلاعات شما محافظت کند. روکش بیرونی HD720 از پلاستیک نرم ساخته شده و به‌واسطه‌ی این لایه‌ی الاستیک می‌تواند سخت‌ترین ضربات را دفع کند. این هارددیسک از رابط USB 3.0 برای انتقال اطلاعات استفاده می‌کند و سرعت مناسبی هم دارد. این هارد در سه رنگ مشکی، سبز فسفری و آبی فیروزه‌ای تولید شده‌ است.', 333000, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -134,7 +162,7 @@ CREATE TABLE `technical_specifications` (
   `product` int(11) NOT NULL,
   `item` text COLLATE utf8mb4_persian_ci NOT NULL,
   `value` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `active` int(11) NOT NULL DEFAULT '1'
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -158,8 +186,8 @@ CREATE TABLE `tokens` (
   `n` int(11) NOT NULL,
   `token` text COLLATE utf8mb4_persian_ci NOT NULL,
   `user` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `date` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `blocked` int(11) NOT NULL DEFAULT '0'
+  `expiry_date` text COLLATE utf8mb4_persian_ci NOT NULL,
+  `blocked` int(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 -- --------------------------------------------------------
@@ -174,16 +202,17 @@ CREATE TABLE `users` (
   `mobile` text COLLATE utf8mb4_persian_ci NOT NULL,
   `password` text COLLATE utf8mb4_persian_ci NOT NULL,
   `date` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `blocked` int(11) NOT NULL DEFAULT '0'
+  `canComment` int(11) NOT NULL DEFAULT 1,
+  `blocked` int(11) NOT NULL DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`n`, `name`, `mobile`, `password`, `date`, `blocked`) VALUES
-(1, 'شایگان شکرالهی', '09357778351', '87d9bb400c0634691f0e3baaf1e2fd0d', '1517939154', 0),
-(2, 'حسین خوانساری', '09363478412', '87d9bb400c0634691f0e3baaf1e2fd0d', '1518095698', 0);
+INSERT INTO `users` (`n`, `name`, `mobile`, `password`, `date`, `canComment`, `blocked`) VALUES
+(1, 'شایگان شکرالهی', '09357778351', '87d9bb400c0634691f0e3baaf1e2fd0d', '1517939154', 1, 0),
+(2, 'حسین خوانساری', '09363478412', '87d9bb400c0634691f0e3baaf1e2fd0d', '1518095698', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -196,7 +225,7 @@ CREATE TABLE `warranties` (
   `product` text COLLATE utf8mb4_persian_ci NOT NULL,
   `name` text COLLATE utf8mb4_persian_ci NOT NULL,
   `period` text COLLATE utf8mb4_persian_ci NOT NULL,
-  `active` int(11) NOT NULL DEFAULT '1'
+  `active` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_persian_ci;
 
 --
@@ -210,6 +239,18 @@ INSERT INTO `warranties` (`n`, `product`, `name`, `period`, `active`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `card_products`
+--
+ALTER TABLE `card_products`
+  ADD PRIMARY KEY (`n`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`n`);
 
 --
 -- Indexes for table `categories`
@@ -270,50 +311,66 @@ ALTER TABLE `warranties`
 --
 
 --
+-- AUTO_INCREMENT for table `card_products`
+--
+ALTER TABLE `card_products`
+  MODIFY `n` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `discounts`
 --
 ALTER TABLE `discounts`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `technical_specifications`
 --
 ALTER TABLE `technical_specifications`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT for table `tokens`
 --
 ALTER TABLE `tokens`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `warranties`
 --
 ALTER TABLE `warranties`
   MODIFY `n` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

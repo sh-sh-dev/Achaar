@@ -1,6 +1,7 @@
 {
-  "name": "achar",
+  "name": "Achaar",
   "version": "0.1.0",
+  "homepage": "http://achaar.piorra.ir",
   "private": true,
   "dependencies": {
     "autoprefixer": "7.1.6",
