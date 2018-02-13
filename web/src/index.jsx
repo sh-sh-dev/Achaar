@@ -16,6 +16,7 @@ import LogoutFromAccount from './pages/account-logout';
 import DeleteAccount from './pages/delete-account';
 import Category from './pages/category';
 import OrderFinalization from './pages/orderf';
+import Err404 from './pages/err404';
 // misc
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
@@ -64,6 +65,8 @@ class App extends React.Component {
                         {/* Account managing */}
                         <Route exact path='/account/logout' component={LogoutFromAccount} />
                         <Route exact path='/account/delete-account' component={DeleteAccount} />
+                        {/* And, 404! */}
+                        <Route component={Err404} />
                     </React.Fragment>
                 </MuiThemeProvider>
             </Router>
