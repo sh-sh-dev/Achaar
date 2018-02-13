@@ -1,6 +1,6 @@
 import React, {Fragment as F} from 'react';
 import {Redirect, Link} from 'react-router-dom';
-import {palette, cookie, Space, BlankLink} from '../utils/';
+import {palette, cookie, Space, BlankLink, slicePrice, numToFA} from '../utils/';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -9,12 +9,14 @@ import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
 import {
     Step,
     Stepper,
     StepButton,
     StepLabel,
 } from 'material-ui/Stepper';
+import Helmet from "react-helmet";
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 const GridInput = (props) => {
@@ -52,8 +54,10 @@ const GridInput = (props) => {
 class OrderFinalization extends React.Component {
     auth = cookie.get('AS_AUTH')
     state = {
-        activeStep: 1,
-        mobile: window.innerWidth < 768
+        activeStep: 2,
+        mobile: window.innerWidth < 768,
+        chosenPeyk: 'alopeyk',
+        chosenPayMethod: 'online'
     }
     componentDidMount() {
         let _ = this;
@@ -62,15 +66,24 @@ class OrderFinalization extends React.Component {
                 mobile: window.innerWidth < 768
             })
         }
-        console.log(this.steps);
+    }
+    updatePeyk = (shit, value) => {
+        this.setState({
+            chosenPeyk: value
+        })
+    }
+    paymentMethodUpdate = (shit, value) => {
+        this.setState({
+            chosenPayMethod: value
+        })
     }
     getStuff(){
         switch (this.state.activeStep) {
             case 0:
                 return <F>
-                    <h3 style={{margin: 16}}>
+                    <h2 style={{margin: 16}}>
                         مشخصات گیرنده
-                    </h3>
+                    </h2>
                     <GridInput
                         inputProps={{autoFocus: true}}
                         icon='person'
@@ -89,7 +102,7 @@ class OrderFinalization extends React.Component {
                     <GridInput
                         borderBottom={false}
                         placeHolder='شماره تلفن همراه'
-                        icon='call'
+                        icon='contact phone'
                         defaultValue='09357778351'
                         colSize={7} />
                     <Space height={16} />
@@ -104,8 +117,8 @@ class OrderFinalization extends React.Component {
                 </F>;
             case 1:
                 return <div style={{padding: 16}}>
-                    <h3 style={{marginTop: 0}}>انتخاب پیک</h3>
-                    <RadioButtonGroup name='peyk' defaultSelected='alopeyk'>
+                    <h2 style={{marginTop: 0}}>نحوه ارسال</h2>
+                    <RadioButtonGroup onChange={this.updatePeyk} name='peyk' defaultSelected='alopeyk'>
                         <RadioButton
                             value='alopeyk' label={
                                 <F>
@@ -114,18 +127,20 @@ class OrderFinalization extends React.Component {
                                         zIndex: 2
                                     }} href='https://alopeyk.com'>الوپیک</BlankLink>
                                     <br />
-                                    <p style={{margin: 0, color: '#888', fontSize: 12}}>اینطوری سریع‌تر میرسه.</p>
+                                    <p style={{margin: 0, color: '#888', fontSize: 12}}>
+                                        سفارش شما با پیک موتوری الوپیک فرستاده می‌شود. لازم به ذکر است حوزه کاری این سرویس فقط در استان‌های تهران و البرز می باشد.
+                                    </p>
                                 </F>
                             } style={{
                                 marginBottom: 16
                             }} />
                         <RadioButton value='pishtaz' label={
-                                <F>ارسال کالا با <b>پیک پیشتاز</b></F>
+                                <F>ارسال کالا با <b>پست پیشتاز</b></F>
                             } />
                     </RadioButtonGroup>
                     <Divider style={{marginTop: 16}} />
-                    <h3>نحوه پرداخت</h3>
-                    <RadioButtonGroup name='payment_method' defaultSelected='online'>
+                    <h2>نحوه پرداخت</h2>
+                    <RadioButtonGroup name='payment_method' onChange={this.paymentMethodUpdate} defaultSelected='online'>
                         <RadioButton
                             style={{
                                 marginBottom: 16
@@ -136,6 +151,8 @@ class OrderFinalization extends React.Component {
                             value='online'
                             label='پرداخت آنلاین' />
                     </RadioButtonGroup>
+                    <Divider style={{marginBottom: 16, marginTop: 16}} />
+                    <Toggle label='دریافت رسید' labelPosition='right'/>
                     <Space height={15} />
                     <div style={{textAlign: 'center'}}>
                         <FlatButton
@@ -156,12 +173,59 @@ class OrderFinalization extends React.Component {
                     </div>
                 </div>
             case 2:
-                return <div>همین دیگه.</div>;
+                return (
+                    <div
+                        style={{
+                            padding: 16
+                        }}>
+                        <h2>کالاها</h2>
+                        <div
+                            style={{
+                                overflow: 'auto'
+                            }}>
+                            <table className='cart-main'>
+                                <thead>
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>تعداد</th>
+                                        <th>قیمت واحد</th>
+                                        <th>قیمت کل</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>آچار لندنی</td>
+                                        <td>{numToFA(2)}</td>
+                                        <td>{slicePrice(numToFA(410000))}</td>
+                                        <td>{slicePrice(numToFA(410000 * 2))}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>آچار لندنی</td>
+                                        <td>{numToFA(2)}</td>
+                                        <td>{slicePrice(numToFA(410000))}</td>
+                                        <td>{slicePrice(numToFA(410000 * 2))}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>آچار لندنی</td>
+                                        <td>{numToFA(2)}</td>
+                                        <td>{slicePrice(numToFA(410000))}</td>
+                                        <td>{slicePrice(numToFA(410000 * 2))}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                );
+            default:
+                return <Redirect to='/' />
         }
     }
     render () {
         if (this.auth) {
             return (<F>
+                <Helmet>
+                    <title>نهایی‌سازی خرید | آچار</title>
+                </Helmet>
                 <Paper
                     rounded={false}
                     style={{
@@ -169,15 +233,28 @@ class OrderFinalization extends React.Component {
                         height: 256
                     }}>
                     <AppBar
-                        title='نهایی‌سازی خرید'
+                        title={
+                            (function() {
+                                switch (this.state.activeStep) {
+                                    case 0:
+                                        return 'اطلاعات گیرنده';
+                                    case 1:
+                                        return 'اطلاعات سفارش';
+                                    default:
+                                        return 'بازبینی سفارش';
+                                }
+                            }.bind(this)())
+                        }
                         zDepth={0}
                         style={{
                             backgroundColor: 'transparent'
                         }}
                         iconElementLeft={
-                            <IconButton>
-                                <FontIcon className='mdi'>arrow_forward</FontIcon>
-                            </IconButton>
+                            <Link to='/cart'>
+                                <IconButton>
+                                    <FontIcon color='#fff' className='mdi'>arrow_forward</FontIcon>
+                                </IconButton>
+                            </Link>
                     } />
                 </Paper>
                 <Paper
@@ -193,9 +270,8 @@ class OrderFinalization extends React.Component {
                         display:'flex',
                         alignItems: 'center'
                     }}>
-                    <Stepper ref={
-                            (e) => {this.steps = e}
-                        } style={{width: '100%'}} activeStep={this.state.activeStep}>
+                    <Stepper
+                        style={{width: '100%'}} activeStep={this.state.activeStep}>
                         <Step>
                             <StepLabel>آدرس تحویل</StepLabel>
                         </Step>
@@ -207,7 +283,7 @@ class OrderFinalization extends React.Component {
                         </Step>
                     </Stepper>
                 </Paper>
-                <div style={{paddingBottom: 80, marginTop: -128}}>
+                <div style={{marginTop: -128}}>
                     <div className='col-xs-12 col-md-8' style={{float: 'none', margin: '0 auto'}}>
                         <Paper style={{
                                 overflow: 'auto',
