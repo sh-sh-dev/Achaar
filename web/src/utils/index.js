@@ -55,7 +55,7 @@ const slicePrice = num => chunk(num.toString().split('').reverse(), 3).map(e => 
 
 const $APP_DEFAULTS = require('./app-defaults.json');
 
-const resolveApiURL = path => `${$APP_DEFAULTS.api_url}${path}`;
+const resolveApiURL = path => `${$APP_DEFAULTS.api_url}/${path}`;
 
 export {
     Space,
