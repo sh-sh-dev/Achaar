@@ -5,7 +5,7 @@ $Data = getData();
 
 $Category = Clean($Data["category"]);
 
-if (empty($Category)) die(Response("دسته بندی وارد نشده است",false,-700));
+if (empty($Category)) die(Response("دسته بندی وارد نشده است",false,-3));
 
 $Category = $db->real_escape_string($Category);
 

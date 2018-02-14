@@ -1,47 +1,53 @@
 {
-    "app": {
-        "database_error":-1
-    },
-    "auth": {
-        "signup": {
-            "fill_inputs": -100,
-            "password_lower":-101,
-            "password_greater":-102,
-            "mobile_not_mobile":-103,
-            "user_exist":-104,
-            "failed":-105
-        },
-        "signin": {
-            "ip_blocked":-200,
-            "fill_inputs": -201,
-            "password_invalid":-202,
-            "username_invalid":-203,
-            "login_failed":-204,
-            "insert_token_failed":-205,
-            "username_or_password_is_wrong":-206
-        }
-    },
-    "products": {
-        "getProduct": {
-            "product_is_empty":-400,
-            "product_not_valid":-401,
-            "get_products_failed":-402,
-            "not_found":-403
-        },
-        "categories": {
-            "sql_failed":-500,
-            "empty":-501
-        }
-        ,
-        "searchProduct": {
-            "fill_inputs":-600,
-            "sql_failed":-601,
-            "not_found":-602
-        }
-        ,
-        "getCategory": {
-            "fill_inputs":-700,
-            "not_found":-701
-        }
+  "app": {
+    "database_error":-1,
+    "token_invalid":-2,
+    "fill_inputs":-3
+  },
+  "auth": {
+    "signup": {
+      "fill_inputs": -3,
+      "password_lower":-101,
+      "password_greater":-102,
+      "mobile_not_mobile":-103,
+      "user_exist":-104,
+      "failed":-105
     }
+  , "signin": {
+      "ip_blocked":-200,
+      "fill_inputs": -3,
+      "password_invalid":-202,
+      "username_invalid":-203,
+      "login_failed":-204,
+      "insert_token_failed":-205,
+      "username_or_password_is_wrong":-206
+    }
+  },
+  "products": {
+    "getProduct": {
+      "product_is_empty":-400,
+      "product_not_valid":-401,
+      "get_products_failed":-402,
+      "not_found":-403
+    }
+  , "categories": {
+      "sql_failed":-500,
+      "empty":-501
+    }
+  , "searchProduct": {
+      "fill_inputs":-3,
+      "sql_failed":-601,
+      "not_found":-602
+    }
+  , "getCategory": {
+      "fill_inputs":-3,
+      "not_found":-701
+    }
+  , "addComment": {
+      "token_invalid":-2,
+      "fill_inputs":-3,
+      "can_not_comment":-800,
+      "sql_failed":-801
+    }
+  }
 }

@@ -31,7 +31,7 @@ $Mobile = Clean($Data["mobile"]);
 $Password = Clean($Data["password"]);
 
 if (empty($Mobile) || empty($Password)) {
-    die(Response("لطفا همه فیلد ها را پر نمایید",false,-201));
+    die(Response("لطفا همه فیلد ها را پر نمایید",false,-3));
 }
 if (strlen($Password) < 6 || strlen($Password) > 18) {
     die(Response("پسورد معتبر نمی‌باشد",false,-202));
@@ -52,7 +52,7 @@ else {
     if ($Login->num_rows == 1) {
         $LoginAttempts->deleteAttempts();
         $Token = Token($Mobile);
-        $IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
+        $IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`expiry_date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP() + $TokenExpireTime)");
         if ($IToken) Response($Token,true,200,true);
         else die(Response("خطای غیر منتظره رخ داد",false,-205));
     }

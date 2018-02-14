@@ -8,7 +8,7 @@ $Password = Clean($Data["password"]);
 $Mobile = Clean($Data["mobile"]);
 
 if (empty($Name) || empty($Password) || empty($Mobile)) {
-    die(Response("لطفا همه فیلد ها را پر نمایید",false,-100));
+    die(Response("لطفا همه فیلد ها را پر نمایید",false,-3));
 }
 if (mb_strlen($Password) < 6 || mb_strlen($Password) > 18) {
     $Re = strlen($Password) < 6 ? true : false;
@@ -31,7 +31,7 @@ if ($RepeatabilityCheck->num_rows != 0) {
 }
 
 $Signup = $db->query("INSERT INTO `users` (`name`,`mobile`,`password`,`date`) VALUES ('$Name','$Mobile','$Password',UNIX_TIMESTAMP())");
-$IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP())");
+$IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`expiry_date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP() + $TokenExpireTime)");
 
 if ($Signup && $IToken) {
     Response($Token,true,100,true);
