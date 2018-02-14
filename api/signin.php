@@ -43,7 +43,7 @@ if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
 $Password = md5(base64_encode($Password));
 $Mobile = $db->real_escape_string($Mobile);
 
-$Login = $db->query("SELECT * FROM `users` WHERE `Password`='$Password' AND `Mobile`='$Mobile' AND `blocked`=0");
+$Login = $db->query("SELECT * FROM `users` WHERE `password`='$Password' AND `mobile`='$Mobile' AND `blocked`=0");
 
 if (!$Login) {
     die(Response("خطای غیر منتظره رخ داد",false,-204));
@@ -52,7 +52,8 @@ else {
     if ($Login->num_rows == 1) {
         $LoginAttempts->deleteAttempts();
         $Token = Token($Mobile);
-        $IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`expiry_date`) VALUES ('$Token','$Mobile',UNIX_TIMESTAMP() + $TokenExpireTime)");
+        $UserN = getUser($Mobile,'n');
+        $IToken = $db->query("INSERT INTO `tokens` (`token`,`user`,`expiry_date`) VALUES ('$Token',$UserN,UNIX_TIMESTAMP() + $TokenExpireTime)");
         if ($IToken) Response($Token,true,200,true);
         else die(Response("خطای غیر منتظره رخ داد",false,-205));
     }
