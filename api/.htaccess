@@ -16,11 +16,11 @@ IndexIgnore *
 
 #SSL
 
-RewriteEngine On
+# RewriteEngine On
 
-RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTPS} !=on
 
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 #WWW
 
