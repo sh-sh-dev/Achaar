@@ -268,18 +268,37 @@ class OrderFinalization extends React.Component {
                         zIndex: 1100,
                         height: 35,
                         display:'flex',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        overflow: 'hidden'
                     }}>
                     <Stepper
                         style={{width: '100%'}} activeStep={this.state.activeStep}>
                         <Step>
-                            <StepLabel>آدرس تحویل</StepLabel>
+                            <StepButton onClick={
+                                    () => {
+                                        this.setState({
+                                            activeStep: 0
+                                        });
+                                    }
+                                }>آدرس تحویل</StepButton>
                         </Step>
                         <Step>
-                            <StepLabel>شیوه ارسال</StepLabel>
+                            <StepButton onClick={
+                                    () => {
+                                        this.setState({
+                                            activeStep: 1
+                                        });
+                                    }
+                                }>شیوه ارسال</StepButton>
                         </Step>
                         <Step>
-                            <StepLabel>بازبینی</StepLabel>
+                            <StepButton onClick={
+                                    () => {
+                                        this.setState({
+                                            activeStep: 2 
+                                        });
+                                    }
+                                }>بازبینی</StepButton>
                         </Step>
                     </Stepper>
                 </Paper>
