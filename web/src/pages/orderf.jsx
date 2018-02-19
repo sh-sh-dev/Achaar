@@ -80,7 +80,7 @@ class OrderFinalization extends React.Component {
     getStuff(){
         switch (this.state.activeStep) {
             case 0:
-                return <F>
+                return (<F>
                     <h2 style={{margin: 16}}>
                         مشخصات گیرنده
                     </h2>
@@ -105,6 +105,7 @@ class OrderFinalization extends React.Component {
                         icon='contact phone'
                         defaultValue='09357778351'
                         colSize={7} />
+                    <div className="clear"></div>
                     <Space height={16} />
                     <div style={{padding: 16, textAlign: 'center'}}>
                         <RaisedButton
@@ -114,7 +115,7 @@ class OrderFinalization extends React.Component {
                             label='تایید اطلاعات'
                             primary={true} />
                     </div>
-                </F>;
+                </F>);
             case 1:
                 return <div style={{padding: 16}}>
                     <h2 style={{marginTop: 0}}>نحوه ارسال</h2>

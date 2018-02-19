@@ -9,9 +9,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import Subheader from 'material-ui/Subheader';
 import ReactStars from 'react-stars';
+import {
+    List,
+    ListItem as LI
+} from 'material-ui/List';
 import {Tab, Tabs} from 'material-ui/Tabs';
 import {
     Table, TableRow, TableBody, TableRowColumn
@@ -36,21 +41,80 @@ const Comments = (props) => {
     // }
     for (var i = 0; i < props.data.length; i++) {
         let comment = props.data[i];
-        result.push(<div key={`$_${i}`} className='comment'>
-            <div className='comment-bubble'>
-                <div style={{fontSize: '1.25em'}} className='comment-title'>{comment.title}</div>
-                <div className='comment-author' style={{fontSize: '.8em', opacity: .65}}><i className='mdi'>person</i> {comment.user}</div>
-                <div className='comment-text' style={{lineHeight: 1.35}}>{comment.text.split('\n').map(e => <React.Fragment>{e} <br /></React.Fragment>)}</div>
-                <div className='comment-metadata' style={{fontSize: '.8em', opacity: .65, textAlign: 'left'}}>
-                    {numToFA(comment.date).split(' ').reverse().join(' | ')}
-                </div>
-                {/* {comment.score != null && <div className='comment-rating' style={{direction: 'ltr', fontSize: '.8em', opacity: .75}}>
-                    {rateFullStars((Math.round(comment.score / 20 * 2) / 2).toFixed(1).toString().split('.'))}
-                </div>} */}
-            </div>
-        </div>)
+        // <div className='comment-bubble'>
+        //     <div style={{fontSize: '1.25em'}} className='comment-title'>{comment.title}</div>
+        //     <div className='comment-author' style={{fontSize: '.8em', opacity: .65}}><i className='mdi'>person</i> {comment.user}</div>
+        //     <div className='comment-text' style={{lineHeight: 1.35}}>{comment.text.split('\n').map(e => <React.Fragment>{e} <br /></React.Fragment>)}</div>
+        //     <div className='comment-metadata' style={{fontSize: '.8em', opacity: .65, textAlign: 'left'}}>
+        //         {numToFA(comment.date).split(' ').reverse().join(' | ')}
+        //     </div>
+        //     {/* {comment.score != null && <div className='comment-rating' style={{direction: 'ltr', fontSize: '.8em', opacity: .75}}>
+        //     {rateFullStars((Math.round(comment.score / 20 * 2) / 2).toFixed(1).toString().split('.'))}
+        //     </div>} */}
+        // </div>
+        result.push(
+            <LI key={`$_${i}`} primaryText={comment.title} secondaryText={comment.text} secondaryTextLines={1} initiallyOpen={true} />
+        )
     }
-    return result;
+    return <List style={{
+            marginLeft: -16,
+            marginRight: -16
+        }}>{result}</List>;
+}
+
+const ProductDetails = (props) => {
+    let {price, discount, hasD} = props;
+    let prevPrice;
+
+    if (hasD === true) {
+        prevPrice = price;
+        price = discount.discounted_price.toString();
+    }
+
+    price = slicePrice(numToFA(price));
+    prevPrice = slicePrice(numToFA(prevPrice));
+
+    // <i className="mdi" style={{
+    //         fontSize: '165%',
+    //         color: palette.accent1Color
+    //     }}>attach_money </i>
+    //     <span>قیمت: </span>
+    //     <b style={{
+    //             color: discount.special ? '#f44336' : palette.accent2Color
+    //         }}>{price}</b>&nbsp;
+    //     {hasD && <React.Fragment><s style={{color: '#888', fontSize: 13}}>{prevPrice}</s>&nbsp;</React.Fragment>}
+    //     تومان
+    // <Space height={16} />
+    // <i className="mdi" style={{
+    //         fontSize: '165%',
+    //         color: palette.accent1Color
+    //     }}>security </i>
+    // <span>گارانتی: </span>
+    //     <b>{props.warranties.map(e => {
+    //             return <React.Fragment>{e.full} <br /></React.Fragment>
+    //         })}</b>
+    return (
+        <div>
+            <h2>{props.name}</h2>
+                    <List>
+                        <LI primaryText={
+                                <React.Fragment>
+                                    <span>قیمت: </span>
+                                    <b style={{
+                                            color: discount.special ? '#f44336' : palette.accent2Color
+                                        }}>{price}</b>&nbsp;
+                                        {hasD && <React.Fragment><s style={{color: '#888', fontSize: 13}}>{prevPrice}</s>&nbsp;</React.Fragment>}
+                                        تومان
+                                </React.Fragment>
+                            } label={
+                                <FontIcon className="mdi" color="#fb5">attach_money</FontIcon>
+                            } />
+                    </List>
+            <p style={{
+                    color: '#959595'
+                }}>{props.description}</p>
+        </div>
+    )
 }
 
 export default class ProductPage extends Component {
@@ -75,7 +139,7 @@ export default class ProductPage extends Component {
             } else {
                 let {result} = res.data;
                 if (result.split('').reverse()[0] !== '.') {
-                    result += '.';
+                    result = '.';
                 }
                 $.setState({loaded: `err${res.data.code}`, data: result})
             }
@@ -90,23 +154,28 @@ export default class ProductPage extends Component {
     auth = cookie.get('AS_AUTH')
 
     render(){
-        let {props} = this;
-        let di = {
+        const di = {
             close(){
                 this.setState({commentDialogOpen: false})
             },
             open(){
                 this.setState({commentDialogOpen: true})
             }
-        }
+        },
+        tabItemStyle = {
+            direction: 'rtl',
+            clear: 'both',
+            padding: 16
+        },
+        product = this.state.data;
         if (this.state.loaded == true) {
             console.log(this.state.data);
             return (
                 <div className='container' style={{padding: 0}}>
                     <Helmet>
-                        <title>{`${this.state.data.name} | آچار`}</title>
+                        <title>{`${product.name} | آچار`}</title>
                     </Helmet>
-                    <AppBar zDepth={2} title={this.state.data.name}
+                    <AppBar zDepth={2} title={product.name}
                         iconElementLeft={
                             <Link to='/'>
                                 <IconButton>
@@ -124,63 +193,35 @@ export default class ProductPage extends Component {
                                 </IconButton>
                             </Link>
                         }>
-                        <Tabs onChange={this.handleChangeTab} value={this.state.activeTab} style={{width: 'calc(100% + 48px)', marginLeft: -24, marginRight: -24}}>
-                            <Tab label='معرفی' value={0} />
-                            <Tab label="مشخصات فنی" value={1} />
-                            <Tab label="نظرات کاربران" value={2} />
-                        </Tabs>
-                    </AppBar>
-                    <Space height={127} />
-                    <SwipeableViews animateHeight index={this.state.activeTab} onChangeIndex={this.handleChangeTab} enableMouseEvents axis='x-reverse'>
-                        <div style={{overflowY: 'auto', padding: 15}}>
-                            <Paper zDepth={1}>
-                                <div className='clear' style={{direction: 'rtl'}}>
-                                    <div className='col-xs-12 col-md-6'>
-                                        <Space height={1} />
-                                        {/* Pictures! */}
-                                    </div>
-                                    <div className='col-xs-12 col-md-6'>
-                                        <h2>{this.state.data.name}</h2>
-                                        <div style={{fontSize: '1.25em'}}>
-                                            <p style={{color: '#585858'}}>
-                                                <i className='mdi'>security</i> گارانتی: <b style={{color: '#000'}}>{this.state.data.warranties.map(e => <React.Fragment>{e.full}<br /></React.Fragment>)
-                                            }</b>
-                                            <br />
-                                            <i className='mdi'>attach_money</i> قیمت:
-                                            <b style={{color: palette.accent2Color}}> {slicePrice(numToFA(this.state.data.price))} تومان</b>
-                                        </p>
-                                        {this.auth ?
-                                            <div style={{margin: 20}}>
-                                                <RaisedButton fullWidth={true} label='افزودن به سبد خرید' secondary={true}>
-                                                    <FontIcon className='mdi' color='#fff'>add_shopping_cart</FontIcon>
-                                                </RaisedButton>
-                                            </div>
-                                            :
-                                            <div className='unselectable' style={{margin: 20, color: palette.primary3Color, fontSize: 14, padding: 5, textAlign: 'center', backgroundColor: '#eaeaea', borderRadius: 2, cursor: 'default'}}>
-                                                برای سفارش کالا برای وارد سایت شوید.
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                                <div>
-                                    <p style={{padding: 16, margin: 4, color: '#777', fontSize: 15}}>{this.state.data.description}</p>
-                                </div>
-                            </div>
-                            </Paper>
+                        <div style={{width: '100%', textAlign: 'center', marginLeft: -20, marginRight: -20}}>
+                            <Tabs onChange={this.handleChangeTab} value={this.state.activeTab} style={{maxWidth: '100vw', width: 480, display: 'inline-block'}}>
+                                <Tab label='معرفی' value={0} />
+                                <Tab label="مشخصات فنی" value={1} />
+                                <Tab label="نظرات کاربران" value={2} />
+                            </Tabs>
                         </div>
-                        <div style={{padding: 15, direction: 'rtl', overflowY: 'auto'}}>
-                            <Paper zDepth={1}>
+                    </AppBar>
+                    <Space height={120} />
+                    <Paper className="col-xs-12 col-md-8 productmaincol clear" style={{
+                            padding: 0
+                        }}>
+                        <SwipeableViews animateHeight index={this.state.activeTab} onChangeIndex={this.handleChangeTab} axis='x-reverse'>
+                            <div className='clear' style={tabItemStyle}>
+                                <ProductDetails warranties={product.warranties} discount={product.discount} hasD={product.has_discount} name={this.state.data.name} price={this.state.data.price} description={this.state.data.description} />
+                            </div>
+                            <div className='clear' style={tabItemStyle}>
                                 <Table selectable={false} multipleSelectable={false}>
                                     <TableBody displayRowCheckbox={false}>
-                                            {this.state.data.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
+                                        {product.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
                                     </TableBody>
                                 </Table>
-                            </Paper>
-                        </div>
-                        <div style={{padding: 15, paddingRight: 30, direction: 'rtl', overflowY: 'auto', paddingBottom: 127 + 15}}>
-                            <Comments data={this.state.data.comments} />
-                        </div>
-                    </SwipeableViews>
+                            </div>
+                            <div className='clear' style={tabItemStyle}>
+                                <Comments data={product.comments} />
+                            </div>
+                        </SwipeableViews>
+                    </Paper>
+                    <Space height={16} />
 
                     {this.auth &&
                         <React.Fragment>
@@ -190,13 +231,12 @@ export default class ProductPage extends Component {
                                 <FontIcon className='mdi'>chat_bubble</FontIcon>
                             </FloatingActionButton>
 
-
                             <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab === 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab === 2 ? 96 : 25, zIndex: 1100}}>
                                 <FontIcon className='mdi'>add_shopping_cart</FontIcon>
                             </FloatingActionButton>
 
 
-                            <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${this.state.data.name}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
+                            <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${product.name}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
                                 <FlatButton secondary={true} label='ارسال دیدگاه' onClick={di.close.bind(this)} />,
                                 <FlatButton secondary={true} onClick={di.close.bind(this)} label='لغو' />
                             ]}>

@@ -1,11 +1,10 @@
 // basic stuff
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 // theme and UI
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {palette} from './utils/';
+import {theme} from './utils/';
 // routes
 import HomePage from './pages/home-page';
 import SignUp from './pages/signup';
@@ -27,36 +26,7 @@ class App extends React.Component {
     render() {
         return (
             <Router>
-                <MuiThemeProvider muiTheme={getMuiTheme({
-                    isRtl: true,
-                    palette,
-                    fontFamily: 'inherit',
-                    appBar: {
-                        padding: 20
-                    },
-                    slider: {
-                        trackSize: 2,
-                        trackColor: '#dedede',
-                        trackColorSelected: '#dedede',
-                        handleColorZero: '#dedede',
-                        selectionColor: palette.accent1Color,
-                        rippleColor: palette.accent1Color
-                    },
-                    toggle: {
-                        trackOffColor: '#aaa',
-                        thumbOffColor: '#d9d9d9',
-                        trackOnColor: palette.accent3Color,
-                        thumbOnColor: palette.accent1Color
-                    },
-                    radioButton: {
-                        checkedColor: palette.accent1Color,
-                        reqiredColor: palette.accent1Color
-                    },
-                    spacing: {
-                        desktopKeylineIncrement: 56,
-                        desktopDropDownItemHeight: 56 / 2
-                    }
-                })}>
+                <MuiThemeProvider muiTheme={theme}>
                     <Switch>
                         {/* Index */}
                         <Route path="/" exact component={HomePage} />
@@ -65,7 +35,7 @@ class App extends React.Component {
                         <Route path='/signin' exact component={SignIn} />
                         {/* Products */}
                         <Route exact path='/category/:name' component={Category} />
-                        <Route path='/product/:id' render={({match}) => <ProductPage pid={match.params.id} />} exact />
+                        <Route path='/product/:id' render={({match, history}) => <ProductPage pid={match.params.id} history={history} />} exact />
                         {/* Cart */}
                         <Route exact path='/cart' component={ShoppingCart} />
                         <Route exact path='/order-finalization' component={OrderFinalization} />

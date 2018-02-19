@@ -88,21 +88,28 @@ function get($table,$req) {
 
 function getCategory($n,$req) {
     $db = $GLOBALS["db"];
-    $query = $db->query("SELECT * FROM `categories` WHERE `name`='$n' OR `n`=$n");
+    $query = $db->query("SELECT * FROM `categories` WHERE `name`='$n' OR `n`='$n'");
     $result = $query->fetch_assoc();
     return $result[$req];
 }
 
 function getUser($n,$req) {
     $db = $GLOBALS["db"];
-    $query = $db->query("SELECT * FROM `users` WHERE `mobile`='$n' OR `n`=$n");
+    $query = $db->query("SELECT * FROM `users` WHERE `mobile`='$n' OR `n`='$n'");
     $result = $query->fetch_assoc();
     return $result[$req];
 }
 
+function changeUser($user,$item,$value) {
+    $db = $GLOBALS["db"];
+    $change = $db->query("UPDATE `users` SET `$item`='$value' WHERE `n`='$user' OR `mobile`='$user'");
+    if ($change) return true;
+    else return false;
+}
+
 function getToken($n,$req) {
     $db = $GLOBALS["db"];
-    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$n' OR `n`=$n");
+    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$n' OR `n`='$n'");
     $result = $query->fetch_assoc();
     return $result[$req];
 }
@@ -115,7 +122,7 @@ function Discount($price, $percent) {
 function CheckToken($token) {
     $db = $GLOBALS["db"];
     if (empty($token)) return false;
-    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$token' AND `expiry_date`>UNIX_TIMESTAMP()");
+    $query = $db->query("SELECT * FROM `tokens` WHERE `token`='$token' AND `expiry_date`>UNIX_TIMESTAMP() AND `blocked`=0");
     if (!$query) return false;
     if ($query->num_rows == 1) {
         $User = $query->fetch_assoc();
@@ -126,4 +133,13 @@ function CheckToken($token) {
     else {
         return false;
     }
+}
+
+function CheckProduct($product) {
+    $db = $GLOBALS["db"];
+    if (empty($product)) return false;
+    $query = $db->query("SELECT `name` FROM `products` WHERE `n`='$product' AND `active`=1");
+    if (!$query) return false;
+    if ($query->num_rows == 1) return true;
+    else return false;
 }

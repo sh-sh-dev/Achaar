@@ -70,7 +70,7 @@ h6{
 
 .container{
     width: 100%;
-    padding: 0 15px;
+    padding: 0 16px;
     min-height: 1px;
     @include clear;
 }
@@ -82,7 +82,7 @@ h6{
 [class^='col-']{
     float: right;
     @include clear;
-    padding: 0 15px;
+    padding: 0 16px;
     text-align: right;
     position: relative;
 }
@@ -321,7 +321,7 @@ a{
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px;
+    height: 160px;
     color: #fff;
     font-size: 1.25em;
     position: relative;
@@ -353,7 +353,7 @@ a{
 }
 
 .mulitsh{
-    margin: 20px 15px;
+    margin: 20px 16px;
     background-color: #fff;
     border-radius: 2.5px;
     overflow: hidden;
@@ -380,7 +380,7 @@ a{
     .mulitsh-button{
         background-color: #fff;
         border: 0;
-        box-shadow: 0 2px 15px -3px rgba(#000, .3);
+        box-shadow: 0 2px 16px -3px rgba(#000, .3);
         font-size: 21px;
         cursor: pointer;
         padding: 0 6px;
@@ -406,7 +406,7 @@ a{
         @media only screen and (min-width: 768px){
             width: (100% / 7);
         }
-        padding: 15px;
+        padding: 16px;
         text-align: center;
         img{
             width: 100%;
@@ -447,7 +447,7 @@ body.superdoc-form{
             width: 100%;
             max-width: 500px;
             overflow: auto;
-            padding: 15px 20px;
+            padding: 16px 20px;
             text-align: center;
             position: relative;
             .loading{
@@ -481,7 +481,7 @@ body.superdoc-form{
     .comment-bubble{
         background-color: $primary;
         border-radius: 5px;
-        padding: 15px;
+        padding: 16px;
         position: relative;
         margin: 10px;
         max-width: 550px;
@@ -546,7 +546,6 @@ body.superdoc-form{
         flex-direction: row;
         width: 100%;
         height: 100%;
-        // overflow-y: auto;
         .FDO--container{
             width: 4 / 12 * 100%;
             display: flex;
@@ -585,4 +584,30 @@ body.superdoc-form{
         font-size: 9px;
         left: 0
     }
+}
+
+.clear{
+    @include clear;
+}
+
+.productaddscfab{
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    z-index: 1100;
+    @media only screen and (min-width: 768px) {
+        position: absolute;
+        left: 56px;
+        bottom: -28px
+    }
+}
+
+.productmaincol{
+    margin: 0 auto;
+    float: none;
+}
+
+.producttabitem{
+    padding-top: 16px;
+    padding-bottom: 16px;
 }

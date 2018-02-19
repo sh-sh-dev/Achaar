@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import * as mul from './mulitsh.jsx';
 import palette from './palette';
+import theme from './theme';
 import BlankLink from './blankLink.jsx';
 const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;
@@ -30,7 +31,11 @@ class TypeText extends Component{
 }
 
 function Space(props){
-    return <div style={{height: props.height}}></div>
+    let {style} = props;
+    if (!style) {
+        style = {};
+    }
+    return <div {...props} style={Object.assign(style, {height: props.height})}></div>
 }
 
 const chunk = (array, chunkSize) => {
@@ -69,5 +74,6 @@ export {
     cookie,
     $APP_DEFAULTS,
     resolveApiURL,
-    BlankLink
+    BlankLink,
+    theme
 };

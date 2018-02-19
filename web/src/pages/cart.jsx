@@ -112,7 +112,7 @@ export default class ShoppingCart extends Component {
                 fullPrice += this.state.items[i].price * this.state.items[i].amount;
             }
             let finalize = () => {
-                this.props.history.push({pathname: '/finalize-order'})
+                this.props.history.push({pathname: '/order-finalization'})
             }
             return (
                 <Fragment>
