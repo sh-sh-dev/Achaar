@@ -32,6 +32,9 @@ const theme = getMuiTheme({
     },
     inkBar: {
         backgroundColor: '#fff'
+    },
+    toolbar: {
+        backgroundColor: '#fff'
     }
 })
 

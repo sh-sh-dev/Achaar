@@ -10,59 +10,55 @@ import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
-import Subheader from 'material-ui/Subheader';
-import ReactStars from 'react-stars';
-import {
-    List,
-    ListItem as LI
-} from 'material-ui/List';
 import {Tab, Tabs} from 'material-ui/Tabs';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import {
     Table, TableRow, TableBody, TableRowColumn
 } from 'material-ui/Table';
-import SwipeableViews from 'react-swipeable-views';
 import {Link, Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import FNR from 'react-fnr';
 import Err404 from './err404';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
 const Comments = (props) => {
     let result = [];
-    // const rateFullStars = (num) => {
-    //     let fulls = Number(num[0]),
-    //     halfs = Number(num[1]);
-    //     let f = [];
-    //     for (var i = 0; i < (fulls == 0 ? 4 : fulls); i++) {
-    //         f.push(<i className='mdi'>{fulls == 0 ? 'star_border' : 'star'}</i>)
-    //     }
-    //     f.push(<i className='mdi'>{halfs >= .5 ? 'star_half' : 'star_border'}</i>)
-    //     return f;
-    // }
     for (var i = 0; i < props.data.length; i++) {
         let comment = props.data[i];
+        comment.score = Number(comment.score);
+
+        // generate a color based on score. 🎨
+        let scoreColor = Math.round(comment.score / 100 * 255);
+        scoreColor = [255 - scoreColor, scoreColor, 0];
+
         result.push(
-            <div>
-                <div style={{fontSize: '1.25em'}}>{comment.title}</div>
-                <div style={{fontSize: '.8em', opacity: .65}}>
-                    <i className='mdi'>person</i> {comment.user}
-                </div>
-                <div style={{lineHeight: 1.35}}>
-                    {comment.text.split('\n').map(e => <React.Fragment>{e} <br /></React.Fragment>)}
-                </div>
-                <div style={{fontSize: '.8em', opacity: .65, textAlign: 'left'}}>
-                    {numToFA(comment.date).split(' ').reverse().join(' | ')}
-                </div>
-                {/* {comment.score != null && <div className='comment-rating' style={{direction: 'ltr', fontSize: '.8em', opacity: .75}}>
-                {rateFullStars((Math.round(comment.score / 20 * 2) / 2).toFixed(1).toString().split('.'))}
-                </div>} */}
-            </div>
+            <Card
+                style={{
+                    boxShadow: 'none'
+                }}>
+                <CardHeader
+                    title={comment.title}
+                    subtitle={numToFA(`${comment.user} | ${comment.date.split(' ').join(' - ')}`)}
+                    actAsExpander={true}
+                    showExpandableButton={true}
+                    avatar={
+                        <Avatar
+                            backgroundColor={`rgb(${scoreColor.join(', ')})`}
+                            title={`امتیاز کاربر به این کالا: ${numToFA(comment.score)}`}
+                            icon={
+                                <FontIcon className="mdi">star</FontIcon>
+                            } />
+                    } />
+                <CardText
+                    expandable={true}>
+                    {comment.text}
+                </CardText>
+            </Card>
         )
     }
-    return <List style={{
-            marginLeft: -16,
-            marginRight: -16
-        }}>{result}</List>;
+    return result
 }
 
 const ProductDetails = (props) => {
@@ -111,7 +107,7 @@ export default class ProductPage extends Component {
         super(props);
         this.state = {
             activeTab: 2,
-            commentDialogOpen: false
+            commentDialogOpen: true
         }
     }
 
@@ -190,55 +186,104 @@ export default class ProductPage extends Component {
                             <div style={{
                                     padding: 16
                                 }}>
-                                <Paper className="col-xs-12 col-md-8 productmaincol clear" style={{
+                                <Paper className="col-xs-11.8 col-md-8 productmaincol clear" style={{
                                         padding: 0
                                     }}>
-                                    <SwipeableViews animateHeight index={this.state.activeTab} onChangeIndex={this.handleChangeTab} axis='x-reverse'>
-                                        <div className='clear' style={tabItemStyle}>
-                                            <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description} />
-                                        </div>
-                                        <div className='clear' style={tabItemStyle}>
-                                            <Table selectable={false} multipleSelectable={false}>
-                                                <TableBody displayRowCheckbox={false}>
-                                                    {result.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
-                                                </TableBody>
-                                            </Table>
-                                        </div>
-                                        <div className='clear' style={tabItemStyle}>
-                                            <Comments data={result.comments} />
-                                        </div>
-                                    </SwipeableViews>
+                                    <div>
+                                        {(function() {
+                                            switch (this.state.activeTab) {
+                                                case 0:
+                                                    return (<div className='clear' style={tabItemStyle}>
+                                                        <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description} />
+                                                    </div>);
+                                                case 1:
+                                                    return (<div className='clear' style={tabItemStyle}>
+                                                        <Table selectable={false} multipleSelectable={false}>
+                                                            <TableBody displayRowCheckbox={false}>
+                                                                {result.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </div>);
+                                                case 2:
+                                                    return (<div className='clear' style={tabItemStyle}>
+                                                        <Comments data={result.comments} />
+                                                    </div>);
+                                                default:
+                                                    return <Redirect to='/' />
+                                            }
+                                        }.bind(this)())}
+                                    </div>
                                 </Paper>
                             </div>
                             {this.auth &&
                                 <React.Fragment>
                                     <FloatingActionButton secondary={true} style={{
-                                            position: 'fixed', right: 25, bottom: 25, zIndex: 1100, transform: `scale(${this.state.activeTab === 2 ? 1 : 0})`, opacity: this.state.activeTab === 2 ? 1 : .4
-                                        }} onClick={di.open.bind(this)}>
-                                        <FontIcon className='mdi'>chat_bubble</FontIcon>
-                                    </FloatingActionButton>
-
-                                    <FloatingActionButton backgroundColor={palette[`primary${this.state.activeTab === 2 ? 2 : 1}Color`]} style={{position: 'fixed', right: 25, bottom: this.state.activeTab === 2 ? 96 : 25, zIndex: 1100}}>
+                                            position: 'fixed', right: this.state.activeTab === 2 ? -60 : 32, bottom: 32, zIndex: 1100
+                                        }}>
                                         <FontIcon className='mdi'>add_shopping_cart</FontIcon>
                                     </FloatingActionButton>
 
+                                    <FloatingActionButton backgroundColor={palette.accent3Color} style={{
+                                            position: 'fixed', right: 32, bottom: this.state.activeTab === 2 ? 32 : -60, zIndex: 1100
+                                        }} onClick={di.open.bind(this)} iconStyle={{
+                                            color: palette.accent1Color
+                                        }}>
+                                        <FontIcon className='mdi'>chat_bubble</FontIcon>
+                                    </FloatingActionButton>
 
-                                    <Dialog contentStyle={{width: 'calc(100% - 50px)', maxWidth: 'none'}} modal={true} title={`دیدگاه شما درباره ${result.name}`} open={this.state.commentDialogOpen} modal={false} autoScrollBodyContent={true} onRequestClose={di.close.bind(this)} actions={[
-                                            <FlatButton secondary={true} label='ارسال دیدگاه' onClick={di.close.bind(this)} />,
-                                            <FlatButton secondary={true} onClick={di.close.bind(this)} label='لغو' />
-                                        ]}>
-                                        {this.state.commentDialogOpen &&
-                                            <React.Fragment>
-                                                <div style={{textAlign: 'center'}}>
-                                                    <TextField floatingLabelText='عنوان دیدگاه شما' autoFocus />
-                                                </div>
-                                                <TextField multiLine floatingLabelText='دیدگاه خود را بنویسید...' rows={2} fullWidth={true} />
-                                                <Space height={15} />
-                                                <div style={{direction: 'ltr', textAlign: 'center'}}>
-                                                    <ReactStars size={40} color1='#aaa' color2={palette.accent2Color} className='mdi unselectable' char='star' />
-                                                </div>
-                                            </React.Fragment>
-                                        }
+                                    <Dialog
+                                        onRequestClose={di.close.bind(this)}
+                                        title='دیدگاه شما'
+                                        open={this.state.commentDialogOpen}
+                                        contentStyle={{
+                                            width: '96vw',
+                                            maxWidth: 720,
+                                        }}
+                                        modal
+                                        actions={
+                                            [
+                                                <FlatButton onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
+                                                <FlatButton secondary={true} label="ثبت دیدگاه"></FlatButton>
+                                            ]
+                                        }>
+                                            <div style={{
+                                                    display: 'flex',
+                                                    alignItems: 'flex-start',
+                                                    borderBottom: '1px solid #dedede',
+                                                    paddingBottom: 8,
+                                                    marginBottom: 8
+                                                }}>
+                                                <IconButton disableTouchRipple style={{
+                                                        marginRight: 16
+                                                    }} tabIndex={-1}>
+                                                    <FontIcon className="mdi">create</FontIcon>
+                                                </IconButton>
+                                                <TextField
+                                                    fullWidth
+                                                    underlineShow={false}
+                                                    hintText='عنوان دیدگاه' />
+                                            </div>
+                                            <div style={{
+                                                    display: 'flex',
+                                                    alignItems: 'flex-start'
+                                                }}>
+                                                <IconButton disableTouchRipple style={{
+                                                        marginRight: 16
+                                                    }} tabIndex={-1}>
+                                                    <FontIcon className="mdi">subject</FontIcon>
+                                                </IconButton>
+                                                <TextField
+                                                    fullWidth
+                                                    underlineShow={false}
+                                                    multiLine
+                                                    rows={7}
+                                                    rowsMax={7}
+                                                    hintStyle={{
+                                                        bottom: 'auto',
+                                                        top: 12
+                                                    }}
+                                                    hintText='متن دیدگاه' />
+                                            </div>
                                     </Dialog>
                                 </React.Fragment>
                             }
@@ -281,15 +326,5 @@ export default class ProductPage extends Component {
                 data={{product: this.props.pid}}
                 method='post' />
         )
-        if (this.state.loaded == true) {
-            console.log(this.state.data);
-        } else if (typeof this.state.loaded == 'string') {
-            if (this.state.loaded == 'err-403') {
-            } else {
-
-            }
-        } else {
-
-        }
     }
 }
