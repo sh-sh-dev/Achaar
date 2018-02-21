@@ -154,7 +154,7 @@ export default class SignUp extends Component {
                 </div>)
         }
     }
-    auth = cookie.get('AS_AUTH');
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
     render() {
         if (!this.auth) {
             return (<Paper zDepth={5} className='form-main'>

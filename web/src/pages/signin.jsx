@@ -27,7 +27,7 @@ export default class SignIn extends Component {
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
-    auth = cookie.get('AS_AUTH')
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
     verifyPhoneNumber = (e) => {
         let val = e.target.value;
         for (var i = 0; i < 10; i++) {

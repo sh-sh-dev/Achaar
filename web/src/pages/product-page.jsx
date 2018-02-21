@@ -117,7 +117,7 @@ export default class ProductPage extends Component {
         })
     }
 
-    auth = cookie.get('AS_AUTH')
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
 
     render(){
         const di = {

@@ -101,7 +101,7 @@ export default class ShoppingCart extends Component {
             })
         }).bind(this)
     }
-    auth = cookie.get('AS_AUTH')
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
     render(){
         if (this.auth) {
             const closeD = () => {

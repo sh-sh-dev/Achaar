@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Helmet from 'react-helmet';
 
 export default class LogoutFromAccount extends Component {
-    auth = cookie.get('AS_AUTH');
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
     state = {
         done: false
     }

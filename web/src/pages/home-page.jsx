@@ -17,7 +17,7 @@ export default class HomePage extends React.Component {
     state = {
         drawerOpen: false
     }
-    auth = cookie.get('AS_AUTH');
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
     render(){
         document.body.className = '';
         return (

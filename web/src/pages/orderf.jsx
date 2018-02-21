@@ -52,7 +52,7 @@ const GridInput = (props) => {
 }
 
 class OrderFinalization extends React.Component {
-    auth = cookie.get('AS_AUTH')
+    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
     state = {
         activeStep: 2,
         mobile: window.innerWidth < 768,
