@@ -5,7 +5,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 // import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link, Redirect} from 'react-router-dom';
-import {palette, Space, slicePrice, numToFA, cookie} from '../utils/';
+import {palette, Space, slicePrice, numToFA, cookie, validateCookie} from '../utils/' ;
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -101,7 +101,7 @@ export default class ShoppingCart extends Component {
             })
         }).bind(this)
     }
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
+    auth = validateCookie()
     render(){
         if (this.auth) {
             const closeD = () => {

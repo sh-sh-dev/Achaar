@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import {cookie, Space, palette} from '../utils/';
+import {cookie, Space, palette, validateCookie} from '../utils/' ;
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Helmet from 'react-helmet';
 
 export default class DeleteAccount extends Component {
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
+    auth = validateCookie();
     state = {
         done: false
     }

@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Space, cookie, $APP_DEFAULTS, resolveApiURL} from '../utils/';
+import {Space, cookie, $APP_DEFAULTS, resolveApiURL, validateCookie} from '../utils/' ;
 import Helmet from 'react-helmet';
 import axios from 'axios';
 import {Link, Redirect} from 'react-router-dom';
@@ -27,7 +27,7 @@ export default class SignIn extends Component {
         }
         this.farsiNumbers = [/۰/gi, /۱/gi, /۲/gi, /۳/gi, /۴/gi, /۵/gi, /۶/gi, /۷/gi, /۸/gi, /۹/gi];
     }
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
+    auth = validateCookie()
     verifyPhoneNumber = (e) => {
         let val = e.target.value;
         for (var i = 0; i < 10; i++) {

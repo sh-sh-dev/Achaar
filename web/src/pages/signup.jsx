@@ -7,7 +7,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {Space, cookie, $APP_DEFAULTS, resolveApiURL} from '../utils/';
+import {Space, cookie, $APP_DEFAULTS, resolveApiURL, validateCookie} from '../utils/' ;
 import {Link, Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import axios from 'axios';
@@ -154,7 +154,7 @@ export default class SignUp extends Component {
                 </div>)
         }
     }
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
+    auth = validateCookie();
     render() {
         if (!this.auth) {
             return (<Paper zDepth={5} className='form-main'>

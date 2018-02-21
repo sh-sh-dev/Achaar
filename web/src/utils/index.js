@@ -1,3 +1,4 @@
+import validateCookie from './cookie-validation';
 import React, {Component} from 'react';
 import * as mul from './mulitsh.jsx';
 import palette from './palette';
@@ -75,5 +76,6 @@ export {
     $APP_DEFAULTS,
     resolveApiURL,
     BlankLink,
-    theme
+    theme,
+    validateCookie
 };

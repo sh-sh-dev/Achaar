@@ -1,6 +1,6 @@
 import React, {Fragment as F} from 'react';
 import {Redirect, Link} from 'react-router-dom';
-import {palette, cookie, Space, BlankLink, slicePrice, numToFA} from '../utils/';
+import {palette, cookie, Space, BlankLink, slicePrice, numToFA, validateCookie} from '../utils/' ;
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -52,7 +52,7 @@ const GridInput = (props) => {
 }
 
 class OrderFinalization extends React.Component {
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
+    auth = validateCookie()
     state = {
         activeStep: 2,
         mobile: window.innerWidth < 768,
@@ -296,7 +296,7 @@ class OrderFinalization extends React.Component {
                             <StepButton onClick={
                                     () => {
                                         this.setState({
-                                            activeStep: 2 
+                                            activeStep: 2
                                         });
                                     }
                                 }>بازبینی</StepButton>

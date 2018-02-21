@@ -10,14 +10,14 @@ import IconMenu from 'material-ui/IconMenu';
 import Badge from 'material-ui/Badge';
 import {Link} from 'react-router-dom';
 import FontIcon from 'material-ui/FontIcon';
-import {MulitshSelf, MulitshItem, TypeText, Space, palette, cookie} from '../utils/';
+import {MulitshSelf, MulitshItem, TypeText, Space, palette, cookie, validateCookie} from '../utils/' ;
 import Helmet from 'react-helmet';
 
 export default class HomePage extends React.Component {
     state = {
         drawerOpen: false
     }
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm);
+    auth = validateCookie()
     render(){
         document.body.className = '';
         return (

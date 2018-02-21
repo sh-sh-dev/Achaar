@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Space, palette, slicePrice, numToFA, cookie, resolveApiURL} from '../utils/';
+import {Space, palette, slicePrice, numToFA, cookie, resolveApiURL, validateCookie} from '../utils/' ;
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -117,7 +117,7 @@ export default class ProductPage extends Component {
         })
     }
 
-    auth = !!cookie.get('AS_AUTH').match(/^[a-f0-9]{32}$/gm)
+    auth = validateCookie()
 
     render(){
         const di = {

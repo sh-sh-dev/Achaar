@@ -14,7 +14,7 @@ import IconMenu from 'material-ui/IconMenu';
 import Toggle from 'material-ui/Toggle';
 import CircularProgress from 'material-ui/CircularProgress';
 import Err404 from './err404';
-import {palette, Space, numToFA, slicePrice, resolveApiURL} from '../utils/'
+import {palette, Space, numToFA, slicePrice, resolveApiURL, validateCookie} from '../utils/' 
 import Helmet from 'react-helmet';
 import axios from 'axios';
 
