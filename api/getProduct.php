@@ -60,11 +60,15 @@ while ($TechnicalSpecificationsROW = $getTechnicalSpecifications->fetch_assoc())
     $TechnicalSpecifications[] = $TechnicalSpecificationsArray;
 }
 
+$Score = $db->query("SELECT AVG(score) FROM comments WHERE `product`=1 AND `approved`=1");
+$Score = $Score->fetch_assoc();
+
 $result = [
     'name'=>$Product['name'],
     'description'=>$Product['description'],
     'technical_specifications'=>$TechnicalSpecifications,
     'price'=>$Product['price'],
+    'score'=>(int)round($Score["AVG(score)"]),
     'category'=>getCategory($Product['category'],'name'),
     'warranties'=>$Warranties,
     'comments'=>$Comments,
