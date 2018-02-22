@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Space, palette, slicePrice, numToFA, resolveApiURL, validateCookie, cookie} from '../utils/' ;
+import {Space, palette, slicePrice, numToFA, resolveApiURL, validateCookie, cookie, NewLine} from '../utils/' ;
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -86,7 +86,8 @@ const Comments = (props) => {
                     } />
                 <CardText
                     expandable={true}>
-                    {comment.text}
+                    <NewLine
+                        text={comment.text} />
                 </CardText>
             </Card>
         )

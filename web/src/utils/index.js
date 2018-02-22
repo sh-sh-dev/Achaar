@@ -4,6 +4,7 @@ import * as mul from './mulitsh.jsx';
 import palette from './palette';
 import theme from './theme';
 import BlankLink from './blankLink.jsx';
+import NewLine from "./react-new-line.jsx";
 const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;
 
@@ -77,5 +78,6 @@ export {
     resolveApiURL,
     BlankLink,
     theme,
-    validateCookie
+    validateCookie,
+    NewLine
 };
