@@ -9,7 +9,7 @@ $Text = $db->real_escape_string(Clean($Data["text"]));
 $Score = (int)Clean($Data["score"]);
 $Product = (int)Clean($Data["product"]);
 
-if (!CheckToken($Data["token"])) die(Response("توکن معتبر نیست",false,-2));
+if (!CheckToken($Token)) die(Response("توکن معتبر نیست",false,-2));
 if (empty($Title) || empty($Text) || empty($Score) || empty($Product) || $Product == 0) die(Response("لطفا همه فیلد ها را پر کنید",false,-3));
 
 $User = getToken($Token,'user');
@@ -29,4 +29,4 @@ $addComment = $db->query("INSERT INTO `comments` (`user`,`product`,`title`,`text
 
 if (!$addComment) die(Response("ثبت نظر مقدور نبود",false,-803));
 
-Response("نظر ثبت شد",true,null,true);
+Response("نظر شما ثبت شد و بعد از تایید نمایش داده خواهد شد",true,null,true);
