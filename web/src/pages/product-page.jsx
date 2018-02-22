@@ -139,14 +139,18 @@ const ProductDetails = (props) => {
                         color: palette.accent1Color
                     }}>security </i>
                     <span>گارانتی: </span>
-                    <b>
-                        {props.warranties.map((e, index) => {
-                            return <React.Fragment key={`G_${index}`}>
-                                {e.full}
-                                <br />
-                            </React.Fragment>
-                        })}
-                    </b>
+                    {props.warranties.length > 0 ?
+                        <b>
+                            {props.warranties.map((e, index) => {
+                                return <React.Fragment key={`G_${index}`}>
+                                    {e.full}
+                                    <br />
+                                </React.Fragment>
+                            })}
+                        </b>
+                        :
+                        <b>ندارد</b>
+                    }
                     <div>
                         {props.children}
                     </div>
@@ -185,9 +189,6 @@ export default class ProductPage extends Component {
         commentText = this.commentTextField.getValue(),
         commentTitle = this.commentTitleField.getValue(),
         token = cookie.get('AS_AUTH');
-        // if (token === undefined) {
-        //     token = null;
-        // }
         if (commentText && commentTitle && score) {
             axios({
                 method: 'post',
@@ -288,7 +289,9 @@ export default class ProductPage extends Component {
                                                                     <div
                                                                         style={{
                                                                             textAlign: 'center',
-                                                                            padding: 24
+                                                                            padding: 24,
+                                                                            margin: '0 auto',
+                                                                            maxWidth: 480
                                                                         }}>
                                                                     <RaisedButton
                                                                         label='افزودن به سبد خرید'
