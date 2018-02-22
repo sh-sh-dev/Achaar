@@ -35,6 +35,7 @@ const Comments = (props) => {
 
         result.push(
             <Card
+                key={i}
                 style={{
                     boxShadow: 'none'
                 }}>
@@ -45,6 +46,10 @@ const Comments = (props) => {
                     showExpandableButton={true}
                     avatar={
                         <Avatar
+                            size={30}
+                            style={{
+                                marginTop: 5
+                            }}
                             backgroundColor={`rgb(${scoreColor.join(', ')})`}
                             title={`امتیاز کاربر به این کالا: ${numToFA(comment.score)}`}
                             icon={
@@ -75,39 +80,64 @@ const ProductDetails = (props) => {
 
     return (
         <div>
-            <h2>{props.name}</h2>
-                <i className="mdi" style={{
-                        fontSize: '165%',
-                        color: palette.accent1Color
-                    }}>attach_money </i>
-                    <span>قیمت: </span>
-                    <b style={{
-                            color: discount.special ? '#f44336' : palette.accent2Color
-                        }}>{price}</b>&nbsp;
-                    {hasD && <React.Fragment><s style={{color: '#888', fontSize: 13}}>{prevPrice}</s>&nbsp;</React.Fragment>}
-                    تومان
+            <h2>
+                {props.name}
+            </h2>
+            <i
+                className="mdi"
+                style={{
+                    fontSize: '165%',
+                    color: palette.accent1Color
+                }}>attach_money </i>
+                <span>قیمت: </span>
+                <b style={{
+                        color: discount.special ? '#f44336' : palette.accent2Color
+                    }}>
+                    {price}
+                </b>
+                &nbsp;
+                {hasD &&
+                    <React.Fragment><s style={{color: '#888', fontSize: 13}}>
+                        {prevPrice}
+                    </s>&nbsp;</React.Fragment>
+                }
+                تومان
                 <Space height={16} />
-                <i className="mdi" style={{
+                <i
+                    className="mdi"
+                    style={{
                         fontSize: '165%',
                         color: palette.accent1Color
                     }}>security </i>
-                <span>گارانتی: </span>
-                    <b>{props.warranties.map(e => {
-                            return <React.Fragment>{e.full} <br /></React.Fragment>
-                        })}</b>
-            <p style={{
-                    color: '#959595'
-                }}>{props.description}</p>
-        </div>
-    )
+                    <span>گارانتی: </span>
+                    <b>
+                        {props.warranties.map((e, index) => {
+                            return <React.Fragment key={`G_${index}`}>
+                                {e.full}
+                                <br />
+                            </React.Fragment>
+                        })}
+                    </b>
+                    <div>
+                        {props.children}
+                    </div>
+                    <p style={{
+                            color: '#777777',
+                            fontSize: 14,
+                            fontWeight: 500
+                        }}>
+                        {props.description}
+                    </p>
+                </div>
+            )
 }
 
 export default class ProductPage extends Component {
     constructor(props){
         super(props);
         this.state = {
-            activeTab: 2,
-            commentDialogOpen: true
+            activeTab: 0,
+            commentDialogOpen: false
         }
     }
 
@@ -194,13 +224,29 @@ export default class ProductPage extends Component {
                                             switch (this.state.activeTab) {
                                                 case 0:
                                                     return (<div className='clear' style={tabItemStyle}>
-                                                        <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description} />
+                                                        <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description}>
+                                                                {this.auth &&
+                                                                    <div
+                                                                        style={{
+                                                                            textAlign: 'center',
+                                                                            padding: 24
+                                                                        }}>
+                                                                    <RaisedButton
+                                                                        label='افزودن به سبد خرید'
+                                                                        fullWidth
+                                                                        secondary={true}
+                                                                        icon={
+                                                                            <FontIcon className="mdi">add_shopping_cart</FontIcon>
+                                                                        } />
+                                                                    </div>
+                                                                }
+                                                        </ProductDetails>
                                                     </div>);
                                                 case 1:
                                                     return (<div className='clear' style={tabItemStyle}>
                                                         <Table selectable={false} multipleSelectable={false}>
                                                             <TableBody displayRowCheckbox={false}>
-                                                                {result.technical_specifications.map(e => <TableRow><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
+                                                                {result.technical_specifications.map((e, index) => <TableRow key={index}><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
                                                             </TableBody>
                                                         </Table>
                                                     </div>);
@@ -218,13 +264,21 @@ export default class ProductPage extends Component {
                             {this.auth &&
                                 <React.Fragment>
                                     <FloatingActionButton secondary={true} style={{
-                                            position: 'fixed', right: this.state.activeTab === 2 ? -60 : 32, bottom: 32, zIndex: 1100
+                                            position: 'fixed',
+                                            right: 32,
+                                            bottom: 32,
+                                            zIndex: 1100,
+                                            transform: `scale(${ Number(this.state.activeTab !== 2) })`
                                         }}>
                                         <FontIcon className='mdi'>add_shopping_cart</FontIcon>
                                     </FloatingActionButton>
 
                                     <FloatingActionButton backgroundColor={palette.accent3Color} style={{
-                                            position: 'fixed', right: 32, bottom: this.state.activeTab === 2 ? 32 : -60, zIndex: 1100
+                                            position: 'fixed',
+                                            right: 32,
+                                            bottom: 32,
+                                            zIndex: 1100,
+                                            transform: `scale(${ Number(this.state.activeTab === 2) })`
                                         }} onClick={di.open.bind(this)} iconStyle={{
                                             color: palette.accent1Color
                                         }}>
@@ -242,7 +296,9 @@ export default class ProductPage extends Component {
                                         modal
                                         actions={
                                             [
-                                                <FlatButton onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
+                                                <FlatButton style={{
+                                                        marginRight: 8
+                                                    }} onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
                                                 <FlatButton secondary={true} label="ثبت دیدگاه"></FlatButton>
                                             ]
                                         }>
