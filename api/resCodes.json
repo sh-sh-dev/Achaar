@@ -46,8 +46,10 @@
   , "addComment": {
       "token_invalid":-2,
       "fill_inputs":-3,
-      "can_not_comment":-800,
-      "sql_failed":-801
+      "product_not_found":-800,
+      "score_not_valid":-801,
+      "can_not_comment":-802,
+      "sql_failed":-803
     }
   }
 }
