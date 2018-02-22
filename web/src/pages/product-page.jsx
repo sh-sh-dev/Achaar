@@ -228,215 +228,216 @@ export default class ProductPage extends Component {
         return (
             <FNR
                 component={
-                    ({data: {result}}) => {
-                        if (!result.code) {
-                            return <div>
-                            <Helmet>
-                                <title>
-                                    {`${result.name} | آچار`}
-                                </title>
-                            </Helmet>
-                            <AppBar
-                                zDepth={2}
-                                title={result.name}
-                                iconElementLeft={
-                                    <Link to='/'>
-                                        <IconButton>
-                                            <FontIcon
-                                                className='mdi'
-                                                color={palette.primary3Color}>
-                                                arrow_forward
-                                            </FontIcon>
-                                        </IconButton>
-                                    </Link>
-                                }
-                                style={{flexWrap: 'wrap', position: 'fixed', right: 0}}
-                                iconElementRight={
-                                    this.auth &&
-                                    <Link to='/cart'>
-                                        <IconButton>
-                                            <FontIcon
-                                                color={palette.primary3Color}
-                                                className='mdi'>shopping_cart</FontIcon>
-                                        </IconButton>
-                                    </Link>
-                                }>
-                                <div style={{width: '100%', textAlign: 'center', marginRight: -20}}>
-                                    <Tabs
-                                        onChange={this.handleChangeTab}
-                                        value={this.state.activeTab}
-                                        style={{width: 500, maxWidth: '100vw', display: 'inline-block'}}>
-                                        <Tab label='معرفی' value={0} />
-                                        <Tab label="مشخصات فنی" value={1} />
-                                        <Tab label="نظرات کاربران" value={2} />
-                                    </Tabs>
-                                </div>
-                            </AppBar>
-                            <Space height={104} />
-                            <div style={{
-                                    padding: 16
-                                }}>
-                                <Paper className="col-xs-11.8 col-md-8 productmaincol clear" style={{
-                                        padding: 0
-                                    }}>
-                                    <div>
-                                        {(function() {
-                                            switch (this.state.activeTab) {
-                                                case 0:
-                                                    return (<div className='clear' style={tabItemStyle}>
-                                                        <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description}>
-                                                                {this.auth &&
-                                                                    <div
-                                                                        style={{
-                                                                            textAlign: 'center',
-                                                                            padding: 24,
-                                                                            margin: '0 auto',
-                                                                            maxWidth: 480
-                                                                        }}>
-                                                                    <RaisedButton
-                                                                        label='افزودن به سبد خرید'
-                                                                        fullWidth
-                                                                        secondary={true}
-                                                                        icon={
-                                                                            <FontIcon className="mdi">add_shopping_cart</FontIcon>
-                                                                        } />
-                                                                    </div>
-                                                                }
-                                                        </ProductDetails>
-                                                    </div>);
-                                                case 1:
-                                                    return (<div className='clear' style={tabItemStyle}>
-                                                        <Table selectable={false} multipleSelectable={false}>
-                                                            <TableBody displayRowCheckbox={false}>
-                                                                {result.technical_specifications.map((e, index) => <TableRow key={index}><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
-                                                            </TableBody>
-                                                        </Table>
-                                                    </div>);
-                                                case 2:
-                                                    return (<div className='clear' style={tabItemStyle}>
-                                                        <Comments data={result.comments} />
-                                                    </div>);
-                                                default:
-                                                    return <Redirect to='/' />
-                                            }
-                                        }.bind(this)())}
+                    ({data}) => {
+                        const {result, code} = data;
+                        if (result.ok === true) {
+                            return (<div>
+                                <Helmet>
+                                    <title>
+                                        {`${result.name} | آچار`}
+                                    </title>
+                                </Helmet>
+                                <AppBar
+                                    zDepth={2}
+                                    title={result.name}
+                                    iconElementLeft={
+                                        <Link to='/'>
+                                            <IconButton>
+                                                <FontIcon
+                                                    className='mdi'
+                                                    color={palette.primary3Color}>
+                                                    arrow_forward
+                                                </FontIcon>
+                                            </IconButton>
+                                        </Link>
+                                    }
+                                    style={{flexWrap: 'wrap', position: 'fixed', right: 0}}
+                                    iconElementRight={
+                                        this.auth &&
+                                        <Link to='/cart'>
+                                            <IconButton>
+                                                <FontIcon
+                                                    color={palette.primary3Color}
+                                                    className='mdi'>shopping_cart</FontIcon>
+                                            </IconButton>
+                                        </Link>
+                                    }>
+                                    <div style={{width: '100%', textAlign: 'center', marginRight: -20}}>
+                                        <Tabs
+                                            onChange={this.handleChangeTab}
+                                            value={this.state.activeTab}
+                                            style={{width: 500, maxWidth: '100vw', display: 'inline-block'}}>
+                                            <Tab label='معرفی' value={0} />
+                                            <Tab label="مشخصات فنی" value={1} />
+                                            <Tab label="نظرات کاربران" value={2} />
+                                        </Tabs>
                                     </div>
-                                </Paper>
-                            </div>
-                            {this.auth &&
-                                <React.Fragment>
-                                    <Snackbar
-                                        open={this.state.commentSnackOpen}
-                                        message={this.state.commentSnackText}
-                                        autoHideDuration={3000}
-                                        onRequestClose={
-                                            () => {
-                                                this.setState({
-                                                    commentSnackOpen: false
-                                                })
-                                            }
-                                        } />
-                                    <FloatingActionButton secondary={true} style={{
-                                            position: 'fixed',
-                                            right: 32,
-                                            bottom: 32,
-                                            zIndex: 1100,
-                                            transform: `scale(${ Number(this.state.activeTab !== 2) })`
+                                </AppBar>
+                                <Space height={104} />
+                                <div style={{
+                                        padding: 16
+                                    }}>
+                                    <Paper className="col-xs-11.8 col-md-8 productmaincol clear" style={{
+                                            padding: 0
                                         }}>
-                                        <FontIcon className='mdi'>add_shopping_cart</FontIcon>
-                                    </FloatingActionButton>
+                                        <div>
+                                            {(function() {
+                                                switch (this.state.activeTab) {
+                                                    case 0:
+                                                        return (<div className='clear' style={tabItemStyle}>
+                                                            <ProductDetails warranties={result.warranties} discount={result.discount} hasD={result.has_discount} name={result.name} price={result.price} description={result.description}>
+                                                                    {this.auth &&
+                                                                        <div
+                                                                            style={{
+                                                                                textAlign: 'center',
+                                                                                padding: 24,
+                                                                                margin: '0 auto',
+                                                                                maxWidth: 220
+                                                                            }}>
+                                                                        <RaisedButton
+                                                                            label='افزودن به سبد خرید'
+                                                                            fullWidth
+                                                                            secondary={true}
+                                                                            icon={
+                                                                                <FontIcon className="mdi">add_shopping_cart</FontIcon>
+                                                                            } />
+                                                                        </div>
+                                                                    }
+                                                            </ProductDetails>
+                                                        </div>);
+                                                    case 1:
+                                                        return (<div className='clear' style={tabItemStyle}>
+                                                            <Table selectable={false} multipleSelectable={false}>
+                                                                <TableBody displayRowCheckbox={false}>
+                                                                    {result.technical_specifications.map((e, index) => <TableRow key={index}><TableRowColumn>{e.item}</TableRowColumn><TableRowColumn>{e.value}</TableRowColumn></TableRow>)}
+                                                                </TableBody>
+                                                            </Table>
+                                                        </div>);
+                                                    case 2:
+                                                        return (<div className='clear' style={tabItemStyle}>
+                                                            <Comments data={result.comments} />
+                                                        </div>);
+                                                    default:
+                                                        return <Redirect to='/' />
+                                                }
+                                            }.bind(this)())}
+                                        </div>
+                                    </Paper>
+                                </div>
+                                {this.auth &&
+                                    <React.Fragment>
+                                        <Snackbar
+                                            open={this.state.commentSnackOpen}
+                                            message={this.state.commentSnackText}
+                                            autoHideDuration={3000}
+                                            onRequestClose={
+                                                () => {
+                                                    this.setState({
+                                                        commentSnackOpen: false
+                                                    })
+                                                }
+                                            } />
+                                        <FloatingActionButton secondary={true} style={{
+                                                position: 'fixed',
+                                                right: 32,
+                                                bottom: 32,
+                                                zIndex: 1100,
+                                                transform: `scale(${ Number(this.state.activeTab !== 2) })`
+                                            }}>
+                                            <FontIcon className='mdi'>add_shopping_cart</FontIcon>
+                                        </FloatingActionButton>
 
-                                    <FloatingActionButton backgroundColor={palette.accent3Color} style={{
-                                            position: 'fixed',
-                                            right: 32,
-                                            bottom: 32,
-                                            zIndex: 1100,
-                                            transform: `scale(${ Number(this.state.activeTab === 2) })`
-                                        }} onClick={di.open.bind(this)} iconStyle={{
-                                            color: palette.accent1Color
-                                        }}>
-                                        <FontIcon className='mdi'>chat_bubble</FontIcon>
-                                    </FloatingActionButton>
+                                        <FloatingActionButton backgroundColor={palette.accent3Color} style={{
+                                                position: 'fixed',
+                                                right: 32,
+                                                bottom: 32,
+                                                zIndex: 1100,
+                                                transform: `scale(${ Number(this.state.activeTab === 2) })`
+                                            }} onClick={di.open.bind(this)} iconStyle={{
+                                                color: palette.accent1Color
+                                            }}>
+                                            <FontIcon className='mdi'>chat_bubble</FontIcon>
+                                        </FloatingActionButton>
 
-                                    <Dialog
-                                        onRequestClose={di.close.bind(this)}
-                                        title='دیدگاه شما'
-                                        open={this.state.commentDialogOpen}
-                                        contentStyle={{
-                                            width: '96vw',
-                                            maxWidth: 720,
-                                        }}
-                                        modal
-                                        actions={
-                                            [
-                                                <FlatButton style={{
-                                                        marginRight: 8
-                                                    }} onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
-                                                <FlatButton onClick={this.sendComment} secondary={true} label="ثبت دیدگاه"></FlatButton>
-                                            ]
-                                        }>
-                                            <div style={{
-                                                    display: 'flex',
-                                                    alignItems: 'flex-start',
-                                                    borderBottom: '1px solid #dedede',
-                                                    paddingBottom: 8,
-                                                    marginBottom: 8
-                                                }}>
-                                                <IconButton disableTouchRipple style={{
-                                                        marginRight: 16
-                                                    }} tabIndex={-1}>
-                                                    <FontIcon className="mdi">create</FontIcon>
-                                                </IconButton>
-                                                <TextField
-                                                    ref={
-                                                        e => {this.commentTitleField = e}
-                                                    }
-                                                    fullWidth
-                                                    underlineShow={false}
-                                                    hintText='عنوان دیدگاه' />
-                                            </div>
-                                            <div style={{
-                                                    display: 'flex',
-                                                    alignItems: 'flex-start',
-                                                    borderBottom: '1px solid #dedede'
-                                                }}>
-                                                <IconButton disableTouchRipple style={{
-                                                        marginRight: 16
-                                                    }} tabIndex={-1}>
-                                                    <FontIcon className="mdi">subject</FontIcon>
-                                                </IconButton>
-                                                <TextField
-                                                    fullWidth
-                                                    underlineShow={false}
-                                                    multiLine
-                                                    rows={7}
-                                                    ref={
-                                                        e => {this.commentTextField = e}
-                                                    }
-                                                    rowsMax={7}
-                                                    hintStyle={{
-                                                        bottom: 'auto',
-                                                        top: 12
-                                                    }}
-                                                    hintText='متن دیدگاه' />
-                                            </div>
-                                            <Space height={15} />
-                                            <StarRating ref={
-                                                    (e) => {this.rateComponent = e}
-                                                } />
-                                    </Dialog>
-                                </React.Fragment>
-                            }
-                        </div>;
+                                        <Dialog
+                                            onRequestClose={di.close.bind(this)}
+                                            title='دیدگاه شما'
+                                            open={this.state.commentDialogOpen}
+                                            contentStyle={{
+                                                width: '96vw',
+                                                maxWidth: 720,
+                                            }}
+                                            modal
+                                            actions={
+                                                [
+                                                    <FlatButton style={{
+                                                            marginRight: 8
+                                                        }} onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
+                                                    <FlatButton onClick={this.sendComment} secondary={true} label="ثبت دیدگاه"></FlatButton>
+                                                ]
+                                            }>
+                                                <div style={{
+                                                        display: 'flex',
+                                                        alignItems: 'flex-start',
+                                                        borderBottom: '1px solid #dedede',
+                                                        paddingBottom: 8,
+                                                        marginBottom: 8
+                                                    }}>
+                                                    <IconButton disableTouchRipple style={{
+                                                            marginRight: 16
+                                                        }} tabIndex={-1}>
+                                                        <FontIcon className="mdi">create</FontIcon>
+                                                    </IconButton>
+                                                    <TextField
+                                                        ref={
+                                                            e => {this.commentTitleField = e}
+                                                        }
+                                                        fullWidth
+                                                        underlineShow={false}
+                                                        hintText='عنوان دیدگاه' />
+                                                </div>
+                                                <div style={{
+                                                        display: 'flex',
+                                                        alignItems: 'flex-start',
+                                                        borderBottom: '1px solid #dedede'
+                                                    }}>
+                                                    <IconButton disableTouchRipple style={{
+                                                            marginRight: 16
+                                                        }} tabIndex={-1}>
+                                                        <FontIcon className="mdi">subject</FontIcon>
+                                                    </IconButton>
+                                                    <TextField
+                                                        fullWidth
+                                                        underlineShow={false}
+                                                        multiLine
+                                                        rows={7}
+                                                        ref={
+                                                            e => {this.commentTextField = e}
+                                                        }
+                                                        rowsMax={7}
+                                                        hintStyle={{
+                                                            bottom: 'auto',
+                                                            top: 12
+                                                        }}
+                                                        hintText='متن دیدگاه' />
+                                                </div>
+                                                <Space height={15} />
+                                                <StarRating ref={
+                                                        (e) => {this.rateComponent = e}
+                                                    } />
+                                        </Dialog>
+                                    </React.Fragment>
+                                }
+                            </div>);
                         } else {
-                            if (result.code === -403) {
+                            if (code === -403) {
                                 return <Err404 />
                             } else {
                                 return (
                                     <div className='load-indic'>
                                         <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
                                         <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
-                                            <b>{this.state.data}</b>
+                                            <b>{result.data}</b>
                                         </div>
                                         <Space height={15} />
                                         <Link to='/'>
