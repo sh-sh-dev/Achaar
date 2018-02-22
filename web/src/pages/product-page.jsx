@@ -139,14 +139,18 @@ const ProductDetails = (props) => {
                         color: palette.accent1Color
                     }}>security </i>
                     <span>گارانتی: </span>
-                    <b>
-                        {props.warranties.map((e, index) => {
-                            return <React.Fragment key={`G_${index}`}>
-                                {e.full}
-                                <br />
-                            </React.Fragment>
-                        })}
-                    </b>
+                    {props.warranties.length > 0 ?
+                        <b>
+                            {props.warranties.map((e, index) => {
+                                return <React.Fragment key={`G_${index}`}>
+                                    {e.full}
+                                    <br />
+                                </React.Fragment>
+                            })}
+                        </b>
+                        :
+                        <b>ندارد</b>
+                    }
                     <div>
                         {props.children}
                     </div>
