@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Space, palette, slicePrice, numToFA, cookie, resolveApiURL, validateCookie} from '../utils/' ;
+import {Space, palette, slicePrice, numToFA, resolveApiURL, validateCookie, cookie} from '../utils/' ;
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
@@ -9,11 +9,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import TextField from 'material-ui/TextField';
 import {Tab, Tabs} from 'material-ui/Tabs';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import {
     Table, TableRow, TableBody, TableRowColumn
 } from 'material-ui/Table';
@@ -21,7 +19,37 @@ import {Link, Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import FNR from 'react-fnr';
 import Err404 from './err404';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import { Rating } from 'material-ui-rating';
+import axios from 'axios';
+import Snackbar from 'material-ui/Snackbar';
+
+class StarRating extends Component {
+    state = {
+        value: 5
+    }
+    render() {
+        return(
+            <div style={{
+                    textAlign: 'center'
+                }}>
+                <span style={{
+                        fontWeight: 500,
+                        fontSize: 20
+                    }}>امتیاز شما به این کالا: <strong>{numToFA(this.state.value)}</strong> از ۵</span>
+                <Rating
+                    value={this.state.value}
+                    max={5}
+                    onChange={value => {
+                        this.setState({
+                            value
+                        })
+                    }}
+                    />
+            </div>
+        )
+    }
+}
 
 const Comments = (props) => {
     let result = [];
@@ -137,7 +165,9 @@ export default class ProductPage extends Component {
         super(props);
         this.state = {
             activeTab: 0,
-            commentDialogOpen: false
+            commentDialogOpen: false,
+            commentSnackOpen: false,
+            commentSnackText: ''
         }
     }
 
@@ -148,6 +178,36 @@ export default class ProductPage extends Component {
     }
 
     auth = validateCookie()
+
+    sendComment = () => {
+        let score = this.rateComponent.state.value,
+        commentText = this.commentTextField.getValue(),
+        commentTitle = this.commentTitleField.getValue(),
+        token = cookie.get('AS_AUTH');
+        // if (token === undefined) {
+        //     token = null;
+        // }
+        if (commentText && commentTitle && score) {
+            axios({
+                method: 'post',
+                url: resolveApiURL('addComment'),
+                data: {
+                    token,
+                    text: commentText,
+                    title: commentTitle,
+                    score,
+                    product: this.props.pid
+                }
+            }).then(res => {
+                console.log(res);
+                this.setState({
+                    commentDialogOpen: false,
+                    commentSnackOpen: true,
+                    commentSnackText: res.data.result
+                })
+            })
+        }
+    }
 
     render(){
         const di = {
@@ -162,13 +222,11 @@ export default class ProductPage extends Component {
             direction: 'rtl',
             clear: 'both',
             padding: 16
-        },
-        product = this.state.data;
+        };
         return (
             <FNR
                 component={
                     ({data: {result}}) => {
-                        console.log(result);
                         if (!result.code) {
                             return <div>
                             <Helmet>
@@ -263,6 +321,17 @@ export default class ProductPage extends Component {
                             </div>
                             {this.auth &&
                                 <React.Fragment>
+                                    <Snackbar
+                                        open={this.state.commentSnackOpen}
+                                        message={this.state.commentSnackText}
+                                        autoHideDuration={3000}
+                                        onRequestClose={
+                                            () => {
+                                                this.setState({
+                                                    commentSnackOpen: false
+                                                })
+                                            }
+                                        } />
                                     <FloatingActionButton secondary={true} style={{
                                             position: 'fixed',
                                             right: 32,
@@ -299,7 +368,7 @@ export default class ProductPage extends Component {
                                                 <FlatButton style={{
                                                         marginRight: 8
                                                     }} onClick={di.close.bind(this)} label="لغو" secondary={true}></FlatButton>,
-                                                <FlatButton secondary={true} label="ثبت دیدگاه"></FlatButton>
+                                                <FlatButton onClick={this.sendComment} secondary={true} label="ثبت دیدگاه"></FlatButton>
                                             ]
                                         }>
                                             <div style={{
@@ -315,13 +384,17 @@ export default class ProductPage extends Component {
                                                     <FontIcon className="mdi">create</FontIcon>
                                                 </IconButton>
                                                 <TextField
+                                                    ref={
+                                                        e => {this.commentTitleField = e}
+                                                    }
                                                     fullWidth
                                                     underlineShow={false}
                                                     hintText='عنوان دیدگاه' />
                                             </div>
                                             <div style={{
                                                     display: 'flex',
-                                                    alignItems: 'flex-start'
+                                                    alignItems: 'flex-start',
+                                                    borderBottom: '1px solid #dedede'
                                                 }}>
                                                 <IconButton disableTouchRipple style={{
                                                         marginRight: 16
@@ -333,6 +406,9 @@ export default class ProductPage extends Component {
                                                     underlineShow={false}
                                                     multiLine
                                                     rows={7}
+                                                    ref={
+                                                        e => {this.commentTextField = e}
+                                                    }
                                                     rowsMax={7}
                                                     hintStyle={{
                                                         bottom: 'auto',
@@ -340,6 +416,10 @@ export default class ProductPage extends Component {
                                                     }}
                                                     hintText='متن دیدگاه' />
                                             </div>
+                                            <Space height={15} />
+                                            <StarRating ref={
+                                                    (e) => {this.rateComponent = e}
+                                                } />
                                     </Dialog>
                                 </React.Fragment>
                             }
