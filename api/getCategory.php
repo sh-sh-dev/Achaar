@@ -21,9 +21,14 @@ $Products = [];
 while ($ProductsROW = $getProducts->fetch_assoc()) {
     $getDiscount = $db->query("SELECT * FROM `discounts` WHERE `product`='$ProductsROW[n]' AND `active`=1 AND `expiry_date`>UNIX_TIMESTAMP()");
 
+    $Score = $db->query("SELECT AVG(score) FROM comments WHERE `product`='$ProductsROW[n]' AND `approved`=1");
+    $Score = $Score->fetch_assoc();
+    $Score = (int)round($Score["AVG(score)"]);
+
     $ProductsArray = [
         'id'=>$ProductsROW['n'],
         'name'=>$ProductsROW["name"],
+        'score'=>$Score,
         'price'=>$ProductsROW["price"],
         'has_discount'=>false,
         'available'=>$ProductsROW['available'] ? true : false

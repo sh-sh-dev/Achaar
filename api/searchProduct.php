@@ -19,9 +19,14 @@ $result = [];
 while ($SearchROW = $Search->fetch_assoc()) {
     $getDiscount = $db->query("SELECT * FROM `discounts` WHERE `product`='$SearchROW[n]' AND `active`=1 AND `expiry_date`>UNIX_TIMESTAMP()");
 
+    $Score = $db->query("SELECT AVG(score) FROM comments WHERE `product`='$SearchROW[n]' AND `approved`=1");
+    $Score = $Score->fetch_assoc();
+    $Score = (int)round($Score["AVG(score)"]);
+
     $SearchArray = [
         'name'=>$SearchROW['name'],
         'price'=>$SearchROW['price'],
+        'score'=>$Score,
         'category'=>getCategory($SearchROW['category'],'name'),
         'has_discount'=>false,
         'available'=>$SearchROW['available'] ? true : false
