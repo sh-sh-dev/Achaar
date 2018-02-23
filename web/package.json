@@ -31,6 +31,8 @@
     "html-webpack-plugin": "2.29.0",
     "immutability-helper": "^2.6.4",
     "jest": "20.0.4",
+    "lodash.chunk": "^4.2.0",
+    "lodash.throttle": "^4.1.1",
     "material-ui": "^0.20.0",
     "material-ui-rating": "^1.4.1",
     "node-sass": "^4.7.2",

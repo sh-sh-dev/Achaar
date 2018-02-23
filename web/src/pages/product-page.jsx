@@ -18,7 +18,7 @@ import {
 import {Link, Redirect} from 'react-router-dom';
 import Helmet from 'react-helmet';
 import FNR from 'react-fnr';
-import Err404 from './err404';
+import Err404 from './errors/not-found';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
 import { Rating } from 'material-ui-rating';
 import axios from 'axios';
@@ -172,13 +172,50 @@ export default class ProductPage extends Component {
             activeTab: 0,
             commentDialogOpen: false,
             commentSnackOpen: false,
-            commentSnackText: ''
+            commentSnackText: '',
+            fabHidden: false
+        };
+
+        let didScroll = false,
+        last = 0,
+        delta = 5,
+        height = 56;
+
+        window.addEventListener('scroll', e => {
+            didScroll = true;
+        })
+
+        setInterval(() => {
+            if (didScroll) {
+                hasScrolled();
+                didScroll = false;
+            }
+        }, 330)
+
+        const hasScrolled = () => {
+            let st = window.scrollY;
+
+            if (Math.abs(last - st) <= delta) {return;}
+
+            if (st > last && st > height) {
+                this.setState({
+                    fabHidden: true
+                });
+            } else {
+                if (st + window.innerHeight < document.body.offsetHeight) {
+                    this.setState({
+                        fabHidden: false
+                    });
+                }
+            }
+            last = st;
         }
     }
 
     handleChangeTab = value => {
         this.setState({
-            activeTab: value
+            activeTab: value,
+            fabHidden: false
         })
     }
 
@@ -230,7 +267,7 @@ export default class ProductPage extends Component {
                 component={
                     ({data}) => {
                         const {result, code} = data;
-                        if (result.ok === true) {
+                        if (data.ok === true) {
                             return (<div>
                                 <Helmet>
                                     <title>
@@ -340,7 +377,7 @@ export default class ProductPage extends Component {
                                         <FloatingActionButton secondary={true} style={{
                                                 position: 'fixed',
                                                 right: 32,
-                                                bottom: 32,
+                                                bottom: !this.state.fabHidden ? 32 : -60,
                                                 zIndex: 1100,
                                                 transform: `scale(${ Number(this.state.activeTab !== 2) })`
                                             }}>
@@ -350,7 +387,7 @@ export default class ProductPage extends Component {
                                         <FloatingActionButton backgroundColor={palette.accent3Color} style={{
                                                 position: 'fixed',
                                                 right: 32,
-                                                bottom: 32,
+                                                bottom: !this.state.fabHidden ? 32 : -60,
                                                 zIndex: 1100,
                                                 transform: `scale(${ Number(this.state.activeTab === 2) })`
                                             }} onClick={di.open.bind(this)} iconStyle={{
@@ -437,7 +474,10 @@ export default class ProductPage extends Component {
                                     <div className='load-indic'>
                                         <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
                                         <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
-                                            <b>{result.data}</b>
+                                            <b style={{
+                                                    fontWeight: 500,
+                                                    fontSize: '.85em'
+                                                }}>{result}.</b>
                                         </div>
                                         <Space height={15} />
                                         <Link to='/'>

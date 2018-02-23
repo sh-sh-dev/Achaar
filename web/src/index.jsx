@@ -15,12 +15,10 @@ import LogoutFromAccount from './pages/account-logout';
 import DeleteAccount from './pages/delete-account';
 import Category from './pages/category';
 import OrderFinalization from './pages/orderf';
-import Err404 from './pages/err404';
+import Err404 from './pages/errors/not-found';
 // misc
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
-
-console.log('👌🔧');
 
 class App extends React.Component {
     render() {

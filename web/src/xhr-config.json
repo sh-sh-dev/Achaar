@@ -1,0 +1,6 @@
+{
+    "config": {
+        "timeout": 5000
+    },
+    "method": "post"
+}
