@@ -23,6 +23,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import { Rating } from 'material-ui-rating';
 import axios from 'axios';
 import Snackbar from 'material-ui/Snackbar';
+import Skeleton from '../skeleton';
 
 class StarRating extends Component {
     state = {
@@ -263,12 +264,10 @@ export default class ProductPage extends Component {
             padding: 16
         };
         return (
-            <FNR
-                component={
-                    ({data}) => {
-                        const {result, code} = data;
-                        if (data.ok === true) {
-                            return (<div>
+            <Skeleton
+                subject='محصول'
+                component={({result}) => {
+                    return (<div>
                                 <Helmet>
                                     <title>
                                         {`${result.name} | آچار`}
@@ -466,46 +465,11 @@ export default class ProductPage extends Component {
                                     </React.Fragment>
                                 }
                             </div>);
-                        } else {
-                            if (code === -403) {
-                                return <Err404 />
-                            } else {
-                                return (
-                                    <div className='load-indic'>
-                                        <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
-                                        <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
-                                            <b style={{
-                                                    fontWeight: 500,
-                                                    fontSize: '.85em'
-                                                }}>{result}.</b>
-                                        </div>
-                                        <Space height={15} />
-                                        <Link to='/'>
-                                            <RaisedButton backgroundColor={palette.accent2Color} labelColor='#fff' label='خروج به صفحه اصلی' />
-                                        </Link>
-                                    </div>
-                                )
-                            }
-                        }
-                    }
-                }
+                }}
                 url={resolveApiURL('getProduct')}
-                loadingComponent={
-                    () => {
-                        return (<div className='load-indic'>
-                            <CircularProgress size={120} thickness={6} color={palette.accent3Color} />
-                            <br />
-                            در حال بارگذاری کالا...
-                        </div>)
-                    }
-                }
-                errorComponent={
-                    () => {
-                        return <Redirect to='/' />
-                    }
-                }
-                data={{product: this.props.pid}}
-                method='post' />
+                data={{
+                    product: this.props.pid
+                }} />
         )
     }
 }
