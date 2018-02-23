@@ -1,20 +1,26 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Link} from 'react-router-dom';
-import {palette, Space, validateCookie} from '../utils/' ;
+import {palette, Space} from '../../utils/' ;
 
-export default function Err404() {
+export default function Err(props) {
     return (
         <div
             className='load-indic'
-            style={{backgroundColor: palette.primary1Color}}>
+            style={{backgroundColor: '#c6c6c6'}}>
             <i
                 className='mdi'
-                style={{opacity: .5, fontSize: 80}}>cloud_off</i>
+                style={{color: '#f44336', fontSize: 80}}>error_outline</i>
             <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>
-                <b>
-                    گشتم نبود، نگرد نیست!
-                </b>
+                خطایی رخ داد.<br />
+                {props.err &&
+                    <b style={{
+                            fontWeight: 500,
+                            fontSize: '.85em'
+                        }}>
+                        {props.err}
+                    </b>
+                }
             </div>
             <Space height={15} />
             <Link to='/'>

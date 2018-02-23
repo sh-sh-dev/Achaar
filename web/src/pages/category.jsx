@@ -1,4 +1,4 @@
-import React, {Component, Fragment as F} from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import qs from 'querystringify';
 import AppBar from 'material-ui/AppBar';
@@ -12,11 +12,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import IconMenu from 'material-ui/IconMenu';
 import Toggle from 'material-ui/Toggle';
-import CircularProgress from 'material-ui/CircularProgress';
-import Err404 from './err404';
-import {palette, Space, numToFA, slicePrice, resolveApiURL, validateCookie} from '../utils/' 
+import {palette, Space, numToFA, slicePrice, resolveApiURL} from '../utils/'
 import Helmet from 'react-helmet';
-import axios from 'axios';
+import Skeleton from '../skeleton';
 
 class CategoryItem extends Component {
     render() {
@@ -34,15 +32,21 @@ class CategoryItem extends Component {
                     <CardTitle title={e.name} />
                     <CardText>
                         {e.has_discount ?
-                            <F>قیمت: <s style={{color: '#888', fontSize: 13}}>{slicePrice(numToFA(e.price))}</s> &nbsp;<b style={
+                            <React.Fragment>قیمت: <s style={{color: '#888', fontSize: 13}}>{slicePrice(numToFA(e.price))}</s> &nbsp;<b style={
                                 {
                                     color: e.discount.special ? '#f44336' : palette.accent1Color,
                                     fontSize: 17.5
                                 }
-                            }>{slicePrice(numToFA(e.discount.discounted_price))}</b> تومان</F>
+                            }>{slicePrice(numToFA(e.discount.discounted_price))}</b> تومان</React.Fragment>
                             :
-                            <F>قیمت: <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</F>
-                        }
+                            <React.Fragment>قیمت: <b style={{color: palette.accent1Color}}>{slicePrice(numToFA(e.price))}</b> تومان</React.Fragment>
+                        }<br />
+                    <small style={{
+                            display: 'block',
+                            color: '#888'
+                        }}>
+                            <i className="mdi">star</i> {numToFA(e.score / 20) + ' / ۵'}
+                        </small>
                     </CardText>
                 </Card>
             </Link>
@@ -50,10 +54,10 @@ class CategoryItem extends Component {
         });
         if (this.props.data.length > 0) {
             return (
-                <F>
-                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 == 0)}</div>
-                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 == 1)}</div>
-                </F>
+                <React.Fragment>
+                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 === 0)}</div>
+                    <div className='col-xs-12 col-sm-6 col-md-4 col-lg-3' style={{padding: 0}}>{data.filter((e, index) => index%2 === 1)}</div>
+                </React.Fragment>
             );
         } else {
             return (<div className='unselectable' style={{color: '#888', textAlign: 'center', fontWeight: 300, fontSize: 35, padding: '50px 12px'}}>
@@ -94,29 +98,29 @@ export default class Category extends Component {
             })
         }
     }
-    componentDidMount(){
-        let _ = this;
-        axios({
-            method: 'post',
-            url: resolveApiURL('getCategory'),
-            data: {
-                category: _.category
-            }
-        }).then(res => {
-            console.log(res);
-            if (res.data.ok) {
-                _.setState({
-                    loaded: true,
-                    data: res.data.result
-                })
-            } else if (res.data.ok === false) {
-                _.setState({
-                    loaded: `err${res.data.code}`,
-                    data: res.data.result
-                })
-            }
-        })
-    }
+    // componentDidMount(){
+    //     let _ = this;
+    //     axios({
+    //         method: 'post',
+    //         url: resolveApiURL('getCategory'),
+    //         data: {
+    //             category: _.category
+    //         }
+    //     }).then(res => {
+    //         console.log(res);
+    //         if (res.data.ok) {
+    //             _.setState({
+    //                 loaded: true,
+    //                 data: res.data.result
+    //             })
+    //         } else if (res.data.ok === false) {
+    //             _.setState({
+    //                 loaded: `err${res.data.code}`,
+    //                 data: res.data.result
+    //             })
+    //         }
+    //     })
+    // }
     updateQueryString = (q, v) => {
         let newQuery = {};
         newQuery[q] = v;
@@ -129,7 +133,7 @@ export default class Category extends Component {
         return (
             <div className={`FDO--container ${this.state.FDO && ' open'}`} data-mobile={this.state.mobile}>
                 <Paper zDepth={1} style={{width: '100%'}} rounded={false}>
-                    <div style={{display: 'flex', alignItems: 'center', height: 64, padding: '16px 8px', borderBottom: '1px solid #dedede'}}>
+                    <div style={{display: 'flex', alignItems: 'center', height: 56, padding: '16px 4px', borderBottom: '1px solid #dedede'}}>
                         <IconButton style={{marginRight: 16}} onClick={
                             () => {
                                 this._filterInput.focus()
@@ -174,76 +178,127 @@ export default class Category extends Component {
         )
     }
     render(){
-        if (this.state.loaded === true) {
-            return (
-                <F>
-                    <Helmet>
-                        <title>
-                            دسته بندی {this.state.data.name} | آچار
-                        </title>
-                    </Helmet>
+        return (
+            <Skeleton
+                url={resolveApiURL('getCategory')}
+                method='post'
+                data={{
+                    category: this.category
+                }}
+                component={
+                    ({result}) => {
+                        return <React.Fragment>
+                            <Helmet>
+                                <title>
+                                    دسته بندی {result.name} | آچار
+                                </title>
+                            </Helmet>
 
-                    <div className='category'>
-                        <AppBar title={this.state.data.name} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
-                            this.state.mobile ?
-                            <IconButton onClick={() => {
-                                this.setState({
-                                    FDO: true
-                                })
-                            }}>
-                                <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
-                            </IconButton> :
-                            <F></F>
-                        } />
+                            <div className='category'>
+                                <AppBar title={result.name} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
+                                    this.state.mobile ?
+                                    <IconButton onClick={() => {
+                                        this.setState({
+                                            FDO: true
+                                        })
+                                    }}>
+                                        <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
+                                    </IconButton> :
+                                    <React.Fragment></React.Fragment>
+                                } />
 
 
-                        <div className='scroll-content'>
-                            {this.filterHelpers()}
-                            <div className='result' style={{padding: 16}}>
-                                <CategoryItem data={this.state.data.products.filter((e, ind) => {
-                                        let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter.replace(/ /g, '')) !== -1);
-                                        if (this.query.availables === true) {
-                                            return condition && e.available === true
-                                        } else {
-                                            return condition
-                                        }
-                                    }).sort(this.state.sortFn)} />
+                                <div className='scroll-content'>
+                                    {this.filterHelpers()}
+                                    <div className='result' style={{padding: 16}}>
+                                        <CategoryItem data={result.products.filter((e, ind) => {
+                                                let name = e.name.toLowerCase();
+                                                let filter = this.query.filter.toLowerCase()
+                                                let condition = (this.query.min < e.price && e.price < this.query.max && name.indexOf(filter.replace(/ /g, '')) !== -1);
+                                                if (this.query.availables === true) {
+                                                    return condition && e.available === true
+                                                } else {
+                                                    return condition
+                                                }
+                                            }).sort(this.state.sortFn)} />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </F>
-            )
-        } else if (typeof this.state.loaded === 'string') {
-            if (this.state.loaded === 'err-701') {
-                return <F>
-                    <Err404 />
-                    <Helmet>
-                        <title>دسته بندی یافت نشد!</title>
-                    </Helmet>
-                </F>
-            } else {
-                return (
-                    <div className='load-indic'>
-                        <Helmet>
-                            <title>خطایی رخ داد!</title>
-                        </Helmet>
-                        <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
-                        <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
-                            <b>{this.state.data}</b>
-                        </div>
-                        <Space height={15} />
-                        <Link to='/'>
-                            <RaisedButton backgroundColor={palette.accent2Color} labelColor='#fff' label='خروج به صفحه اصلی' />
-                        </Link>
-                    </div>
-                )
-            }
-        } else {
-            return (<div className='load-indic'>
-                <CircularProgress size={120} thickness={6} color={palette.accent3Color} />
-                <br />
-                در حال بارگذاری دسته بندی...
-            </div>)
-        }
+                        </React.Fragment>
+                    }
+                }
+                subject='دسته بندی' />
+        )
+        // if (this.state.loaded === true) {
+        //     return (
+        //         <React.Fragment>
+        //             <Helmet>
+        //                 <title>
+        //                     دسته بندی {result.name} | آچار
+        //                 </title>
+        //             </Helmet>
+        //
+        //             <div className='category'>
+        //                 <AppBar title={this.state.data.name} style={{flexShrink: 0}} zDepth={2} iconElementLeft={
+        //                     this.state.mobile ?
+        //                     <IconButton onClick={() => {
+        //                         this.setState({
+        //                             FDO: true
+        //                         })
+        //                     }}>
+        //                         <FontIcon className='mdi' color={palette.primary3Color}>menu</FontIcon>
+        //                     </IconButton> :
+        //                     <React.Fragment></React.Fragment>
+        //                 } />
+        //
+        //
+        //                 <div className='scroll-content'>
+        //                     {this.filterHelpers()}
+        //                     <div className='result' style={{padding: 16}}>
+        //                         <CategoryItem data={this.state.data.products.filter((e, ind) => {
+        //                                 let condition = (this.query.min < e.price && e.price < this.query.max && e.name.indexOf(this.query.filter.replace(/ /g, '')) !== -1);
+        //                                 if (this.query.availables === true) {
+        //                                     return condition && e.available === true
+        //                                 } else {
+        //                                     return condition
+        //                                 }
+        //                             }).sort(this.state.sortFn)} />
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </React.Fragment>
+        //     )
+        // } else if (typeof this.state.loaded === 'string') {
+        //     if (this.state.loaded === 'err-701') {
+        //         return <React.Fragment>
+        //             <Err404 />
+        //             <Helmet>
+        //                 <title>دسته بندی یافت نشد!</title>
+        //             </Helmet>
+        //         </React.Fragment>
+        //     } else {
+        //         return (
+        //             <div className='load-indic'>
+        //                 <Helmet>
+        //                     <title>خطایی رخ داد!</title>
+        //                 </Helmet>
+        //                 <i className='mdi' style={{color: '#f44336', fontSize: 80}}>error_outline</i>
+        //                 <div style={{fontSize: '1.8em', margin: '.67rem 0', textAlign: 'center', fontWeight: 300}}>خطایی رخ داد.<br />
+        //                     <b>{this.state.data}</b>
+        //                 </div>
+        //                 <Space height={15} />
+        //                 <Link to='/'>
+        //                     <RaisedButton backgroundColor={palette.accent2Color} labelColor='#fff' label='خروج به صفحه اصلی' />
+        //                 </Link>
+        //             </div>
+        //         )
+        //     }
+        // } else {
+        //     return (<div className='load-indic'>
+        //         <CircularProgress size={120} thickness={6} color={palette.accent3Color} />
+        //         <br />
+        //         در حال بارگذاری دسته بندی...
+        //     </div>)
+        // }
     }
 }
