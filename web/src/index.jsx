@@ -16,6 +16,7 @@ import DeleteAccount from './pages/delete-account';
 import Category from './pages/category';
 import OrderFinalization from './pages/orderf';
 import Err404 from './pages/errors/not-found';
+import Search from "./pages/search";
 // misc
 import './styles/index.scss';
 import registerServiceWorker from './registerServiceWorker';
@@ -40,6 +41,8 @@ class App extends React.Component {
                         {/* Account managing */}
                         <Route exact path='/account/logout' component={LogoutFromAccount} />
                         <Route exact path='/account/delete-account' component={DeleteAccount} />
+                        {/* Search */}
+                        <Route exact path='/search' component={Search} />
                         {/* And, 404! */}
                         <Route component={Err404} />
                     </Switch>
