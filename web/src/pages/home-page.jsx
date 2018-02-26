@@ -10,7 +10,7 @@ import IconMenu from 'material-ui/IconMenu';
 import Badge from 'material-ui/Badge';
 import {Link} from 'react-router-dom';
 import FontIcon from 'material-ui/FontIcon';
-import {MulitshSelf, MulitshItem, TypeText, Space, palette, cookie, validateCookie} from '../utils/' ;
+import {MulitshSelf, MulitshItem, TypeText, Space, palette, cookie, validateCookie, numToFA} from '../utils/' ;
 import Helmet from 'react-helmet';
 
 export default class HomePage extends React.Component {
@@ -30,6 +30,11 @@ export default class HomePage extends React.Component {
                         {this.auth && <Link to='/cart'>
                             <IconButton>
                                 <FontIcon className='mdi' color={palette.primary3Color}>shopping_cart</FontIcon>
+                                <Badge
+                                    badgeContent={numToFA(5)}
+                                    badgeStyle={{top: -36, left: -12}}
+                                    secondary={true}>
+                                </Badge>
                             </IconButton>
                         </Link>
                         }

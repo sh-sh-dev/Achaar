@@ -98,29 +98,6 @@ export default class Category extends Component {
             })
         }
     }
-    // componentDidMount(){
-    //     let _ = this;
-    //     axios({
-    //         method: 'post',
-    //         url: resolveApiURL('getCategory'),
-    //         data: {
-    //             category: _.category
-    //         }
-    //     }).then(res => {
-    //         console.log(res);
-    //         if (res.data.ok) {
-    //             _.setState({
-    //                 loaded: true,
-    //                 data: res.data.result
-    //             })
-    //         } else if (res.data.ok === false) {
-    //             _.setState({
-    //                 loaded: `err${res.data.code}`,
-    //                 data: res.data.result
-    //             })
-    //         }
-    //     })
-    // }
     updateQueryString = (q, v) => {
         let newQuery = {};
         newQuery[q] = v;
