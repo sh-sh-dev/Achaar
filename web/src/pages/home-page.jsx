@@ -22,13 +22,17 @@ export default class HomePage extends React.Component {
     }
     handleSearch = e => {
         e.preventDefault();
-        let text = this.refs.searchField.input.value;
+        let text = this.refs.searchField.input.value.trim();
         if (text) {
             let string = qs.stringify({q: text}, true)
             this.props.history.push(`/search${string}`)
         }
-        
     }
+    closeSearchDialog = () => {
+		this.setState({
+            searchDialogOpen: false
+		})
+	}
     auth = validateCookie()
     render(){
         document.body.className = '';
@@ -37,15 +41,19 @@ export default class HomePage extends React.Component {
                 <Helmet>
                     <title>آچار | فروشگاه آنلاین تجهیزات و ابزار صنعتی</title>
                 </Helmet>
-                <Dialog open={this.state.searchDialogOpen}>
+                <Dialog open={this.state.searchDialogOpen} onRequestClose={this.closeSearchDialog} title='جستجو در آچار'>
                     <form onSubmit={this.handleSearch} style={{
                         display: 'flex',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        flexDirection: 'row-reverse'
                     }}>
-                        <IconButton type="submit">
+                        <IconButton type="submit" tabIndex={-1} style={{marginLeft: 8}}>
                             <FontIcon className="mdi">search</FontIcon>
                         </IconButton>
                         <TextField ref='searchField' fullWidth autoComplete='off' hintText='جستجو کنید...' name='query' />
+                        <IconButton tabIndex={-1} type="button" style={{marginRight: 8}} onClick={this.closeSearchDialog}>
+                            <FontIcon className="mdi">close</FontIcon>
+                        </IconButton>
                     </form>
                 </Dialog>
                 <div>
@@ -103,8 +111,7 @@ export default class HomePage extends React.Component {
                             </MenuItem>
                         </Link>
                     </Drawer>
-                    <Space height={64} />
-                    {/* <DemoSimple /> */}
+                    <Space height={56 + 16} />
                     <MulitshSelf icon='bookmark border' headerText='جدیدترین کالاها' interval={7000}>
                         <MulitshItem title='کالای اول' description='کالای دوم' imagePath={{}} price={41000} />
                         <MulitshItem title='کالای اول' description='کالای دوم' imagePath={{}} price={41000} />

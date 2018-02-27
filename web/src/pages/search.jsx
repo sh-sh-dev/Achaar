@@ -24,8 +24,6 @@ class SearchInput extends React.Component {
 		return (
 			<Paper style={{
 					padding: 4,
-					// marginLeft: 16,
-					// marginRight: 16,
 					margin: 8,
 					height: 56,
 					display: 'flex',
