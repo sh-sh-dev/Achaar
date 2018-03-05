@@ -11,6 +11,10 @@ body{
     font-family: IRANSans;
 }
 
+.mute{
+    color: #888
+}
+
 big{
     font-size: 125%
 }
@@ -574,4 +578,22 @@ body.superdoc-form{
 .producttabitem{
     padding-top: 16px;
     padding-bottom: 16px;
+}
+
+.landing-intro-section{
+    text-align: center;
+    i.mdi{
+        font-size: 5em;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .title{
+        @extend h5;
+        margin-bottom: 0;
+    }
+    p{
+        @extend .mute;
+        margin-top: 0;
+        font-size: .95em
+    }
 }
