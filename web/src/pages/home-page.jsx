@@ -121,8 +121,7 @@ export default class HomePage extends React.Component {
         )
     }
     auth = validateCookie()
-    render(){
-        document.body.className = '';
+    get landing(){
         return (
             <React.Fragment>
                 <Helmet>
@@ -134,9 +133,12 @@ export default class HomePage extends React.Component {
                 <div>
                     <Paper rounded={false} style={{
                         backgroundColor: palette.accent1Color,
-                        backgroundImage: `linear-gradient(to right, transparent, ${palette.accent2Color})`,
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='${palette.accent3Color}' fill-opacity='0.27'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E")`,
                         color: '#fff',
                         height: 256,
+                        backgroundAttachment: 'fixed',
+                        paddingLeft: 16,
+                        paddingRight: 16,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -172,33 +174,35 @@ export default class HomePage extends React.Component {
                                     آچار یک فروشگاه آنلاین تجهیزات و ابزار پیشرفته صنعتی است. خب گیتااار.
                                 </p>
                                 <h1>آچار نسبت به دیگران چه برتری هایی دارد؟</h1>
-                                <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
-                                    <i className="mdi" style={{color: palette.primary2Color}}>search</i>
-                                    <div className="title">آچار جــالب است.</div>
-                                    <p>
-                                        جالبه دیگه. جـــــالب.
-                                    </p>
-                                </div>
-                                <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
-                                    <i className="mdi" style={{color: palette.primary2Color}}>search</i>
-                                    <div className="title">آچار جــالب است.</div>
-                                    <p>
-                                        جالبه دیگه. جـــــالب.
-                                    </p>
-                                </div>
-                                <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
-                                    <i className="mdi" style={{color: palette.primary2Color}}>search</i>
-                                    <div className="title">آچار جــالب است.</div>
-                                    <p>
-                                        جالبه دیگه. جـــــالب.
-                                    </p>
-                                </div>
-                                <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
-                                    <i className="mdi" style={{color: palette.primary2Color}}>search</i>
-                                    <div className="title">آچار جــالب است.</div>
-                                    <p>
-                                        جالبه دیگه. جـــــالب.
-                                    </p>
+                                <div>
+                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
+                                        <i className="mdi" style={{color: palette.primary2Color}}>search</i>
+                                        <div className="title">آچار جــالب است.</div>
+                                        <p>
+                                            جالبه دیگه. جـــــالب.
+                                        </p>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
+                                        <i className="mdi" style={{color: palette.primary2Color}}>search</i>
+                                        <div className="title">آچار جــالب است.</div>
+                                        <p>
+                                            جالبه دیگه. جـــــالب.
+                                        </p>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
+                                        <i className="mdi" style={{color: palette.primary2Color}}>search</i>
+                                        <div className="title">آچار جــالب است.</div>
+                                        <p>
+                                            جالبه دیگه. جـــــالب.
+                                        </p>
+                                    </div>
+                                    <div className="col-xs-12 col-sm-6 col-md-4 col-lg-3 landing-intro-section">
+                                        <i className="mdi" style={{color: palette.primary2Color}}>search</i>
+                                        <div className="title">آچار جــالب است.</div>
+                                        <p>
+                                            جالبه دیگه. جـــــالب.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -206,5 +210,14 @@ export default class HomePage extends React.Component {
                 </div>
             </React.Fragment>
         )
+    }
+    render(){
+        if (!this.auth) {
+            return <div>
+                چی میخوای؟
+            </div>;
+        } else {
+            return this.landing
+        }
     }
 }
