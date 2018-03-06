@@ -1,10 +1,11 @@
 import validateCookie from './cookie-validation';
 import React, {Component} from 'react';
-import * as mul from './mulitsh.jsx';
+import * as mul from './components/mulitsh.jsx';
 import palette from './palette';
 import theme from './theme';
-import BlankLink from './blankLink.jsx';
-import NewLine from "./react-new-line.jsx";
+import BlankLink from './components/blank-link.jsx';
+import NewLine from "./components/new-line.jsx";
+import AuthBased from './components/auth-based.jsx';
 const cookie = require('cookies-js');
 const {MulitshItem, MulitshSelf} = mul;
 
@@ -79,5 +80,6 @@ export {
     BlankLink,
     theme,
     validateCookie,
-    NewLine
+    NewLine,
+    AuthBased
 };

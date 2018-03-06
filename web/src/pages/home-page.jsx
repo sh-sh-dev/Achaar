@@ -137,6 +137,7 @@ export default class HomePage extends React.Component {
                         color: '#fff',
                         height: 256,
                         backgroundAttachment: 'fixed',
+                        backgroundSize: '35vw',
                         paddingLeft: 16,
                         paddingRight: 16,
                         display: 'flex',

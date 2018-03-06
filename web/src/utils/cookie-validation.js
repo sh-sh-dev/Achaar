@@ -5,7 +5,7 @@ const validateCookie = () => {
     if (typeof token === "undefined") {
         token = '';
     }
-    let valid = token.match(/^[a-f0-9]{32}$/gm);
+    let valid = Boolean(token.match(/^[a-f0-9]{32}$/gm));
     return valid;
 }
 

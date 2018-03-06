@@ -1,19 +1,9 @@
-// Mulitsh stands for `MULtiple ITem SHow`
-
 import React, {Component} from 'react';
 import SwipeableViews from 'react-swipeable-views';
 import Img from 'react-image';
 import { autoPlay } from 'react-swipeable-views-utils';
-import palette from './palette';
+const chunk = require('lodash.chunk');
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const chunk = (array, chunkSize) => {
-    return [].concat.apply([],
-        array.map(function(elem,i) {
-            return i%chunkSize ? [] : [array.slice(i,i+chunkSize)];
-        })
-    );
-}
 
 class MulitshSelf extends Component {
     constructor(props){
@@ -68,7 +58,7 @@ function MulitshItem(props) {
             <div className='title'>{props.title}</div>
             <p>{props.description}</p>
             <div className='footer'>
-                <span className='price' style={{color: palette.accent1Color}}>{chunk(props.price.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')} تومان</span>
+                <span className='price'>{chunk(props.price.toString().split('').reverse(), 3).map(e => e.reverse().join('')).reverse().join(',')} تومان</span>
             </div>
         </div>
     )

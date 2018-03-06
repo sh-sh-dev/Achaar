@@ -11,9 +11,8 @@ import SignUp from './pages/signup';
 import SignIn from './pages/signin';
 import ProductPage from './pages/product-page';
 import ShoppingCart from './pages/cart';
-import LogoutFromAccount from './pages/account-logout';
-import DeleteAccount from './pages/delete-account';
 import Category from './pages/category';
+import Account from "./pages/account";
 import OrderFinalization from './pages/orderf';
 import Err404 from './pages/errors/not-found';
 import Search from "./pages/search";
@@ -39,8 +38,7 @@ class App extends React.Component {
                         <Route exact path='/cart' component={ShoppingCart} />
                         <Route exact path='/order-finalization' component={OrderFinalization} />
                         {/* Account managing */}
-                        <Route exact path='/account/logout' component={LogoutFromAccount} />
-                        <Route exact path='/account/delete-account' component={DeleteAccount} />
+                        <Route exact path='/account' component={Account} />
                         {/* Search */}
                         <Route exact path='/search' component={Search} />
                         {/* And, 404! */}
