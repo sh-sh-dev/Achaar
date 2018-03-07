@@ -6,7 +6,9 @@ const theme = getMuiTheme({
     palette,
     fontFamily: 'inherit',
     appBar: {
-        padding: 20
+        padding: 20,
+        color: '#fff',
+        textColor: '#212121'
     },
     slider: {
         trackSize: 2,
@@ -31,10 +33,15 @@ const theme = getMuiTheme({
         desktopDropDownItemHeight: 56 / 2
     },
     inkBar: {
-        backgroundColor: '#fff'
+        backgroundColor: palette.primary1Color
     },
     toolbar: {
         backgroundColor: '#fff'
+    },
+    tabs: {
+        backgroundColor: '#fff',
+        selectedTextColor: palette.primary1Color,
+        textColor: '#888'
     }
 })
 
