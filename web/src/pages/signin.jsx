@@ -14,8 +14,10 @@ import {Link, Redirect} from 'react-router-dom';
 
 export default class SignIn extends Component {
     constructor(props){
-        document.body.className = 'superdoc-form signin';
         super(props)
+        if (!this.auth) {
+            document.body.className = 'superdoc-form signin';
+        }
         this.phoneNumRegexp = /^[0][9][0-4][0-9]{8,8}$/g;
         this.state = {
             phone: false,

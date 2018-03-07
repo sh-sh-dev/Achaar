@@ -14,8 +14,10 @@ import axios from 'axios';
 
 export default class SignUp extends Component {
     constructor(props){
-        document.body.className = 'superdoc-form signup';
-        super(props)
+        super(props);
+        if (!this.auth){
+            document.body.className = 'superdoc-form signup';
+        }
         this.phoneNumRegexp = /^[0][9][0-4][0-9]{8,8}$/g;
         this.state = {
             phone: false,
