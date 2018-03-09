@@ -3,7 +3,6 @@ import Helmet from 'react-helmet';
 import AppBar from 'material-ui/AppBar';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-// import TouchRipple from 'material-ui/internal/TouchRipple';
 import {Link, Redirect} from 'react-router-dom';
 import {palette, Space, slicePrice, numToFA, cookie, validateCookie} from '../utils/' ;
 import Paper from 'material-ui/Paper';
@@ -120,7 +119,7 @@ export default class ShoppingCart extends Component {
                         <title>سبد خرید | آچار</title>
                     </Helmet>
                     <Paper zDepth={1} style={{backgroundColor: palette.primary1Color, height: 256}}>
-                        <AppBar style={{backgroundColor: 'transparent'}} title='سبد خرید' zDepth={0} iconElementLeft={<Link to='/'><IconButton><FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon></IconButton></Link>} />
+                        <AppBar titleStyle={{color: '#fff'}} style={{backgroundColor: 'transparent'}} title='سبد خرید' zDepth={0} iconElementLeft={<Link to='/'><IconButton><FontIcon className='mdi' color={palette.primary3Color}>arrow_forward</FontIcon></IconButton></Link>} />
                     </Paper>
                     <div className='col-xs-12 col-md-8' style={{position: 'relative', top: -56, float: 'none', margin: '0 auto'}}>
                         <Paper style={{padding: 15}} zDepth={1}>

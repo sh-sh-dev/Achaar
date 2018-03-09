@@ -42,6 +42,10 @@ const theme = getMuiTheme({
         backgroundColor: '#fff',
         selectedTextColor: palette.primary1Color,
         textColor: '#888'
+    },
+    listItem: {
+        rightIconColor: 'inherit',
+        leftIconColor: 'inherit'
     }
 })
 
