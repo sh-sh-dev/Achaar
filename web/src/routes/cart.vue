@@ -54,9 +54,12 @@
                 </md-content>
 
 
-                <md-snackbar md-position="center" @md-closed='clearCachedItem' :md-duration="6500" :md-active.sync='deletionSnackOpen'>
+                <md-snackbar md-position="center" @md-closed='clearCachedItem' :md-duration="4500" :md-active.sync='deletionSnackOpen'>
                     <span>{{deletedText}} از سبد خرید حذف گردید.</span>
-                    <md-button class="md-primary" @click='restoreLastDeleted'>بازآوری</md-button>
+                    <div class="">
+                        <md-button class="md-primary" @click='restoreLastDeleted'>بازآوری</md-button>
+                        <md-button class="md-primary" @click='clearCachedItem'>تایید</md-button>
+                    </div>
                 </md-snackbar>
 
 
@@ -108,7 +111,8 @@ export default {
             this.deletedText = ''
         },
         clearCachedItem(){
-            localStorage.removeItem('lastDeleted')
+            localStorage.removeItem('lastDeleted');
+            this.deletionSnackOpen = false
         }
     }
 }
