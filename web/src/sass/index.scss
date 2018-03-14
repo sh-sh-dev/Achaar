@@ -1,0 +1,11 @@
+@import "~vue-material/dist/theme/engine";
+
+@import "_mdi";
+@import "_init";
+
+@include md-register-theme("default", (
+    primary: #ffaf00,
+    accent: #3e2fe2
+));
+
+@import "~vue-material/dist/theme/all";
