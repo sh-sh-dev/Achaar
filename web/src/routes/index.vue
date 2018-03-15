@@ -116,14 +116,14 @@
                 </landing-view>
                 <md-divider></md-divider>
                 <div style="text-align: center; padding: 8vh 20px">
-                    <h1>برای استفاده از خدمات ما، همین حالا ثبت‌نام کنید.</h1>
+                    <h1 style='line-height: 1.5'>برای استفاده از خدمات ما، همین حالا ثبت‌نام کنید.</h1>
                     <md-button class="md-raised md-primary">ثبت نام</md-button>
                     <md-button class="md-raised">مشاهده دسته‌بندی ها</md-button>
                 </div>
             </div>
         </div>
 
-        <md-speed-dial class="md-bottom-right md-fixed" md-effect='scale' md-direction="top">
+        <md-speed-dial class="md-bottom-right md-fixed" :md-event="'ontouchstart' in window ? 'click' : 'hover'" md-effect='scale' md-direction="top">
             <md-speed-dial-target class='md-primary'>
                 <md-icon class="md-morph-final">person</md-icon>
                 <md-icon class="md-morph-initial">person_outline</md-icon>
@@ -151,7 +151,8 @@ export default {
     },
     data(){
         return {
-            showDrawer: false
+            showDrawer: false,
+            window: window
         }
     },
     metaInfo: {
