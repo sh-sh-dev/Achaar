@@ -4,6 +4,6 @@ body{
     margin: 0;
 }
 
-*{
-    font-family: Iransans
+*:not(.md-icon){
+    font-family: Iransans;
 }
