@@ -78,7 +78,7 @@
     <div>
         <md-toolbar class="md-accent landing-toolbar" style='height: 256px;z-index: 0'>
             <div class="md-toolbar-row">
-                <md-button class="md-icon-button" @click='showDrawer = true'>
+                <md-button class="md-icon-button" @click='showDrawer = true' @keydown.esc.exact='showDrawer = false'>
                     <md-icon>menu</md-icon>
                 </md-button>
             </div>
