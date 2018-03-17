@@ -7,6 +7,12 @@ import UserAccount from '@/routes/account.vue';
 
 Vue.use(Router);
 
+/*
+    some routes require authentication.
+    ->meta->requiresAuth
+    can be 1 or -1 (reversed) and 0 (no auth required)
+*/
+
 const routes = new Router({
     mode: 'history',
     routes: [
@@ -22,12 +28,18 @@ const routes = new Router({
         {
             path: '/cart',
             name: 'Cart',
-            component: ShoppingCart
+            component: ShoppingCart,
+            meta: {
+                requiresAuth: 1
+            }
         },
         {
             path: '/account',
             name: 'Account',
-            component: UserAccount
+            component: UserAccount,
+            meta: {
+                requiresAuth: 1
+            }
         }
     ]
 })

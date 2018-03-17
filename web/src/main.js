@@ -14,7 +14,7 @@ Vue.use(VueMaterial);
 Vue.use(Meta);
 
 router.beforeEach(async function(to, from, next) {
-    if (to.matched.some(record => record.meta.requiresAuth && to.path !== '/')){
+    if (to.matched.some(record => record.meta.requiresAuth) && to.path !== '/') {
         const authed = await http({
             url: 'checkToken',
             data: {
@@ -22,7 +22,17 @@ router.beforeEach(async function(to, from, next) {
             }
         })
         try {
-            if (authed.data.ok) {
+            let condition;
+            switch (to.matched[0].meta.requiresAuth) {
+                case 1:
+                    condition = authed.data.ok
+                    break
+                case -1:
+                    condition = !authed.data.ok
+                    break
+            }
+
+            if (condition) {
                 next()
             } else {
                 next({
@@ -30,9 +40,8 @@ router.beforeEach(async function(to, from, next) {
                 })
             }
         } catch (e) {
-            return;
+            return false;
         }
-        next()
     } else {
         next()
     }
