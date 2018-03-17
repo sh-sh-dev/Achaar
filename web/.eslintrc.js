@@ -25,6 +25,7 @@ module.exports = {
     'no-unused-vars': 0,
     'quotes': 0,
     'space-before-blocks': 0,
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    'no-multiple-empty-lines': 0
   }
 }
