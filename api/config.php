@@ -6,7 +6,7 @@ $Database = [
     'database'=>"Achaar"
 ];
 $Headers = [
-    'AllowOrigin'=>"http://localhost:9559",
+    'AllowOrigin'=>"http://localhost:4747",
     'AllowHeaders'=>"*",
     'AllowMethods'=>"POST, OPTIONS",
     'XPoweredBy'=>"Achaar CMS"
