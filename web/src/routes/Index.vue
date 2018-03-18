@@ -143,7 +143,7 @@
 </template>
 
 <script>
-import LandingView from "@/components/landing.vue";
+import LandingView from "@/components/LandingView.vue";
 export default {
     name: 'index',
     components: {
