@@ -16,7 +16,7 @@ if (mb_strlen($Password) < 6 || mb_strlen($Password) > 18) {
     $ResC = $Re ? -101 : -102;
     die(Response("طول رمز عبور $ResD از حد مجاز است",false,$ResC));
 }
-if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
+if (!preg_match("/^09[0-3][0-9]{8,8}$/",$Mobile)) {
     die(Response("موبایل معتبر نمی‌باشد",false,-103));
 }
 
