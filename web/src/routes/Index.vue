@@ -13,8 +13,8 @@
                             <div class="md-display-1" style='color: inherit'><b>آچار</b></div>
                             <div class="md-subheading">فروشگاه آنلاین ابزار و تجهیزات صنعتی</div>
                             <div>
-                                <md-button to='/login' class="md-raised md-primary">ثبت نام</md-button>
-                                <md-button to='/signin' class="md-raised">ورود</md-button>
+                                <md-button to='/signup' class="md-raised md-primary">ثبت نام</md-button>
+                                <md-button to='/login' class="md-raised">ورود</md-button>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     <md-divider></md-divider>
                     <div style="text-align: center; padding: 8vh 20px">
                         <h1 style='line-height: 1.5'>برای استفاده از خدمات ما، همین حالا ثبت‌نام کنید.</h1>
-                        <md-button class="md-raised md-primary" to='/login'>ثبت نام</md-button>
+                        <md-button class="md-raised md-primary" to='/signup'>ثبت نام</md-button>
                         <md-button class="md-raised" to='/categories'>مشاهده دسته‌بندی ها</md-button>
                     </div>
                 </div>
