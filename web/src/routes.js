@@ -4,6 +4,7 @@ import Index from '@/routes/Index.vue';
 import ShoppingCart from '@/routes/ShoppingCart.vue';
 import UserAccount from '@/routes/UserAccount.vue';
 import LoginForm from '@/routes/LoginForm.vue';
+import ErrorTag from '@/routes/ErrorTag.vue';
 
 Vue.use(Router);
 
@@ -44,6 +45,10 @@ const routes = new Router({
                 requiresAuth: -1
             },
             component: LoginForm
+        },
+        {
+            path: '*',
+            component: ErrorTag
         }
     ]
 })
