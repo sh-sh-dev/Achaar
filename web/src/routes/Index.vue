@@ -47,23 +47,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <md-speed-dial class="md-bottom-right md-fixed" :md-event="isTouch ? 'click' : 'hover'" md-effect='scale' md-direction="top">
-                <md-speed-dial-target class='md-primary'>
-                    <md-icon class="md-morph-final">person</md-icon>
-                    <md-icon class="md-morph-initial">person_outline</md-icon>
-                </md-speed-dial-target>
-                <md-speed-dial-content>
-                    <md-button class="md-icon-button" to='/login'>
-                        <md-icon>person_add</md-icon>
-                        <md-tooltip md-direction='right'>ثبت نام</md-tooltip>
-                    </md-button>
-                    <md-button class="md-icon-button" to='/signin'>
-                        <md-icon>vpn_key</md-icon>
-                        <md-tooltip md-direction='right'>ورود به حساب</md-tooltip>
-                    </md-button>
-                </md-speed-dial-content>
-            </md-speed-dial> -->
         </div>
         <div v-else-if="mode === 'user'">
             <md-toolbar class="md-primary">
@@ -172,7 +155,6 @@ export default {
             try {
                 switch (xhr.data.ok) {
                     case true:
-                        // user is logged in
                         this.mode = 'user';
                         break;
                     default:
