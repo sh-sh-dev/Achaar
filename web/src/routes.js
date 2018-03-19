@@ -1,9 +1,9 @@
 import Vue from "vue"
 import Router from 'vue-router';
-import Index from '@/routes/index.vue';
-import ProductPage from '@/routes/product.vue';
-import ShoppingCart from '@/routes/cart.vue';
-import UserAccount from '@/routes/account.vue';
+import Index from '@/routes/Index.vue';
+import ShoppingCart from '@/routes/ShoppingCart.vue';
+import UserAccount from '@/routes/UserAccount.vue';
+import LoginForm from '@/routes/LoginForm.vue';
 
 Vue.use(Router);
 
@@ -22,10 +22,6 @@ const routes = new Router({
             component: Index
         },
         {
-            path: '/product/:id',
-            component: ProductPage
-        },
-        {
             path: '/cart',
             name: 'Cart',
             component: ShoppingCart,
@@ -40,6 +36,14 @@ const routes = new Router({
             meta: {
                 requiresAuth: 1
             }
+        },
+        {
+            path: '/login',
+            name: 'Log in',
+            meta: {
+                requiresAuth: -1
+            },
+            component: LoginForm
         }
     ]
 })

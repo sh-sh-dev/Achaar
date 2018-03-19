@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueMaterial from 'vue-material';
 import Meta from 'vue-meta';
 import cookie from 'cookies-js';
-import toFa from './utils/num-fa';
+import toFa from './utils/number-to-fa';
+import toEn from './utils/number-to-en';
 import router from './routes';
 import http from './utils/http';
 
@@ -51,6 +52,7 @@ router.beforeEach(async function(to, from, next) {
 Vue.use({
     install(Vue, options){
         Vue.prototype.ToFa = toFa
+        Vue.prototype.ToEn = toEn
     }
 })
 
