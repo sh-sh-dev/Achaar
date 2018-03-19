@@ -1,4 +1,5 @@
 <?
+//Salt!
 include "functions.php";
 
 $Data = getData();

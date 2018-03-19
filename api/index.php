@@ -1,3 +1,3 @@
 <?
-$WebURL = "http://localhost:9559";
+$WebURL = "http://localhost:4747";
 header("Location:$WebURL");

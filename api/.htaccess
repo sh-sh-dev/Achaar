@@ -46,7 +46,7 @@ RewriteCond %{REQUEST_FILENAME}.php -f
 
 RewriteRule ^ %{REQUEST_URI}.php [L]
 
-#Config and... Access Denied
+#Config and... Access Denied :)
 
 <FilesMatch "config\.php|functions\.php">
   Order allow,deny

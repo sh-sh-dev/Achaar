@@ -1,4 +1,5 @@
 <?
+//Attempts
 include "functions.php";
 $LoginAttempts = new LoginAttempts($_SERVER["REMOTE_ADDR"],$db);
 $Attempts = $LoginAttempts->getAttempts();
