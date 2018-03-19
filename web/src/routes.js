@@ -46,20 +46,20 @@ const routes = new Router({
             meta: {
                 requiresAuth: -1
             },
+            component: SigninForm
+        },
+        {
+            path: '/signup',
+            name: 'Sign up',
+            meta: {
+                requiresAuth: -1
+            },
             component: LoginForm
         },
         {
             path: '/categories',
             name: 'Categories',
             component: CategoryList
-        },
-        {
-            path: '/signin',
-            name: 'Signin in',
-            meta: {
-                requiresAuth: -1
-            },
-            component: SigninForm
         },
         {
             path: '*',

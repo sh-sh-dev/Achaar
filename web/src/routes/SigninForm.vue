@@ -87,7 +87,7 @@ export default {
                             this.mode = 'success';
 
                             const token = request.data.result;
-                            cookie('$_TOKEN', token);
+                            cookie('$_TOKEN', token, {expires: new Date(Date.now() + (1000 * 60 * 60 * 24 * 50))});
 
                             await wait(750);
                             router.push('/')

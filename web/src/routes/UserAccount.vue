@@ -27,13 +27,9 @@
                 </md-content>
                 <md-content class="md-elevation-2">
                     <md-list>
-                        <md-subheader>فعالیت ها</md-subheader>
                         <md-list-item @click='confirmLogout = true'>
-                            <md-icon class="md-accent">close</md-icon>
+                            <md-icon style='color: #f44336'>close</md-icon>
                             <div class="md-list-item-text">خروج از حساب</div>
-                        </md-list-item>
-                        <md-list-item class="md-inset" @click='confirmDA = true'>
-                            <div class="md-list-item-text" style='color: #f44336'>حذف حساب</div>
                         </md-list-item>
                     </md-list>
                 </md-content>
@@ -46,7 +42,8 @@
     </div>
 </template>
 <script>
-    import routes from '@/routes'
+    import routes from '@/routes';
+    import cookie from 'cookies-js';
     export default {
         name: 'user-account',
         data(){
@@ -57,9 +54,7 @@
         },
         methods: {
             logOut(){
-                routes.push('/')
-            },
-            deleteAccount(){
+                cookie.expire('$_TOKEN');
                 routes.push('/')
             }
         }
