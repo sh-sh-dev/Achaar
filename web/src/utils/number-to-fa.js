@@ -3,9 +3,6 @@ export default function (num) {
         num = num.toString()
     }
     let reg = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-
-    for (var i = 0; i < reg.length; i++) {
-        num = num.replace(new RegExp(i.toString(), 'g'), reg[i])
-    }
+    num = num.replace(/[0-9]/g, n => reg[n])
     return num
 }

@@ -10,7 +10,7 @@ module.exports = {
     browser: true,
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: 'standard',
+  // extends: 'standard',
   // add your custom rules here
   'rules': {
     // allow paren-less arrow functions
@@ -28,6 +28,7 @@ module.exports = {
     'space-before-function-paren': 0,
     'no-multiple-empty-lines': 0,
     'comma-spacing': 0,
-    'no-trailing-spaces': 0
+    'no-trailing-spaces': 0,
+    'no-undef': 1
   }
 }
