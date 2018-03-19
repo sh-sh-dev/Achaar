@@ -3,8 +3,8 @@
 @import "_mdi";
 @import "_init";
 
-$primary: md-get-palette-color(indigo, 600);
-$accent: md-get-palette-color(pink, A400);
+$primary: #ffaf00;
+$accent: #047dcc;
 
 @include md-register-theme("default", (
     primary: $primary,
