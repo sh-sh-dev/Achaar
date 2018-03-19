@@ -72,7 +72,7 @@ export default {
         async handleSubmit(event){
             let {number, pass} = this.validation;
 
-            if (name && number && pass) {
+            if (number && pass) {
                 const request = await http({
                     url: 'signin',
                     data: {
