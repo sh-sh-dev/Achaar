@@ -9,7 +9,10 @@ import http from './utils/http';
 
 import MainView from './main.vue';
 import 'vue-material/dist/vue-material.min.rtl.css';
-import './sass/index.scss'
+import './sass/index.scss';
+
+import LoadingOverlay from './components/LoadingOverlay.vue';
+import ErrorTag from './components/ErrorTag.vue';
 
 Vue.use(VueMaterial);
 Vue.use(Meta);
@@ -48,6 +51,8 @@ router.beforeEach(async function(to, from, next) {
     }
 })
 
+Vue.component('loading-overlay', LoadingOverlay);
+Vue.component('error-tag', ErrorTag)
 
 Vue.use({
     install(Vue, options){

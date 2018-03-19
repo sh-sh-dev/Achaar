@@ -214,15 +214,6 @@ $pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' widt
     background-attachment: fixed;
 }
 
-.flex-cont{
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    max-width: 95vw;
-}
-
 .home-headline{
     display: flex;
     align-items: center;
