@@ -36,7 +36,7 @@ if (empty($Mobile) || empty($Password)) {
 if (strlen($Password) < 6 || strlen($Password) > 18) {
     die(Response("پسورد معتبر نمی‌باشد",false,-202));
 }
-if (!preg_match("/^[0][9][0-4][0-9]{8,8}$/",$Mobile)) {
+if (!preg_match("/^09[0-3][0-9]{8,8}$/",$Mobile)) {
     die(Response("نام کاربری معتبر نمی‌باشد",false,-203));
 }
 
