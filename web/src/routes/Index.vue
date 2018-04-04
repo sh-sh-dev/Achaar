@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </md-toolbar>
-            <md-button class="md-fab md-fixed md-fab-bottom-right">
+            <md-button class="md-fab md-fixed md-fab-bottom-right" to='/categories'>
                 <md-icon>list</md-icon>
                 <md-tooltip>مشاهده لیست دسته بندی ها</md-tooltip>
             </md-button>
@@ -77,7 +77,7 @@
                         <md-button class="md-icon-button" @click='showDrawer = false'>
                             <md-icon>arrow_forward</md-icon>
                         </md-button>
-                        <span class="md-title" style='flex: 3'>اکبر فغانی</span>
+                        <span class="md-title" style='flex: 3'>{{user.name}}</span>
                     </div>
                 </md-toolbar>
                 <md-list>
@@ -146,16 +146,19 @@ export default {
         if (!token) {
             this.mode = 'landing';
         } else {
-            const xhr = await http('checkToken', {
+            const xhr = await http('getUser', {
                 data: {
                     token
                 }
             });
 
+            console.log(xhr);
+
             try {
                 switch (xhr.data.ok) {
                     case true:
                         this.mode = 'user';
+                        this.user = xhr.data.result
                         break;
                     default:
                         this.mode = 'landing';
@@ -170,7 +173,8 @@ export default {
             showDrawer: false,
             mode: 'load',
             data: {},
-            isTouch: 'ontouchstart' in window
+            isTouch: 'ontouchstart' in window,
+            user: null
         }
     },
     components: {

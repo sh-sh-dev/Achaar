@@ -17,6 +17,8 @@ import ErrorTag from './components/ErrorTag.vue';
 Vue.use(VueMaterial);
 Vue.use(Meta);
 
+window.Vue = Vue;
+
 router.beforeEach(async function(to, from, next) {
     if (to.matched.some(record => record.meta.requiresAuth) && to.path !== '/') {
         const authed = await http({
@@ -61,7 +63,7 @@ Vue.use({
     }
 })
 
-window.VM = new Vue({
+new Vue({
     el: '#app',
     components: {
         'main-view': MainView

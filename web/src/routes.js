@@ -7,6 +7,7 @@ import LoginForm from '@/routes/LoginForm.vue';
 import SigninForm from '@/routes/SigninForm.vue';
 import CategoryList from '@/routes/CategoryList.vue';
 import ErrorTag from '@/components/ErrorTag.vue';
+import ProductPage from '@/routes/ProductPage.vue';
 
 Vue.use(Router);
 
@@ -62,8 +63,15 @@ const routes = new Router({
             component: CategoryList
         },
         {
+            path: '/product/:id',
+            component: ProductPage
+        },
+        {
             path: '*',
-            component: ErrorTag
+            component: ErrorTag,
+            props: {
+                pattern: true
+            }
         }
     ]
 })

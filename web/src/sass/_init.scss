@@ -11,3 +11,9 @@ body{
 a{
     text-decoration: none !important;
 }
+
+.no-underline{
+    &::after, &::before{
+        content: none;
+    }
+}
