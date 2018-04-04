@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,16 +20,18 @@
     <meta name="msapplication-TileColor" content="#000000">
     <% for (var chunk of webpack.chunks) {
         for (var file of chunk.files) {
-          if (file.match(/\.(js|css)$/)) { %>
-    <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
-  </head>
-  <body dir="rtl">
-    <noscript>
-      This is your fallback content in case JavaScript fails to load.
-    </noscript>
-    <div id="app"></div>
-    <!-- Todo: only include in production -->
-    <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
-    <!-- built files will be auto injected -->
-  </body>
+            if (file.match(/\.(js|css)$/)) { %>
+                <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
+    </head>
+    <body dir="rtl">
+        <noscript>
+            This is your fallback content in case JavaScript fails to load.
+        </noscript>
+        <div id="app">
+            <router-view></router-view>
+        </div>
+        <!-- Todo: only include in production -->
+        <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
+        <!-- built files will be auto injected -->
+    </body>
 </html>
